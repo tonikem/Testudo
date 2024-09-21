@@ -60,15 +60,13 @@ class InnerContainer extends React.Component {
     }
 
     handleSort(index: number) {
-        if (this.props && this.props.data) {
-            const clone = [...this.props.data.content]
-            const temp = clone[this.state.dragNote]
+        const clone = [...this.props.data.content]
+        const temp = clone[this.state.dragNote]
 
-            clone[this.state.dragNote] = clone[this.state.dragOverNote]
-            clone[this.state.dragOverNote] = temp
+        clone[this.state.dragNote] = clone[this.state.dragOverNote]
+        clone[this.state.dragOverNote] = temp
 
-            this.setNote(clone, this.props.data.id)
-        }
+        this.setNote(clone, this.props.data.id)
     }
 
     urlExists(url: string, callback: any) {

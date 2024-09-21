@@ -18,6 +18,7 @@ const ListGroup = (props: any) => {
 
     setTimeout(() => {
       document.getElementById("reload-icon").style["animation-name"] = ""
+      location.reload()
     }, 1001);
   }
 

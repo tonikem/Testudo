@@ -298,6 +298,7 @@ function App() {
                             if (showActiveFolderIndex == i) {
                               return (
                                 <div key={d.id} onClick={() => {
+                                  localStorage.setItem("activeFolder", i.toString())
                                   onMouseClickTable(d, i)
                                   setTableItems(d)
                                 }}
@@ -321,6 +322,7 @@ function App() {
                             }
                             return (
                               <div key={d.id} onClick={() => {
+                                localStorage.setItem("activeFolder", i.toString())
                                 onMouseClickTable(d, i)
                                 setTableItems(d)
                               }}
