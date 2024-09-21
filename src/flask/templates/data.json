@@ -1,0 +1,237 @@
+{
+    "id": "938452qy7t798qyr8ewh9ahyufed8ihasy789dfs7h78",
+    "main": [
+        {
+            "id": "828f7c86-29cc-4e12-ace2-aa77fd7a7244",
+            "items": [
+                {
+                    "name": "kansio 1",
+                    "id": "8b41e668-7454-4ab3-a024-447b9aa79e7d",
+                    "content": [
+                        {
+                            "name": "liiru laarum",
+                            "id": "c6104158-c2d9-4d93-99a8-0e56a3ed659b",
+                            "type": "Text",
+                            "payload": "moikka vaan\n"
+                        },
+                        {
+                            "name": "Uusi 3",
+                            "id": "48dbe477-1b71-44ee-bcc0-6edd2345e5e2",
+                            "type": "Text",
+                            "payload": ""
+                        },
+                        {
+                            "name": "Uusi 2",
+                            "id": "761e91c0-7ce7-4943-9e51-d458fb4050f2",
+                            "type": "Text",
+                            "payload": "moi"
+                        },
+                        {
+                            "name": "URL 1",
+                            "id": "c451c31e-afd9-4234-831e-c2c8a65e3218",
+                            "type": "URL",
+                            "payload": "https://google.com"
+                        },
+                        {
+                            "name": "Uusi",
+                            "id": "fc196a9d-ceba-445c-9cf8-5fa9629287c6",
+                            "type": "URL",
+                            "payload": "https://uusi.fi/404"
+                        }
+                    ]
+                },
+                {
+                    "name": "toinen kansio",
+                    "id": "8fb9c810-7b1a-4429-af31-df73ae128bde"
+                }
+            ],
+            "name": "Notebook 1001"
+        },
+        {
+            "id": "2d1a7342-bf11-4664-b174-3a54f9acfdfa",
+            "items": [
+                {
+                    "name": "empty 100",
+                    "id": "d49b6d06-3207-446d-9da6-17a3a7384aee",
+                    "content": [
+                        {
+                            "name": "uusi",
+                            "id": "f00a21e0-11c1-4c5b-8116-51ad9683ae10",
+                            "type": "Text",
+                            "payload": "tervehdys vaan kaikille"
+                        },
+                        {
+                            "name": "Python koodia",
+                            "id": "3052bb44-7959-4c00-8dac-71d2890d228a",
+                            "type": "Code",
+                            "payload": "print(\"Moi kaikille\")",
+                            "codeStyle": "python"
+                        },
+                        {
+                            "name": "botit",
+                            "id": "ddd823ef-25d1-42eb-bc96-33dca6be1e76",
+                            "type": "Text",
+                            "payload": "Within a research project, we have created and manually validated and already uploaded several articles containing words in minority Uralic languages (Northern Saami, Udmurt, Hill Mari, Meadow Mari, Komi-Zyrian, Komi-Permyak). Unfortunately, we used slashes in IPA transcription, which are however generally used in the phonological representation of words, but using brackets would be more suitable for phonetic transcription. Therefore, we would like to use this bot to correct these errors. Additionally, we also created more Wiktionary entries for the aforementioned languages, which we also want to upload.\n\nThanks for the permission in advance! Finnotka (keskustelu) 16. tammikuuta 2018 kello 14.08 (UTC)\n\nThank you for your request. I'd like to hear a bit more final word regarding the current quality of the bot modifications from people like Hunsvotti, Mikko Paananen or Hartz who participated in the earlier discussion on your talk page or otherwise followed the bot in action. But giving the bot status seems like a good idea to me, let's just wait a bit still. --TJ (keskustelu) 19. tammikuuta 2018 kello 09.20 (UTC)\nThere's some minor formatting errors, but nothing that can't be fixed easily. From what I've been able to check, the translations are correct or close enough to be useful. However, I'd prefer Finnotka to not have a bot status, since they don't have any prior edits here, it would be easier to keep an eye on the edits as I don't think many people watch the bot edits. Since there's a group of people sharing the account, it might get in the wrong hands. But the edits are welcome here on a normal user account. --Hunsvotti (keskustelu) 21. tammikuuta 2018 kello 20.55 (UTC)\nJust to clear some issues: \"a group of people sharing the account\" is actually three researchers at the Research Institute for Linguistics of the Hungarian Academy of Sciences, not a random group of people. But if you wish, I can create an account only for me myself.\nHere we present our work in English: https://corpora.uni-hamburg.de/temp/book.pdf (from page 39)\nWe created a large amount of Wiktionary entries for several Finno-Ugric minority languages which we want to upload. I don't really see the difference -- from your point of view -- between manually copy-pasting or automatically uploading the same entries. For us, indeed, the difference is huge. Finnotka (keskustelu) 22. tammikuuta 2018 kello 14.45 (UTC)\nSorry, I wasn't being clear. I meant you could continue with the bot, just without the bot flag. How about a temporary bot flag for the duration of your project? --Hunsvotti (keskustelu) 22. tammikuuta 2018 kello 20.54 (UTC)\nSounds great! Finnotka (keskustelu) 24. tammikuuta 2018 kello 13.00 (UTC)\nGreat! I messaged TJ to give you the rights. --Hunsvotti (keskustelu) 24. tammikuuta 2018 kello 20.33 (UTC)\nGiven. I did not see the length of the project specified so I guessed 6 months for now. Also just to make it clear, there's no user FinnotkaBot in existence, just Finnotka. --TJ (keskustelu) 26. tammikuuta 2018 kello 08.19 (UTC)\nGreat, thanks! Finnotka (keskustelu) 26. tammikuuta 2018 kello 13.19 (UTC)\nWe finished. If you think that our articles are OK, you can take back the bot rights. Finnotka (keskustelu) 7. helmikuuta 2018 kello 09.51 (UTC)"
+                        },
+                        {
+                            "name": "C++ koodia",
+                            "id": "014ae414-5209-46c9-909d-de21c43b328f",
+                            "type": "Code",
+                            "payload": "printf(\"moikka\")\n\n// Moikka vaan",
+                            "codeStyle": "cpp"
+                        },
+                        {
+                            "name": "iso tiedosto",
+                            "id": "f35332c1-23a7-4433-99d7-ab94dfe6226f",
+                            "type": "Text",
+                            "payload": "Mik\u00e4 on Lorem Ipsum?\nLorem Ipsum on yksinkertaisesti testausteksti, jota tulostus- ja ladontateollisuudet k\u00e4ytt\u00e4v\u00e4t. Lorem Ipsum on ollut teollisuuden normaali testausteksti jo 1500-luvulta asti, jolloin tuntematon tulostaja otti kaljuunan ja sekoitti sen tehd\u00e4kseen esimerkkikirjan. Se ei ole selvinnyt vain viitt\u00e4 vuosisataa, mutta my\u00f6s loikan elektroniseen kirjoitukseen, j\u00e4\u00e4den suurinpiirtein muuntamattomana. Se tuli kuuluisuuteen 1960-luvulla kun Letraset-paperiarkit, joissa oli Lorem Ipsum p\u00e4tki\u00e4, julkaistiin ja viel\u00e4 my\u00f6hemmin tietokoneen julkistusohjelmissa, kuten Aldus PageMaker joissa oli versioita Lorem Ipsumista.\n\nMiksi k\u00e4yt\u00e4mme sit\u00e4?\nOn todistettu, ett\u00e4 lukijaa h\u00e4iritsee sivun ulkoasu lukiessaan sivua. Lorem Ipsumin k\u00e4yt\u00f6n tarkoitus on, ett\u00e4 se omaa enemm\u00e4n-tai-v\u00e4hemm\u00e4n normaalimpaa sanojen sijoitusta kuin 'Sis\u00e4lt\u00f6\u00e4 t\u00e4h\u00e4n, sis\u00e4lt\u00f6\u00e4 t\u00e4h\u00e4n'. Monet tietokoneen julkistusohjelmien pakkaukset ja nettisivueditorit k\u00e4ytt\u00e4v\u00e4t nyt Lorem Ipsumia heid\u00e4n normaalina mallitekstin\u00e4. 'Lorem Ipsumia' etsitt\u00e4ess\u00e4 l\u00f6ytyy monen monta nettisivua, jotka ovat vasta aluillaan. Useita versioita on muodostunut vuosien kuluessa, jotkut vahingossa ja jotkut tarkoituksella (lis\u00e4tty huumoria ja niin edelleen).\n\n\nMist\u00e4 se tulee?\nVastoin yleist\u00e4 uskomusta, Lorem Ipsum ei ole vain sattumanvarainen teksti. Sill\u00e4 on pitk\u00e4t juuret klassisesta latinalaisesta kirjallisuudesta vuonna 45 eKr alkaen, tehden siit\u00e4 yli 2000 vuotta vanhan. Richard McClintock, latinalainen professori Hampden-Sydneyn yliopistossa Virginiassa, etsi yhden vaikeaselkoisimmista latinalaisista sanoista, consectetur, Lorem Ipsumin kappaleesta ja etsi lainauksia sanasta klassisessa kirjallisuudessa l\u00f6yt\u00e4en varman l\u00e4hteen. Lorem Ipsum tulee osista 1.10.32 ja 1.10.33 \"de Finibus Bonorum et Malorum\":ksesta (The Extremes of Good and Evil), jonka teki Cicero vuonna 45 eKr. T\u00e4m\u00e4 kirja on tutkielma etiikasta, joka oli hyvin yleist\u00e4 Renesanssin aikana. Ensimm\u00e4inen Lorem Ipsumin rivi, \"Lorem ipsum dolor sit amet..\", tulee rivist\u00e4 joka on osassa 1.10.32.\n\nNormaali palanen Lorem Ipsumia, jota on k\u00e4ytetty 1500-luvulla on toistettu alla niille jotka ovat vain kiinnostuneita. Osiot 1.10.32 ja 1.10.33 \"de Finibus Bonorum et Malorum\":ksesta, Cicerolta, ovat my\u00f6s toistettu niiden tarkoissa alkuper\u00e4isiss\u00e4 muodoissaan, joita seuraa englantilaiset versiot vuodelta 1914, k\u00e4\u00e4nt\u00e4j\u00e4n\u00e4 H. Rackman.\n\nMist\u00e4 min\u00e4 saan sit\u00e4?\nOn olemassa monta eri versiota Lorem Ipsumin kappaleista, mutta suurin osa on k\u00e4rsinyt muunnoksista joissain muodoissa, kuten huumorin tai sattumanvaraisesti asetetuin sanoin jotka eiv\u00e4t n\u00e4yt\u00e4 edes v\u00e4h\u00e4n uskottavalta. Jos sin\u00e4 aiot k\u00e4ytt\u00e4\u00e4 kappaletta Lorem Ipsumista, sinun pit\u00e4\u00e4 tarkistaa, ettei tekstin seassa ole mit\u00e4\u00e4n nolostuttavaa. Kaikki Lorem Ipsum-generaattorit Internetiss\u00e4 tuntuvat toistavan ennalta m\u00e4\u00e4riteltyj\u00e4 palasia tarpeen mukaan, tehden t\u00e4st\u00e4 ensimm\u00e4isen aidon generaattorin Internetiss\u00e4. Se k\u00e4ytt\u00e4\u00e4 200 latinalaisen sanan sanakirjaa, johon on yhdistetty kourallinen mallilauseiden rakenteita luoden Lorem Ipsumin, joka n\u00e4ytt\u00e4\u00e4 j\u00e4rjelliselt\u00e4. Generoitu Lorem Ipsum on siten aina vapaa toistoilta, huumorilta jne."
+                        }
+                    ]
+                },
+                {
+                    "name": "empty 2",
+                    "id": "d2b930d9-5e93-4817-9d65-bca0c3a0e04b"
+                }
+            ],
+            "name": "Notebook prime"
+        },
+        {
+            "name": "Ykk\u00f6s Notebook 1",
+            "id": "C32448723894",
+            "items": [
+                {
+                    "name": "Testi item 1 liirum laarumia",
+                    "id": "123456789054ryryt",
+                    "content": [
+                        {
+                            "name": "Wikipedia",
+                            "id": "c7f16338-d1d3-4f56-ba79-d568186349d9",
+                            "type": "URL",
+                            "payload": "https://wikipedia.org"
+                        },
+                        {
+                            "name": "T\u00e4rke\u00e4",
+                            "id": "60183428-34bc-41b1-8706-58def7b2c14a",
+                            "type": "Text",
+                            "payload": "Kokouksen muistio. Sovittiin, ett\u00e4 tullan t\u00e4nne.",
+                            "codeStyle": ""
+                        },
+                        {
+                            "name": "Moi.fi",
+                            "id": "4b146b33-eef8-4ffd-ab86-a707a3f7174e",
+                            "type": "URL",
+                            "payload": "https://moi.fi"
+                        },
+                        {
+                            "name": "c koodia",
+                            "id": "00283610-1206-46fb-a251-288452ed3bfe",
+                            "type": "Code",
+                            "payload": "printf(\"Hello World\")",
+                            "codeStyle": "c"
+                        },
+                        {
+                            "name": "404 test",
+                            "id": "9e6708e0-475f-4012-9359-4e2474762962",
+                            "type": "URL",
+                            "payload": "https://www.404checker.com",
+                            "codeStyle": ""
+                        },
+                        {
+                            "name": "Testi",
+                            "id": "464d1639-9622-4bca-bb0a-ea17c9ffb782",
+                            "type": "Text",
+                            "payload": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit it's your turn to serve"
+                        },
+                        {
+                            "name": "Rust koodia",
+                            "id": "6ae0303e-7101-484b-bbc7-97c07214140f",
+                            "type": "Code",
+                            "payload": "fn main() {\n    println!(\"Hello, world!\");\n}\n",
+                            "codeStyle": "rust"
+                        },
+                        {
+                            "name": "V\u00e4\u00e4r\u00e4 URL",
+                            "id": "18c37928-727b-432b-8f01-db6c60315bb1",
+                            "type": "URL",
+                            "payload": "http://123.564.454.207:8080/home"
+                        },
+                        {
+                            "name": "JS Koodia",
+                            "id": "2be54703-27c8-4ae3-88d9-7c00fda7dbe0",
+                            "type": "Code",
+                            "payload": "var x = document.getElementById(\"id\");\n\nconsole.log(\"Moi kaikki\");",
+                            "codeStyle": "javascript"
+                        }
+                    ]
+                },
+                {
+                    "name": "uusi kansio 2",
+                    "id": "411d343d-5188-4c56-917f-154ef00abbe7",
+                    "content": [
+                        {
+                            "name": "uusi 2",
+                            "id": "a9ecbd15-6ca7-4bda-a837-ddc5a1f6fbc9",
+                            "type": "Text",
+                            "payload": ""
+                        },
+                        {
+                            "name": "uusi 1",
+                            "id": "ade8fc0c-09c7-4a43-bb43-8ecfbe51cf07",
+                            "type": "Text",
+                            "payload": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "jotain",
+                    "id": "571dad84-9950-4426-89eb-88177d8decc4",
+                    "content": [
+                        {
+                            "name": "uusi 1",
+                            "id": "e05abdb6-11f0-4e1c-b517-8997f62f389e",
+                            "type": "Code",
+                            "payload": "print(\"Moikka\")",
+                            "codeStyle": "python"
+                        },
+                        {
+                            "name": "uusi 2",
+                            "id": "5acace53-81ac-46b9-af74-d7dd7c22a4fa",
+                            "type": "Text",
+                            "payload": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Taas uutta",
+                    "id": "c62404d2-eb55-4778-b3ef-58462ba5a1e0"
+                },
+                {
+                    "name": "Jotain",
+                    "id": "b87e067e-632f-4523-8910-39e2ea84852b"
+                }
+            ]
+        },
+        {
+            "name": "Notebook 4",
+            "id": "32984576y78932ry48r43e78"
+        },
+        {
+            "name": "Notebook 5",
+            "id": "9348tyw978ieurhewuirshf",
+            "items": [
+                {
+                    "name": "uusi",
+                    "id": "11fb13e2-a503-4a3a-8d60-5389023b1e58"
+                },
+                {
+                    "name": "toinen mokoma",
+                    "id": "bbc8bef3-14aa-43a2-a3d2-8abb2334cf8b"
+                },
+                {
+                    "name": "Kolmas",
+                    "id": "e09d6d4f-0aa7-4833-b01a-0317eab4899f"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,52 @@
+.panel {
+  position: fixed;
+  top: 54px;
+  width: 227px;
+  min-width: 162px;
+  height: 100%;
+  border-right: 3px solid rgb(0, 0, 0);
+  border-top:  2px solid black;
+  overflow: scroll;
+  box-sizing: border-box;
+  background-color: #2b2d30;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.panel::-webkit-scrollbar {
+  display: none;
+}
+
+.panel__container {
+  height: 100vh;
+  /* border: 2px solid blue; */
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.panel__header {
+  padding: 4px;
+  background-color: #e2e0e0;
+}
+
+.panel__content {
+  padding: 4px;
+}
+
+.prevent-select {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+
+@media only screen and (max-width: 768px) {
+  #panel {
+      position: relative;
+      min-width: 100%;
+      margin-bottom: 0;
+  }
+  .panel {
+    top: 0;
+    border: 0;
+  }
+}

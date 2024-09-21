@@ -1,0 +1,44 @@
+import json
+from sys import getsizeof
+from flask import Flask, render_template, request
+from flask_cors import CORS, cross_origin
+from flask_restful import Resource, Api
+
+app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
+
+
+@app.route('/')
+def index():
+    return render_template("index.html")
+
+
+@cross_origin()
+@app.route('/data')
+def test_json():
+    return render_template("data.json")
+
+
+@cross_origin()
+@app.route("/data", methods=["PUT"])
+def update_data():
+    data = json.loads(request.data)
+    json_data = json.dumps(data, indent=4)
+
+    # Laskee tiedoston viemän tavumäärän
+    print("getsizeof(data):", getsizeof(json_data), "bytes")
+
+    if getsizeof(json_data) > 6000000000:
+        return {"Status": "Content too large. Max size is 6GB"}, 413, {"Access-Control-Allow-Origin": "*"}
+
+    with open("templates/data.json", "w") as f:
+        f.write(json_data)
+
+    return {"Status": "Success"}, 200, {"Access-Control-Allow-Origin": "*"}
+
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000, debug=True)
+
+

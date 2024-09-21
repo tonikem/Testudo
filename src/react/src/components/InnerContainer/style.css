@@ -1,0 +1,257 @@
+#inner-container {
+    background-color: #1e1f22;
+    border-left: 1px solid black;
+    min-height: 100vh;
+    color: #b4b4b4;
+    text-align: center;
+    align-content: center;
+    margin-left: 227px;
+    margin-right: 3px;
+    margin-top: 54px;
+}
+
+.arrow {
+    border: solid #b4b4b4;
+    border-width: 0 4px 4px 0;
+    padding: 3px;
+    transform: rotate(-45deg);
+    float: left;
+    cursor: pointer;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+}
+
+.selector {
+    float: left;
+    display: none;
+    border: 1px solid rgb(17, 16, 16)22;
+    border-radius: 6px;
+    background-color: #1e1f22;
+    padding: 2px;
+}
+
+.edit-input {
+    display: flex;
+    flex-direction: column;
+}
+
+.title-input {
+    display: none;
+    border-radius: 6px;
+    background-color: #1e1f22;
+    padding: 2px;
+    margin: auto;
+    width: calc(100% - 220px);
+}
+
+.code-style {
+    display: none;
+    border-radius: 6px;
+    background-color: #1e1f22;
+    padding: 2px;
+    margin: auto;
+    width: calc(100% - 220px);
+}
+
+.payload-input {
+    display: none;
+    border-radius: 6px;
+    background-color: #1e1f22;
+    padding: 2px;
+    margin: auto;
+    margin-top: 20px;
+    width: calc(100% - 220px);
+}
+
+.item-name {
+    width: calc(100% - 220px);
+    font-size: 18px;
+    margin: auto;
+}
+
+.item-url {
+    margin: 8px;
+}
+
+.code-name {
+    text-align: left;
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+.item-payload {
+    width: calc(100% - 220px);
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-right: auto;
+    margin-left: auto;
+    padding: auto;
+    text-align: left;
+}
+
+.code-style {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-right: auto;
+    margin-left: auto;
+    padding: auto;
+    text-align: left;
+    font-size: 15px;
+}
+
+.data-type {
+    float: left;
+    border: 1px solid #b4b4b4;
+    margin-left: 16px;
+    padding: 5px;
+    border-radius: 6px;
+}
+
+.copy-icon {
+    width: 24px;
+    float: right;
+    cursor: pointer;
+}
+
+.edit-icon {
+    width: 23px;
+    float: right;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.delete-icon {
+    width: 23px;
+    float: right;
+    cursor: pointer;
+    margin-right: 12px;
+}
+
+.save-icon {
+    display: none;
+    width: 28px;
+    float: right;
+    cursor: pointer;
+}
+
+.note-plus {
+    height: 50px;
+    cursor: pointer;
+    float: left;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.open-icon {
+    height: 44px;
+    cursor: pointer;
+    float: left;
+    margin-left: 12px;
+    margin-top: 2px;
+}
+
+.table-list {
+    margin: 0;
+    padding: 0;
+    overflow: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.table-list::-webkit-scrollbar {
+    display: none;
+}
+
+.table-item {
+    list-style-type: none;
+    background-color: #26282e;
+    box-shadow: rgba(0, 0, 0, 0.5) 0px 5px 15px;
+    margin: 16px;
+    max-width: 900px;
+    padding: 16px;
+    border-radius: 12px;
+    height: 70px;
+    min-height: 70px;
+    overflow: hidden;
+}
+
+.status-bar {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    padding: 4px;
+}
+
+.status-bar > div {
+    background-color: yellow;
+    height: 20px;
+    width: 30px;
+    border-radius: 8px;
+    margin: 6px;
+}
+
+.status-bar > p {
+    height: 20px;
+    width: 30px;
+    border-radius: 8px;
+    margin: 6px;
+}
+
+.url-source {
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hidden-element {
+    display: none;
+    flex-direction: column;
+}
+
+@media only screen and (max-width: 768px) {
+    #inner-container {
+        position: relative;
+        margin-left: 0;
+    }
+    .item-payload {
+        min-width: 300px;
+        margin-top: 12px;
+        margin-bottom: 8px;
+        margin-right: auto;
+        margin-left: auto;
+        padding: auto;
+        text-align: left;
+    }
+    .code-name {
+        text-align: left;
+        margin: auto;
+        margin-top: 14px;
+    }
+    .payload-input {
+        display: none;
+        border-radius: 6px;
+        background-color: #1e1f22;
+        padding: 2px;
+        margin: auto;
+        min-width: 240px;
+    }
+    .title-input {
+        display: none;
+        border-radius: 6px;
+        background-color: #1e1f22;
+        padding: 2px;
+        margin: auto;
+        min-width: 240px;
+    }
+    .code-style {
+        display: none;
+        border-radius: 6px;
+        background-color: #1e1f22;
+        padding: 2px;
+        margin: auto;
+        min-width: 240px;
+    }
+}
+
