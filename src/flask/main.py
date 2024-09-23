@@ -9,7 +9,6 @@ app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-
 mongo_client = MongoClient("localhost", 27017)
 testudo_users_db = mongo_client["TestudoUsers"]
 testudo_data_db = mongo_client["TestudoData"]
@@ -17,6 +16,10 @@ testudo_data_db = mongo_client["TestudoData"]
 
 @app.route('/')
 def index():
+
+    if True:
+        return render_template('login.html')
+
     return render_template("index.html")
 
 
