@@ -27,7 +27,7 @@ def update_data():
     json_data = json.dumps(data, indent=4)
 
     # Laskee tiedoston viemän tavumäärän
-    print("getsizeof(data):", getsizeof(json_data), "bytes")
+    # print("getsizeof(data):", getsizeof(json_data), "bytes")
 
     if getsizeof(json_data) > 6000000000:
         return {"Status": "Content too large. Max size is 6GB"}, 413, {"Access-Control-Allow-Origin": "*"}

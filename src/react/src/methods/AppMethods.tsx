@@ -7,7 +7,7 @@ export function uuidv4() {
         });
 }
 
-export const URL = "http://192.168.0.103:5000/data"
+export const URL = "http://localhost:5000/data"
 
 
 export function onMouseClickTable(d: any, i: any) {
@@ -41,7 +41,7 @@ export function sendPutRequest(options: any) {
     fetch(URL, options)
         .then(response => {
             if (response.status == 413) {
-                alert("Notebooks are too large! Delete something to free memory.")
+                alert("Notebooks are too large! Delete something to free memory or disable unused Notebooks.")
                 location.reload(true)
             }
             if (!response.ok) {

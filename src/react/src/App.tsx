@@ -263,7 +263,6 @@ function App() {
     fetch(URL)
       .then(res => res.json())
       .then(mainData => {
-
         // Asetetaan koko data
         localStorage.setItem("main-data", JSON.stringify(mainData))
         setAllData(mainData)
