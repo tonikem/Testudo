@@ -1,4 +1,5 @@
 import json
+from pymongo import MongoClient
 from sys import getsizeof
 from flask import Flask, render_template, request
 from flask_cors import CORS, cross_origin
@@ -7,6 +8,11 @@ from flask_restful import Resource, Api
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
+
+
+mongo_client = MongoClient("localhost", 27017)
+testudo_users_db = mongo_client["TestudoUsers"]
+testudo_data_db = mongo_client["TestudoData"]
 
 
 @app.route('/')

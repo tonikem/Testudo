@@ -41,7 +41,7 @@ export function sendPutRequest(options: any) {
     fetch(URL, options)
         .then(response => {
             if (response.status == 413) {
-                alert("Notebooks are too large! Delete something to free memory or disable unused Notebooks.")
+                alert("Data takes more memory than 6GB. Disable Notebooks or delete items.")
                 location.reload(true)
             }
             if (!response.ok) {
