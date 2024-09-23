@@ -1,3 +1,4 @@
+import jwt
 import json
 from pymongo import MongoClient
 from sys import getsizeof
@@ -12,6 +13,10 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 mongo_client = MongoClient("localhost", 27017)
 testudo_users_db = mongo_client["TestudoUsers"]
 testudo_data_db = mongo_client["TestudoData"]
+
+
+# encoded_jwt = jwt.encode({"some": "payload"}, "secret", algorithm="HS256")
+# print(encoded_jwt)
 
 
 @app.route('/')
@@ -30,13 +35,28 @@ def test_json():
 
 
 @cross_origin()
+@app.route('/login', methods=["POST"])
+def login_to_user():
+    users_col = testudo_users_db["users"]
+
+    data = json.loads(request.data)
+    username = data["username"]
+    password = data["password"]
+
+    res = users_col.find_one({'name': username})
+
+    if res is None:
+        return {"Status": "Failure"}, 404
+    else:
+        # return render_template("data.json")
+        return "Hello World"
+
+
+@cross_origin()
 @app.route("/data", methods=["PUT"])
 def update_data():
     data = json.loads(request.data)
     json_data = json.dumps(data, indent=4)
-
-    # Laskee tiedoston viemän tavumäärän
-    # print("getsizeof(data):", getsizeof(json_data), "bytes")
 
     if getsizeof(json_data) > 6000000000:
         return {"Status": "Content too large. Max size is 6GB"}, 413, {"Access-Control-Allow-Origin": "*"}
