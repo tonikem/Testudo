@@ -15,17 +15,32 @@ cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 mongo_client = MongoClient("localhost", 27017)
+
+# Tietokannat
 testudo_users_db = mongo_client["TestudoUsers"]
 testudo_data_db = mongo_client["TestudoData"]
+
+# Tietokanta sarakkeet
+notebooks_col = testudo_data_db["notebooks"]
+users_col = testudo_users_db["users"]
+
+
+def authenticate(cookie):
+    decoded_cookie = jwt.decode(cookie, "SECRET_KEY_1234", algorithms=["HS256"])
+    user_id = decoded_cookie['user_id']
+    auth_user = users_col.find_one({"id": user_id})
+    return auth_user
 
 
 @app.route('/')
 def index():
+    if request.cookies:
+        cookie = request.cookies["testudoAuthorization"]
 
-    if True:
-        return render_template('login.html')
+        if cookie and authenticate(cookie):
+            return render_template("index.html")
 
-    return render_template("index.html")
+    return render_template('login.html')
 
 
 @cross_origin()
@@ -52,11 +67,11 @@ def login_to_user():
     user_id = response["id"]
 
     if check_password(password, hashed_password):
-        # token should expire after 24 hrs
-        data["token"] = jwt.encode({"user_id": user_id}, "SECRET_KEY_1234", algorithm="HS256")
-        data["password"] = hashed_password.decode('utf-8')
-        print(data)
-        return {"message": "Successfully fetched auth token", "data": data}
+        res_data = {
+            "username": username,  # Token should expire after 24 hrs
+            "token": jwt.encode({"user_id": user_id}, "SECRET_KEY_1234", algorithm="HS256")
+        }
+        return {"message": "Successfully fetched auth token", "data": res_data}, 200
     else:
         return {"message": "Failure. Password not found!"}, 404
 
