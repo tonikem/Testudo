@@ -1,5 +1,6 @@
 import json
 from pymongo import MongoClient
+from functions import get_hashed_password, check_password
 
 
 mongo_client = MongoClient("localhost", 27017)
@@ -32,6 +33,15 @@ with open("./templates/users.json") as file:
     users_col.delete_many({})
 
     # Asetetaan sitten data
-    users_col.insert_many(users)
+    for user in users:
+        password = get_hashed_password(user['password'].strip())
+        username = user['name'].strip()
+        user = {
+            "name": username,
+            "password": password,
+            "id": user['id'],
+            "tokens": []
+        }
+        users_col.insert_one(user)
 
 
