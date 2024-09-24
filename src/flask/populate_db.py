@@ -1,6 +1,6 @@
 import json
 from pymongo import MongoClient
-from functions import get_hashed_password, check_password
+from functions import get_hashed_password
 
 
 mongo_client = MongoClient("localhost", 27017)

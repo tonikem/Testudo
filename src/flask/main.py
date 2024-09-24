@@ -2,9 +2,11 @@ import jwt
 import json
 from pymongo import MongoClient
 from sys import getsizeof
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from flask_cors import CORS, cross_origin
 from flask_restful import Resource, Api
+from functions import check_password
+
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -46,10 +48,14 @@ def login_to_user():
     res = users_col.find_one({'name': username})
 
     if res is None:
-        return {"Status": "Failure"}, 404
-    else:
-        # return render_template("data.json")
-        return "Hello World"
+        return {"Status": "Failure. User not found!"}, 404
+
+    hashed_password = res['password']
+
+    if check_password(password, hashed_password):
+        return redirect("http://localhost:5000")
+
+    return {"Status": "Failure. Password not found!"}, 404
 
 
 @cross_origin()
