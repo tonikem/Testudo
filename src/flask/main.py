@@ -1,5 +1,7 @@
 import jwt
 import json
+import datetime
+import requests
 from pymongo import MongoClient
 from sys import getsizeof
 from flask import Flask, render_template, request, redirect
@@ -15,10 +17,6 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 mongo_client = MongoClient("localhost", 27017)
 testudo_users_db = mongo_client["TestudoUsers"]
 testudo_data_db = mongo_client["TestudoData"]
-
-
-# encoded_jwt = jwt.encode({"some": "payload"}, "secret", algorithm="HS256")
-# print(encoded_jwt)
 
 
 @app.route('/')
@@ -45,17 +43,22 @@ def login_to_user():
     username = data["username"]
     password = data["password"]
 
-    res = users_col.find_one({'name': username})
+    response = users_col.find_one({'name': username})
 
-    if res is None:
+    if response is None:
         return {"Status": "Failure. User not found!"}, 404
 
-    hashed_password = res['password']
+    hashed_password = response['password']
+    user_id = response["id"]
 
     if check_password(password, hashed_password):
-        return redirect("http://localhost:5000")
-
-    return {"Status": "Failure. Password not found!"}, 404
+        # token should expire after 24 hrs
+        data["token"] = jwt.encode({"user_id": user_id}, "SECRET_KEY_1234", algorithm="HS256")
+        data["password"] = hashed_password.decode('utf-8')
+        print(data)
+        return {"message": "Successfully fetched auth token", "data": data}
+    else:
+        return {"message": "Failure. Password not found!"}, 404
 
 
 @cross_origin()
@@ -65,12 +68,12 @@ def update_data():
     json_data = json.dumps(data, indent=4)
 
     if getsizeof(json_data) > 6000000000:
-        return {"Status": "Content too large. Max size is 6GB"}, 413, {"Access-Control-Allow-Origin": "*"}
+        return {"message": "Content too large. Max size is 6GB"}, 413, {"Access-Control-Allow-Origin": "*"}
 
     with open("templates/data.json", "w") as f:
         f.write(json_data)
 
-    return {"Status": "Success"}, 200, {"Access-Control-Allow-Origin": "*"}
+    return {"message": "Success"}, 200, {"Access-Control-Allow-Origin": "*"}
 
 
 if __name__ == "__main__":

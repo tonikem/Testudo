@@ -32,8 +32,11 @@
               "username": username,
               "password": password
             })
-        }).then(function(res){return res.json()})
-          .then(function(data){alert(JSON.stringify(data))})
-      });
+        }).then(function(res){
+          console.log(res.json())
+        }).catch((error) => {
+          alert(error)
+        })
+      })
     </script>
 </html>
