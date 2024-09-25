@@ -12,6 +12,7 @@ from functions import check_password
 
 DATE_FORMAT = "%m/%d/%Y, %H:%M:%S"
 TOKEN_EXPIRATION_TIME = 86400  # <- 1 päivä
+MAX_DATA_SIZE = 6000000000  # 6GB
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -75,7 +76,12 @@ def test_json(auth_token):
             }
             collected_notebooks.append(collected_notebook)
 
-        return {"main": collected_notebooks}
+        result = {"main": collected_notebooks}
+
+        if getsizeof(result) > MAX_DATA_SIZE:
+            return {"message": f"Content too large. Max size is {MAX_DATA_SIZE} bytes"}, 413, {"Access-Control-Allow-Origin": "*"}
+
+        return result
 
     return {"Status": "Failure. Missing token!"}, 404
 
@@ -115,8 +121,8 @@ def update_data():
     data = json.loads(request.data)
     json_data = json.dumps(data, indent=4)
 
-    if getsizeof(json_data) > 6000000000:
-        return {"message": "Content too large. Max size is 6GB"}, 413, {"Access-Control-Allow-Origin": "*"}
+    if getsizeof(json_data) > MAX_DATA_SIZE:
+        return {"message": f"Content too large. Max size is {MAX_DATA_SIZE} bytes"}, 413, {"Access-Control-Allow-Origin": "*"}
 
     with open("templates/data.json", "w") as f:
         f.write(json_data)
