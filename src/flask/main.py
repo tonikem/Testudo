@@ -10,6 +10,9 @@ from flask_restful import Resource, Api
 from functions import check_password
 
 
+DATE_FORMAT = "%m/%d/%Y, %H:%M:%S"
+TOKEN_EXPIRATION_TIME = 60
+
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -26,10 +29,20 @@ users_col = testudo_users_db["users"]
 
 
 def authenticate(cookie):
-    decoded_cookie = jwt.decode(cookie, "SECRET_KEY_1234", algorithms=["HS256"])
-    user_id = decoded_cookie['user_id']
-    auth_user = users_col.find_one({"id": user_id})
-    return auth_user
+    if cookie:
+        decoded_cookie = jwt.decode(cookie, "SECRET_KEY_1234", algorithms=["HS256"])
+        user_id = decoded_cookie['user_id']
+        token_date = decoded_cookie["date"]
+        print(token_date)
+
+        token_date = datetime.datetime.strptime(token_date, DATE_FORMAT)
+
+        datetime_now = datetime.datetime.now()
+        auth_user = users_col.find_one({"id": user_id})
+        expiration = token_date + datetime.timedelta(seconds=TOKEN_EXPIRATION_TIME)
+        return auth_user and datetime_now < expiration
+    else:
+        return False
 
 
 @app.route('/')
@@ -37,7 +50,7 @@ def index():
     if request.cookies:
         cookie = request.cookies["testudoAuthorization"]
 
-        if cookie and authenticate(cookie):
+        if authenticate(cookie):
             return render_template("index.html")
 
     return render_template('login.html')
@@ -46,14 +59,16 @@ def index():
 @cross_origin()
 @app.route('/data')
 def test_json():
+
+    if len(request.cookies) == 0:
+        return {"Status": "Failure. Missing token!"}, 404
+
     return render_template("data.json")
 
 
 @cross_origin()
 @app.route('/login', methods=["POST"])
 def login_to_user():
-    users_col = testudo_users_db["users"]
-
     data = json.loads(request.data)
     username = data["username"]
     password = data["password"]
@@ -67,9 +82,13 @@ def login_to_user():
     user_id = response["id"]
 
     if check_password(password, hashed_password):
+        token_date = datetime.datetime.now().strftime(DATE_FORMAT)
         res_data = {
-            "username": username,  # Token should expire after 24 hrs
-            "token": jwt.encode({"user_id": user_id}, "SECRET_KEY_1234", algorithm="HS256")
+            "username": username,
+            "token": jwt.encode({
+                "user_id": user_id,
+                "date": str(token_date)
+            }, "SECRET_KEY_1234", algorithm="HS256")
         }
         return {"message": "Successfully fetched auth token", "data": res_data}, 200
     else:

@@ -35,13 +35,17 @@
               "password": password
             })
         }).then((res) => {
+          if (res.status == 404) {
+            alert("Username or password is not valid!");
+            throw new Error("Username or password is not valid!");
+          }
           return res.json()
         }).then(res => {
           document.cookie = `testudoAuthorization=${res.data.token}`;
           window.location.reload(true);
         })
         .catch((error) => {
-          alert(error);
+          //alert(error);
         })
       })
     </script>

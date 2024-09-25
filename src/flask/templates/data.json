@@ -10,17 +10,17 @@
                     "id": "8b41e668-7454-4ab3-a024-447b9aa79e7d",
                     "content": [
                         {
-                            "name": "Uusi 2",
-                            "id": "761e91c0-7ce7-4943-9e51-d458fb4050f2",
-                            "type": "Text",
-                            "payload": "moi"
-                        },
-                        {
                             "name": "Uusi 3",
                             "id": "48dbe477-1b71-44ee-bcc0-6edd2345e5e2",
                             "type": "Code",
                             "payload": "print(\"Hello World\")",
                             "codeStyle": "python"
+                        },
+                        {
+                            "name": "Uusi 2",
+                            "id": "761e91c0-7ce7-4943-9e51-d458fb4050f2",
+                            "type": "Text",
+                            "payload": "moi"
                         },
                         {
                             "name": "URL 1",

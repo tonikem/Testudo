@@ -13,6 +13,7 @@ import pencil from '../public/pencil.png'
 import edit from '../public/edit.png'
 import {
   uuidv4,
+  getCookie,
   URL,
   onMouseClickTable,
   sendPutRequest
@@ -260,12 +261,21 @@ function App() {
   }
 
   useEffect(() => {
+
+    const cookie = getCookie("testudoAuthorization")
+    console.log(cookie)
+
     fetch(URL)
       .then(res => res.json())
       .then(mainData => {
-        // Asetetaan koko data
-        localStorage.setItem("main-data", JSON.stringify(mainData))
-        setAllData(mainData)
+        if (mainData.Status === "Failure. Missing token!") {
+          alert("You are missing token! Try to login again.")
+          setAllData({"main": []})
+        } else {
+          // Asetetaan koko data
+          localStorage.setItem("main-data", JSON.stringify(mainData))
+          setAllData(mainData)
+        }
       })
   }, [])
 
