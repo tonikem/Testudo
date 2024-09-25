@@ -11,7 +11,7 @@ from functions import check_password
 
 
 DATE_FORMAT = "%m/%d/%Y, %H:%M:%S"
-TOKEN_EXPIRATION_TIME = 60
+TOKEN_EXPIRATION_TIME = 86400  # <- 1 päivä
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -33,10 +33,7 @@ def authenticate(cookie):
         decoded_cookie = jwt.decode(cookie, "SECRET_KEY_1234", algorithms=["HS256"])
         user_id = decoded_cookie['user_id']
         token_date = decoded_cookie["date"]
-        print(token_date)
-
         token_date = datetime.datetime.strptime(token_date, DATE_FORMAT)
-
         datetime_now = datetime.datetime.now()
         auth_user = users_col.find_one({"id": user_id})
         expiration = token_date + datetime.timedelta(seconds=TOKEN_EXPIRATION_TIME)
@@ -49,7 +46,6 @@ def authenticate(cookie):
 def index():
     if request.cookies:
         cookie = request.cookies["testudoAuthorization"]
-
         if authenticate(cookie):
             return render_template("index.html")
 
@@ -57,13 +53,13 @@ def index():
 
 
 @cross_origin()
-@app.route('/data')
-def test_json():
+@app.route('/data/<auth_token>')
+def test_json(auth_token):
 
-    if len(request.cookies) == 0:
-        return {"Status": "Failure. Missing token!"}, 404
+    if authenticate(auth_token):
+        return render_template("data.json")
 
-    return render_template("data.json")
+    return {"Status": "Failure. Missing token!"}, 404
 
 
 @cross_origin()
