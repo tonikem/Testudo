@@ -1,7 +1,7 @@
 import jwt
 import json
 import datetime
-import requests
+from string_utils.validation import is_url
 from pymongo import MongoClient
 from sys import getsizeof
 from flask import Flask, render_template, request, redirect
@@ -34,7 +34,7 @@ def decode_token(token):
 
 
 def authenticate(token):
-    if token:
+    if is_url(f"http://127.0.0.1:5000/data/{str(token)}"):
         decoded_token = decode_token(token)
         user_id = decoded_token['user_id']
         token_date = decoded_token["date"]
@@ -50,8 +50,8 @@ def authenticate(token):
 @app.route('/')
 def index():
     if request.cookies:
-        token = request.cookies["testudoAuthorization"]
-        if authenticate(token):
+        auth_token = request.cookies["testudoAuthorization"]
+        if authenticate(auth_token):
             return render_template("index.html")
 
     return render_template('login.html')
@@ -60,7 +60,6 @@ def index():
 @cross_origin()
 @app.route('/data/<auth_token>')
 def test_json(auth_token):
-
     if authenticate(auth_token):
         collected_notebooks = []
         decoded_token = decode_token(auth_token)
@@ -82,8 +81,8 @@ def test_json(auth_token):
             return {"message": f"Content too large. Max size is {MAX_DATA_SIZE} bytes"}, 413, {"Access-Control-Allow-Origin": "*"}
 
         return result
-
-    return {"Status": "Failure. Missing token!"}, 404
+    else:
+        return {"Status": "Failure. Missing token!"}, 404
 
 
 @cross_origin()
@@ -122,19 +121,21 @@ def login_to_user():
 @cross_origin()
 @app.route("/data/<auth_token>", methods=["PUT"])
 def update_data(auth_token):
-    data = json.loads(request.data)
-    json_data = json.dumps(data, indent=4)
-
-    if getsizeof(json_data) > MAX_DATA_SIZE:
-        return {"message": f"Content too large. Max size is {MAX_DATA_SIZE} bytes"}, 413, {"Access-Control-Allow-Origin": "*"}
-
     if authenticate(auth_token):
+        data = json.loads(request.data)
+        json_data = json.dumps(data, indent=4)
+
+        if getsizeof(json_data) > MAX_DATA_SIZE:
+            return {"message": f"Content too large. Max size is {MAX_DATA_SIZE} bytes"}, 413, {"Access-Control-Allow-Origin": "*"}
+
         for obj in data["main"]:
             query_filter = {'id': obj['id']}
             update_operation = {'$set': obj}
             notebooks_col.update_one(query_filter, update_operation)
 
-        return {"message": "Success"}, 200, {"Access-Control-Allow-Origin": "*"}
+            return {"message": "Success"}, 200, {"Access-Control-Allow-Origin": "*"}
+    else:
+        return {"Status": "Failure. Missing token!"}, 404
 
 
 if __name__ == "__main__":
