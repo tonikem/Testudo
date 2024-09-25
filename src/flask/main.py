@@ -1,7 +1,10 @@
+import re
+
 import jwt
 import json
 import datetime
 import requests
+from jsonschema import validate
 from pymongo import MongoClient
 from sys import getsizeof
 from flask import Flask, render_template, request, redirect
@@ -54,83 +57,93 @@ def index():
         if authenticate(token):
             return render_template("index.html")
 
+    # Palautetaan login-sivu, jos keksit puuttuvat
     return render_template('login.html')
 
 
 @cross_origin()
 @app.route('/data/<auth_token>')
 def test_json(auth_token):
+    if re.match("^[a-zA-Z0-9_\-/]+\.txt$", auth_token):
+        if authenticate(auth_token):
+            collected_notebooks = []
+            decoded_token = decode_token(auth_token)
+            user_id = decoded_token["user_id"]
+            user = users_col.find_one({"id": user_id})
 
-    if authenticate(auth_token):
-        collected_notebooks = []
-        decoded_token = decode_token(auth_token)
-        user_id = decoded_token["user_id"]
-        user = users_col.find_one({"id": user_id})
+            for notebook_id in user["notebooks"]:
+                notebook = notebooks_col.find_one({"id": notebook_id})
+                collected_notebook = {
+                    "id": notebook["id"],
+                    "name": notebook["name"],
+                    "items": notebook["items"]
+                }
+                collected_notebooks.append(collected_notebook)
 
-        for notebook_id in user["notebooks"]:
-            notebook = notebooks_col.find_one({"id": notebook_id})
-            collected_notebook = {
-                "id": notebook["id"],
-                "name": notebook["name"],
-                "items": notebook["items"]
-            }
-            collected_notebooks.append(collected_notebook)
+            result = {"main": collected_notebooks}
 
-        result = {"main": collected_notebooks}
+            if getsizeof(result) > MAX_DATA_SIZE:
+                return {"message": f"Content too large. Max size is {MAX_DATA_SIZE} bytes"}, 413, {"Access-Control-Allow-Origin": "*"}
 
-        if getsizeof(result) > MAX_DATA_SIZE:
-            return {"message": f"Content too large. Max size is {MAX_DATA_SIZE} bytes"}, 413, {"Access-Control-Allow-Origin": "*"}
+            return result
 
-        return result
-
-    return {"Status": "Failure. Missing token!"}, 404
+        return {"Status": "Failure. Missing token!"}, 404
+    else:
+        return {"message": "Fail. Unwanted string injection."}, 400
 
 
 @cross_origin()
 @app.route('/login', methods=["POST"])
 def login_to_user():
-    data = json.loads(request.data)
-    username = data["username"]
-    password = data["password"]
+    try:
+        data = json.loads(request.data)
+        username = data["username"]
+        password = data["password"]
 
-    response = users_col.find_one({'name': username})
+        response = users_col.find_one({'name': username})
 
-    if response is None:
-        return {"Status": "Failure. User not found!"}, 404
+        if response is None:
+            return {"Status": "Failure. User not found!"}, 404
 
-    hashed_password = response['password']
-    user_id = response["id"]
+        hashed_password = response['password']
+        user_id = response["id"]
 
-    if check_password(password, hashed_password):
-        token_date = datetime.datetime.now().strftime(DATE_FORMAT)
-        res_data = {
-            "username": username,
-            "token": jwt.encode({
-                "user_id": user_id,
-                "date": str(token_date)
-            }, "SECRET_KEY_1234", algorithm="HS256")
-        }
-        return {"message": "Successfully fetched auth token", "data": res_data}, 200
-    else:
-        return {"message": "Failure. Password not found!"}, 404
+        if check_password(password, hashed_password):
+            token_date = datetime.datetime.now().strftime(DATE_FORMAT)
+            res_data = {
+                "username": username,
+                "token": jwt.encode({
+                    "user_id": user_id,
+                    "date": str(token_date)
+                }, "SECRET_KEY_1234", algorithm="HS256")
+            }
+            return {"message": "Successfully fetched auth token", "data": res_data}, 200
+        else:
+            return {"message": "Failure. Password not found!"}, 404
+
+    except json.decoder.JSONDecodeError:
+        return {"message": "Fail. Unwanted JSON-document."}, 400
 
 
 @cross_origin()
 @app.route("/data/<auth_token>", methods=["PUT"])
 def update_data(auth_token):
-    data = json.loads(request.data)
-    json_data = json.dumps(data, indent=4)
+    if re.match("^[a-zA-Z0-9_\-/]+\.txt$", auth_token):
+        data = json.loads(request.data)
+        json_data = json.dumps(data, indent=4)
 
-    if getsizeof(json_data) > MAX_DATA_SIZE:
-        return {"message": f"Content too large. Max size is {MAX_DATA_SIZE} bytes"}, 413, {"Access-Control-Allow-Origin": "*"}
+        if getsizeof(json_data) > MAX_DATA_SIZE:
+            return {"message": f"Content too large. Max size is {MAX_DATA_SIZE} bytes"}, 413, {"Access-Control-Allow-Origin": "*"}
 
-    if authenticate(auth_token):
-        for obj in data["main"]:
-            query_filter = {'id': obj['id']}
-            update_operation = {'$set': obj}
-            notebooks_col.update_one(query_filter, update_operation)
+        if authenticate(auth_token):
+            for obj in data["main"]:
+                query_filter = {'id': obj['id']}
+                update_operation = {'$set': obj}
+                notebooks_col.update_one(query_filter, update_operation)
 
-        return {"message": "Success"}, 200, {"Access-Control-Allow-Origin": "*"}
+            return {"message": "Success"}, 200, {"Access-Control-Allow-Origin": "*"}
+    else:
+        return {"message": "Fail. Unwanted string injection."}, 400
 
 
 if __name__ == "__main__":
