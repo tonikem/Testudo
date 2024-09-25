@@ -43,11 +43,14 @@ export function onMouseClickTable(d: any, i: any) {
 }
 
 export function sendPutRequest(options: any) {
-    fetch(URL, options)
+    const cookie = getCookie("testudoAuthorization")
+
+    if (cookie) {
+        fetch(`${URL}/${cookie}`, options)
         .then(response => {
             if (response.status == 413) {
                 alert("Data takes more memory than 6GB. Disable Notebooks or delete items.")
-                location.reload(true)
+                location.reload()
             }
             if (!response.ok) {
                 throw new Error('Network response was not ok')
@@ -60,5 +63,9 @@ export function sendPutRequest(options: any) {
         .catch(error => {
             console.error('There was a problem with your fetch operation:', error)
         })
+    } else {
+        alert("Cookies are missing!")
+        location.reload()
+    }
 }
 

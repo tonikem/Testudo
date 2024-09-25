@@ -116,20 +116,21 @@ def login_to_user():
 
 
 @cross_origin()
-@app.route("/data", methods=["PUT"])
-def update_data():
+@app.route("/data/<auth_token>", methods=["PUT"])
+def update_data(auth_token):
     data = json.loads(request.data)
     json_data = json.dumps(data, indent=4)
-
-    print(json_data)
 
     if getsizeof(json_data) > MAX_DATA_SIZE:
         return {"message": f"Content too large. Max size is {MAX_DATA_SIZE} bytes"}, 413, {"Access-Control-Allow-Origin": "*"}
 
-    # with open("templates/data.json", "w") as f:
-    #     f.write(json_data)
+    if authenticate(auth_token):
+        for obj in data["main"]:
+            query_filter = {'id': obj['id']}
+            update_operation = {'$set': obj}
+            notebooks_col.update_one(query_filter, update_operation)
 
-    return {"message": "Success"}, 200, {"Access-Control-Allow-Origin": "*"}
+        return {"message": "Success"}, 200, {"Access-Control-Allow-Origin": "*"}
 
 
 if __name__ == "__main__":

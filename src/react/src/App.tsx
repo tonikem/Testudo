@@ -263,8 +263,6 @@ function App() {
   useEffect(() => {
     const cookie = getCookie("testudoAuthorization")
 
-    console.log(`${URL}/${cookie}`)
-
     fetch(`${URL}/${cookie}`)
       .then(res => res.json())
       .then(mainData => {
