@@ -28,11 +28,15 @@ notebooks_col = testudo_data_db["notebooks"]
 users_col = testudo_users_db["users"]
 
 
-def authenticate(cookie):
-    if cookie:
-        decoded_cookie = jwt.decode(cookie, "SECRET_KEY_1234", algorithms=["HS256"])
-        user_id = decoded_cookie['user_id']
-        token_date = decoded_cookie["date"]
+def decode_token(token):
+    return jwt.decode(token, "SECRET_KEY_1234", algorithms=["HS256"])
+
+
+def authenticate(token):
+    if token:
+        decoded_token = decode_token(token)
+        user_id = decoded_token['user_id']
+        token_date = decoded_token["date"]
         token_date = datetime.datetime.strptime(token_date, DATE_FORMAT)
         datetime_now = datetime.datetime.now()
         auth_user = users_col.find_one({"id": user_id})
@@ -45,8 +49,8 @@ def authenticate(cookie):
 @app.route('/')
 def index():
     if request.cookies:
-        cookie = request.cookies["testudoAuthorization"]
-        if authenticate(cookie):
+        token = request.cookies["testudoAuthorization"]
+        if authenticate(token):
             return render_template("index.html")
 
     return render_template('login.html')
@@ -57,7 +61,21 @@ def index():
 def test_json(auth_token):
 
     if authenticate(auth_token):
-        return render_template("data.json")
+        collected_notebooks = []
+        decoded_token = decode_token(auth_token)
+        user_id = decoded_token["user_id"]
+        user = users_col.find_one({"id": user_id})
+
+        for notebook_id in user["notebooks"]:
+            notebook = notebooks_col.find_one({"id": notebook_id})
+            collected_notebook = {
+                "id": notebook["id"],
+                "name": notebook["name"],
+                "items": notebook["items"]
+            }
+            collected_notebooks.append(collected_notebook)
+
+        return {"main": collected_notebooks}
 
     return {"Status": "Failure. Missing token!"}, 404
 

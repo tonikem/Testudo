@@ -40,7 +40,8 @@ with open("./templates/users.json") as file:
             "name": username,
             "password": password,
             "id": user['id'],
-            "tokens": []
+            "tokens": [],
+            "notebooks": user["notebooks"]
         }
         users_col.insert_one(user)
 

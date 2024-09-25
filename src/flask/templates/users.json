@@ -4,7 +4,11 @@
       "name": "qwerty",
       "id": "6bcaa6e6-c314-4033-9e44-aabbeeeca57b",
       "password": "1234",
-      "tokens": []
+      "tokens": [],
+      "notebooks": [
+        "828f7c86-29cc-4e12-ace2-aa77fd7a7244",
+        "2d1a7342-bf11-4664-b174-3a54f9acfdfa"
+      ]
     }
   ]
 }
