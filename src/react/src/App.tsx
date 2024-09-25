@@ -269,7 +269,8 @@ function App() {
       .then(res => res.json())
       .then(mainData => {
         if (mainData.Status === "Failure. Missing token!") {
-          alert("You are missing token! Try to login again.")
+          // Varoitetaan tokenin puuttumisesta
+          alert("You are missing token!")
           setAllData({"main": []})
         } else {
           // Asetetaan koko data

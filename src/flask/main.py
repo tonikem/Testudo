@@ -121,11 +121,13 @@ def update_data():
     data = json.loads(request.data)
     json_data = json.dumps(data, indent=4)
 
+    print(json_data)
+
     if getsizeof(json_data) > MAX_DATA_SIZE:
         return {"message": f"Content too large. Max size is {MAX_DATA_SIZE} bytes"}, 413, {"Access-Control-Allow-Origin": "*"}
 
-    with open("templates/data.json", "w") as f:
-        f.write(json_data)
+    # with open("templates/data.json", "w") as f:
+    #     f.write(json_data)
 
     return {"message": "Success"}, 200, {"Access-Control-Allow-Origin": "*"}
 
