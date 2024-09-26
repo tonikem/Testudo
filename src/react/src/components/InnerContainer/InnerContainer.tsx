@@ -22,6 +22,7 @@ class InnerContainer extends React.Component {
         }
     }
     arrowBooleans: any = {}
+    audioFiles: any = {}
 
     setNote(clone: any, id: any) {
         const allData = this.props.getAllData
@@ -44,7 +45,6 @@ class InnerContainer extends React.Component {
 
                     this.props.setTableItems(allData.main[this.props.showActiveListIndex].items[i])
                     this.props.setAllData(allData)
-
                     this.forceUpdate()
 
                     return // Poistutaan loopista
@@ -247,7 +247,10 @@ class InnerContainer extends React.Component {
                         itemName.style.display = "block"
 
                         const itemPayload = li.getElementsByClassName('item-payload')[0]
-                        itemPayload.style.display = "block"
+
+                        if (itemPayload) {
+                            itemPayload.style.display = "block"
+                        }
 
                         li.getElementsByClassName("hidden-element")[0].style.display = "flex"
                         li.style.height = "auto"
@@ -291,6 +294,17 @@ class InnerContainer extends React.Component {
                 }
             }
         }
+    }
+
+    onChangeFile(e: any, id: string) {
+        e.preventDefault()
+        const file = e.target.files[0]
+        var reader = new FileReader()
+        reader.onload = function(event) {
+            var data = event.target.result.split(','), decodedData = btoa(data[1]) // the actual conversion of data from binary to base64 forma
+            
+        }
+        reader.readAsDataURL(file)
     }
 
     setSelectedValue(value: string, id: string) {
@@ -661,7 +675,8 @@ class InnerContainer extends React.Component {
 
                                                     <input className='payload-input'
                                                         style={{ display: "none" }}
-                                                        type="file" />
+                                                        type="file"
+                                                        onChange={(e) => this.onChangeFile(e, d.id)}/>
                                                 </div>
 
                                                 <p className='item-name'>
@@ -669,7 +684,7 @@ class InnerContainer extends React.Component {
                                                 </p>
                                                 <div className='hidden-element'>
                                                     <audio controls="controls" autobuffer="autobuffer">
-                                                        <source src={"data:audio/wav;base64," + d.payload} />
+                                                        <source src={`data:audio/mpeg;base64,${this.audioFiles[d.id]}`} />
                                                     </audio>
                                                     <div className='text-field'></div>
                                                 </div>
