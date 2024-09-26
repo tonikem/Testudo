@@ -26,8 +26,8 @@ function App() {
   const [getAllData, setAllData] = useState({ main: [] })
   const [showTableItems, setTableItems] = useState([])
 
-  const showActiveListIndex: any = localStorage.getItem("activeList")
-  const showActiveFolderIndex: any = localStorage.getItem("activeFolder")
+  const [showActiveListIndex, setActiveListIndex] = useState(localStorage.getItem("activeList"))
+  const [showActiveFolderIndex, setActiveFolderIndex] = useState(localStorage.getItem("activeFolder"))
 
   function onNotebookEditClick(id: string) {
     setTableItems(getAllData.main.items)
@@ -148,6 +148,7 @@ function App() {
 
   function onMouseClick(index: any) {
     localStorage.setItem("activeList", index.toString())
+    setActiveListIndex(index)
     const allData = getAllData
     setTableItems(allData.main.items)
     setAllData(allData)
@@ -308,6 +309,7 @@ function App() {
                               return (
                                 <div key={d.id} onClick={() => {
                                   localStorage.setItem("activeFolder", i.toString())
+                                  setActiveFolderIndex(i)
                                   onMouseClickTable(d, i)
                                   setTableItems(d)
                                 }}
@@ -332,6 +334,7 @@ function App() {
                             return (
                               <div key={d.id} onClick={() => {
                                 localStorage.setItem("activeFolder", i.toString())
+                                setActiveFolderIndex(i)
                                 onMouseClickTable(d, i)
                                 setTableItems(d)
                               }}

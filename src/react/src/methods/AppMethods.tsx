@@ -16,8 +16,6 @@ export function getCookie(name: string) {
 }
 
 export function onMouseClickTable(d: any, i: any) {
-    localStorage.setItem("activeFolder", i.toString())
-
     const table: any = document.getElementById(d.id)
 
     if (table) {
