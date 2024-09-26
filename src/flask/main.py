@@ -34,7 +34,7 @@ def decode_token(token):
 
 
 def authenticate(token):
-    if is_url(f"http://127.0.0.1:5000/data/{str(token)}"):
+    if token and is_url(f"http://127.0.0.1:5000/data/{token}"):
         decoded_token = decode_token(token)
         user_id = decoded_token['user_id']
         token_date = decoded_token["date"]
