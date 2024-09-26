@@ -187,7 +187,7 @@ def delete_data(auth_token):
 
         # Varmistetaan, että oikea käyttäjä poistaa notebookin
         if notebook_id not in notebooks:
-            return {"message": "You don't own the notebook to be deleted."}, 401
+            return {"message": "You don't own this notebook."}, 401
 
         # Poistetaan notebook
         notebooks_col.delete_one({'id': notebook_id})
