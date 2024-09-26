@@ -41,9 +41,10 @@ class InnerContainer extends React.Component {
                     }
                     sendPutRequest(options)
 
-                    //localStorage.setItem("main-data", JSON.stringify(allData))
                     this.props.setTableItems(allData.main[this.state.showActiveListIndex].items[i])
                     this.props.setAllData(allData)
+
+                    this.forceUpdate()
 
                     return // Poistutaan loopista
                 }
@@ -215,7 +216,6 @@ class InnerContainer extends React.Component {
                         sendPutRequest(options)
 
                         // Asetetaan uudet listan jäsenet
-                        //localStorage.setItem("main-data", JSON.stringify(allData))
                         this.props.setTableItems(allData.main[this.state.showActiveListIndex].items[i])
                         this.props.setAllData(allData)
 
@@ -281,7 +281,6 @@ class InnerContainer extends React.Component {
                             sendPutRequest(options)
 
                             // Asetetaan uudet listan jäsenet
-                            //localStorage.setItem("main-data", JSON.stringify(allData))
                             this.props.setTableItems(allData.main[this.state.showActiveListIndex].items[i])
                             this.props.setAllData(allData)
 
@@ -381,7 +380,7 @@ class InnerContainer extends React.Component {
 
     onPlusNoteClick(data: any) {
         const showActiveListIndex: any = localStorage.getItem("activeList")
-        const allData = JSON.parse(localStorage.getItem('main-data'))
+        const allData = this.props.getAllData
         const items = allData.main[showActiveListIndex].items
 
         const result = window.prompt("Note name", "");
@@ -422,8 +421,6 @@ class InnerContainer extends React.Component {
                     sendPutRequest(options)
 
                     // Asetetaan uudet listan jäsenet
-                    //localStorage.setItem("main-data", JSON.stringify(allData))
-
                     this.props.setTableItems(allData.main[showActiveListIndex].items[i])
                     this.props.setAllData(allData)
 
