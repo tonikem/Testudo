@@ -56,7 +56,7 @@ const ListGroup = (props: any) => {
     }
     sendPutRequest(options)
 
-    localStorage.setItem("main-data", JSON.stringify(allData))
+    //localStorage.setItem("main-data", JSON.stringify(allData))
     props.setAllData(allData)
 
     // Valitaan luotu Notebook

@@ -25,7 +25,7 @@ class InnerContainer extends React.Component {
     arrowBooleans: any = {}
 
     setNote(clone: any, id: any) {
-        const allData = JSON.parse(localStorage.getItem("main-data"))
+        const allData = this.props.getAllData
         const items = allData.main[this.state.showActiveListIndex].items
 
         for (let i = 0; i < items.length; ++i) {
@@ -41,7 +41,7 @@ class InnerContainer extends React.Component {
                     }
                     sendPutRequest(options)
 
-                    localStorage.setItem("main-data", JSON.stringify(allData))
+                    //localStorage.setItem("main-data", JSON.stringify(allData))
                     this.props.setTableItems(allData.main[this.state.showActiveListIndex].items[i])
                     this.props.setAllData(allData)
 
@@ -102,7 +102,7 @@ class InnerContainer extends React.Component {
     }
 
     onClipBoardClick(id: string) {
-        const data = JSON.parse(localStorage.getItem("main-data"))
+        const data = this.props.getAllData
         const items = data.main[this.state.showActiveListIndex].items
 
         for (let i = 0; i < items.length; ++i) {
@@ -197,7 +197,7 @@ class InnerContainer extends React.Component {
             hiddenElement.style.display = "none"
         }
 
-        const allData = JSON.parse(localStorage.getItem("main-data"))
+        const allData = this.props.getAllData
         const items = allData.main[this.state.showActiveListIndex].items
 
         for (let i = 0; i < items.length; ++i) {
@@ -215,7 +215,7 @@ class InnerContainer extends React.Component {
                         sendPutRequest(options)
 
                         // Asetetaan uudet listan jäsenet
-                        localStorage.setItem("main-data", JSON.stringify(allData))
+                        //localStorage.setItem("main-data", JSON.stringify(allData))
                         this.props.setTableItems(allData.main[this.state.showActiveListIndex].items[i])
                         this.props.setAllData(allData)
 
@@ -262,7 +262,7 @@ class InnerContainer extends React.Component {
 
     onDeleteClick(id: string) {
         if (confirm('Are you sure you want to delete this note?')) {
-            const allData = JSON.parse(localStorage.getItem("main-data"))
+            const allData = this.props.getAllData
             const items = allData.main[this.state.showActiveListIndex].items
 
             for (let i = 0; i < items.length; ++i) {
@@ -281,7 +281,7 @@ class InnerContainer extends React.Component {
                             sendPutRequest(options)
 
                             // Asetetaan uudet listan jäsenet
-                            localStorage.setItem("main-data", JSON.stringify(allData))
+                            //localStorage.setItem("main-data", JSON.stringify(allData))
                             this.props.setTableItems(allData.main[this.state.showActiveListIndex].items[i])
                             this.props.setAllData(allData)
 
@@ -422,7 +422,7 @@ class InnerContainer extends React.Component {
                     sendPutRequest(options)
 
                     // Asetetaan uudet listan jäsenet
-                    localStorage.setItem("main-data", JSON.stringify(allData))
+                    //localStorage.setItem("main-data", JSON.stringify(allData))
 
                     this.props.setTableItems(allData.main[showActiveListIndex].items[i])
                     this.props.setAllData(allData)
@@ -669,7 +669,7 @@ class InnerContainer extends React.Component {
                                                     {d.name}
                                                 </p>
                                                 <div className='hidden-element'>
-                                                    <audio controls="controls" autobuffer="autobuffer" autoplay="autoplay">
+                                                    <audio controls="controls" autobuffer="autobuffer">
                                                         <source src={"data:audio/wav;base64," + d.payload} />
                                                     </audio>
                                                     <div className='text-field'></div>
