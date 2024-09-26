@@ -296,6 +296,7 @@ class InnerContainer extends React.Component {
     setSelectedValue(value: string, id: string) {
         const li = document.getElementById(id)
         let textarea = undefined
+        let input = undefined
         let payloadInput = li.getElementsByClassName('payload-input')[0]
         let codeStyle = li.getElementsByClassName('code-style')[0]
 
@@ -332,8 +333,8 @@ class InnerContainer extends React.Component {
                 if (codeStyle) {
                     codeStyle.style.display = "none"
                 }
-                const input = document.createElement('input');
-                payloadInput.parentNode.replaceChild(input, payloadInput);
+                input = document.createElement('input')
+                payloadInput.parentNode.replaceChild(input, payloadInput)
                 input.style.borderRadius = "6px"
                 input.style.backgroundColor = "#1e1f22"
                 input.style.padding = "2px"
@@ -343,12 +344,29 @@ class InnerContainer extends React.Component {
                 input.classList.add("payload-input")
                 input.style.display = "block"
                 break;
+            case 'Audio':
+                if (codeStyle) {
+                    codeStyle.style.display = "none"
+                }
+                input = document.createElement('input')
+                payloadInput.parentNode.replaceChild(input, payloadInput)
+                input.type = "file"
+                input.style.borderRadius = "6px"
+                input.style.backgroundColor = "#1e1f22"
+                input.style.padding = "2px"
+                input.style.margin = "auto"
+                input.style.marginTop = "10px"
+                input.style.width = "calc(100% - 220px)"
+                input.classList.add("payload-input")
+                input.style.display = "block"
+                input.placeholder = "File"
+                break;
             default:
                 if (codeStyle) {
                     codeStyle.style.display = "none"
                 }
-                textarea = document.createElement('textarea');
-                payloadInput.parentNode.replaceChild(textarea, payloadInput);
+                textarea = document.createElement('textarea')
+                payloadInput.parentNode.replaceChild(textarea, payloadInput)
                 textarea.style.minHeight = "200px"
                 textarea.style.borderRadius = "6px"
                 textarea.style.backgroundColor = "#1e1f22"
@@ -406,7 +424,7 @@ class InnerContainer extends React.Component {
 
                     // Asetetaan uudet listan jäsenet
                     localStorage.setItem("main-data", JSON.stringify(allData))
-                    
+
                     this.props.setTableItems(allData.main[showActiveListIndex].items[i])
                     this.props.setAllData(allData)
 
@@ -469,6 +487,7 @@ class InnerContainer extends React.Component {
                                                     <option value="Text">Text</option>
                                                     <option value="URL">URL</option>
                                                     <option value="Code">Code</option>
+                                                    <option value="Audio">Audio</option>
                                                 </select>
 
                                                 <div className='buttons'>
@@ -539,6 +558,7 @@ class InnerContainer extends React.Component {
                                                     <option value="Text">Text</option>
                                                     <option value="URL">URL</option>
                                                     <option value="Code">Code</option>
+                                                    <option value="Audio">Audio</option>
                                                 </select>
 
                                                 <div className='buttons'>
@@ -593,6 +613,74 @@ class InnerContainer extends React.Component {
                                                     onClick={() => this.endEditing(d)} />
                                             </li>
                                         )
+                                    case 'Audio':
+                                        if (this.arrowBooleans[d.id] === undefined || this.arrowBooleans[d.id] === null) {
+                                            this.arrowBooleans[d.id] = false
+                                        }
+                                        return (
+                                            <li id={d.id} key={d.id}
+                                                className="table-item"
+                                                draggable
+                                                onDragStart={() => this.onDragStart(index)}
+                                                onDragEnter={() => this.onDragEnter(index)}
+                                                onDragEnd={() => this.handleSort(index)}
+                                                onDragOver={(e) => e.preventDefault()}>
+
+                                                {/* Tällä vaihdetaan muistiinpanon tyyppi */}
+                                                <select defaultValue={d.type}
+                                                    className='selector'
+                                                    onChange={e => this.setSelectedValue(e.target.value, d.id)}>
+                                                    <option value="Text">Text</option>
+                                                    <option value="URL">URL</option>
+                                                    <option value="Code">Code</option>
+                                                    <option value="Audio">Audio</option>
+                                                </select>
+
+                                                <div className='buttons'>
+                                                    <i onClick={() => {
+                                                        // Asetetaan boolean arvo nuolelle
+                                                        this.resize(d.id)
+                                                    }} className="arrow"></i>
+
+                                                    <div className='data-type'>
+                                                        {d.type}
+                                                    </div>
+                                                    <img className="copy-icon"
+                                                        src={copy}
+                                                        onClick={() => { this.onClipBoardClick(d.id) }} />
+                                                    <img className='edit-icon'
+                                                        src={edit}
+                                                        onClick={() => this.onEditClick(d)} />
+                                                    <img className='delete-icon'
+                                                        src={trash}
+                                                        onClick={() => this.onDeleteClick(d.id)} />
+                                                </div>
+
+                                                <div className='edit-input'>
+                                                    <input className='title-input'
+                                                        type="text"
+                                                        defaultValue={d.name} />
+
+                                                    <input className='payload-input'
+                                                        style={{display: "none"}}
+                                                        placeholder='File'
+                                                        type="file" />
+                                                </div>
+
+                                                <p className='item-name'>
+                                                    {d.name}
+                                                </p>
+                                                <p className='item-payload'>
+                                                    {d.payload}
+                                                </p>
+                                                <div className='hidden-element'>
+                                                    <div className='text-field'></div>
+                                                </div>
+                                                <img className='save-icon'
+                                                    src={save}
+                                                    onClick={() => this.endEditing(d)} />
+                                            </li>
+                                        )
                                     default:
                                         if (this.arrowBooleans[d.id] === undefined || this.arrowBooleans[d.id] === null) {
                                             this.arrowBooleans[d.id] = false
@@ -613,6 +701,7 @@ class InnerContainer extends React.Component {
                                                     <option value="Text">Text</option>
                                                     <option value="URL">URL</option>
                                                     <option value="Code">Code</option>
+                                                    <option value="Audio">Audio</option>
                                                 </select>
 
                                                 <div className='buttons'>

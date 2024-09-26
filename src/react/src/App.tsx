@@ -310,7 +310,7 @@ function App() {
                         {
                           // Listataan yksittäiset osat
                           data.items.map(function (d: any, i: any) {
-                            if (showActiveFolderIndex == i) {
+                            if (i == showActiveFolderIndex) {
                               return (
                                 <div key={d.id} onClick={() => {
                                   localStorage.setItem("activeFolder", i.toString())
