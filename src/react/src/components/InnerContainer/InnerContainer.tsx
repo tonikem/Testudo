@@ -359,7 +359,6 @@ class InnerContainer extends React.Component {
                 input.style.width = "calc(100% - 220px)"
                 input.classList.add("payload-input")
                 input.style.display = "block"
-                input.placeholder = "File"
                 break;
             default:
                 if (codeStyle) {
@@ -662,18 +661,17 @@ class InnerContainer extends React.Component {
                                                         defaultValue={d.name} />
 
                                                     <input className='payload-input'
-                                                        style={{display: "none"}}
-                                                        placeholder='File'
+                                                        style={{ display: "none" }}
                                                         type="file" />
                                                 </div>
 
                                                 <p className='item-name'>
                                                     {d.name}
                                                 </p>
-                                                <p className='item-payload'>
-                                                    {d.payload}
-                                                </p>
                                                 <div className='hidden-element'>
+                                                    <audio controls="controls" autobuffer="autobuffer" autoplay="autoplay">
+                                                        <source src={"data:audio/wav;base64," + d.payload} />
+                                                    </audio>
                                                     <div className='text-field'></div>
                                                 </div>
                                                 <img className='save-icon'

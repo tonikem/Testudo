@@ -12,8 +12,8 @@
                         {
                             "name": "Uusi 3",
                             "id": "48dbe477-1b71-44ee-bcc0-6edd2345e5e2",
-                            "type": "Code",
-                            "payload": "print(\"Hello World\")",
+                            "type": "Audio",
+                            "payload": "",
                             "codeStyle": "python"
                         },
                         {
