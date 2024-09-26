@@ -164,7 +164,6 @@ def update_data(auth_token):
                 "tokens": user["tokens"],
                 "notebooks": notebooks
             }
-            print(notebooks)
             query_filter = {'id': user['id']}
             update_operation = {'$set': new_user}
             users_col.update_one(query_filter, update_operation)
@@ -172,6 +171,39 @@ def update_data(auth_token):
         return {"message": "Success"}, 200, {"Access-Control-Allow-Origin": "*"}
     else:
         return {"Status": "Failure. Missing token!"}, 404
+
+
+@cross_origin()
+@app.route("/data/<auth_token>", methods=["DELETE"])
+def delete_data(auth_token):
+    if authenticate(auth_token):
+        # Poistetaan ensin notebook
+        data = json.loads(request.data)
+        notebook_id = data['id']
+        notebooks_col.delete_one({'id': notebook_id})
+
+        # Sitten poistetaan notebook id käyttäjältä
+        decoded_token = decode_token(auth_token)
+        user_id = decoded_token["user_id"]
+        user = users_col.find_one({"id": user_id})
+        notebooks = user['notebooks']
+        notebooks.remove(notebook_id)
+
+        new_user = {
+            "id": user["id"],
+            "name": user["name"],
+            "password": user["password"],
+            "tokens": user["tokens"],
+            "notebooks": notebooks
+        }
+
+        query_filter = {'id': user['id']}
+        update_operation = {'$set': new_user}
+        users_col.update_one(query_filter, update_operation)
+
+        return {"message": "Deleted notebook."}, 200, {"Access-Control-Allow-Origin": "*"}
+
+    return {"Status": "Failure. Missing token!"}, 404
 
 
 if __name__ == "__main__":

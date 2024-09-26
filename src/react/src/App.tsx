@@ -16,7 +16,8 @@ import {
   getCookie,
   URL,
   onMouseClickTable,
-  sendPutRequest
+  sendPutRequest,
+  sendDeleteRequest
 } from './methods/AppMethods'
 import './App.css';
 
@@ -168,18 +169,20 @@ function App() {
 
       for (let i = 0; i < allData.main.length; ++i) {
         if (id == allData.main[i].id) {
+          const deleted_notebook = structuredClone(allData.main[i])
+
           delete allData.main[i]
 
           allData.main = allData.main.flat(0)
 
           const options = {
-            method: 'PUT',
+            method: 'DELETE',
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify(allData)
+            body: JSON.stringify(deleted_notebook)
           }
-          sendPutRequest(options)
+          sendDeleteRequest(options)
 
           localStorage.setItem("main-data", JSON.stringify(allData))
           setAllData(allData)
@@ -266,7 +269,6 @@ function App() {
     if (cookie === undefined) {
       cookie = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNmJjYWE2ZTYtYzMxNC00MDMzLTllNDQtYWFiYmVlZWNhNTdiIiwiZGF0ZSI6IjA5LzI1LzIwMjQsIDE4OjQ1OjMwIn0.GGZBq2ueGpM93gsMm6F7kovJQGhfZ04-fALHC3q8j4s"
     }
-
 
     fetch(`${URL}/${cookie}`)
       .then(res => res.json())
