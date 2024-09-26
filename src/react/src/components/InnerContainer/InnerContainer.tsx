@@ -19,7 +19,7 @@ class InnerContainer extends React.Component {
         this.state = {
             dragNote: 0,
             dragOverNote: 0,
-            showActiveListIndex: localStorage.getItem("activeList")
+            showActiveListIndex: this.props.showActiveListIndex
         }
     }
     arrowBooleans: any = {}
@@ -43,8 +43,6 @@ class InnerContainer extends React.Component {
 
                     this.props.setTableItems(allData.main[this.state.showActiveListIndex].items[i])
                     this.props.setAllData(allData)
-
-                    this.forceUpdate()
 
                     return // Poistutaan loopista
                 }

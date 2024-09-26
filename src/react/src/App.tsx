@@ -397,6 +397,9 @@ function App() {
         </ListGroup>
       </Panel>
       <InnerContainer data={showTableItems}
+        setActiveFolderIndex={setActiveFolderIndex}
+        showActiveListIndex={showActiveListIndex}
+        showActiveFolderIndex={showActiveFolderIndex}
         getAllData={getAllData}
         setTableItems={setTableItems}
         setAllData={setAllData} />
