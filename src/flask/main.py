@@ -133,7 +133,7 @@ def update_data(auth_token):
             update_operation = {'$set': obj}
             notebooks_col.update_one(query_filter, update_operation)
 
-            return {"message": "Success"}, 200, {"Access-Control-Allow-Origin": "*"}
+        return {"message": "Success"}, 200, {"Access-Control-Allow-Origin": "*"}
     else:
         return {"Status": "Failure. Missing token!"}, 404
 
