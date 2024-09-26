@@ -177,16 +177,22 @@ def update_data(auth_token):
 @app.route("/data/<auth_token>", methods=["DELETE"])
 def delete_data(auth_token):
     if authenticate(auth_token):
-        # Poistetaan ensin notebook
-        data = json.loads(request.data)
-        notebook_id = data['id']
-        notebooks_col.delete_one({'id': notebook_id})
-
-        # Sitten poistetaan notebook id käyttäjältä
         decoded_token = decode_token(auth_token)
         user_id = decoded_token["user_id"]
         user = users_col.find_one({"id": user_id})
         notebooks = user['notebooks']
+
+        data = json.loads(request.data)
+        notebook_id = data['id']
+
+        # Varmistetaan, että oikea käyttäjä poistaa notebookin
+        if notebook_id not in notebooks:
+            return {"message": "You don't own the notebook to be deleted."}, 401
+
+        # Poistetaan notebook
+        notebooks_col.delete_one({'id': notebook_id})
+
+        # poistetaan notebook id käyttäjältä
         notebooks.remove(notebook_id)
 
         new_user = {
