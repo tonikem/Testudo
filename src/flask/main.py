@@ -74,12 +74,13 @@ def test_json(auth_token):
 
         for notebook_id in user["notebooks"]:
             notebook = notebooks_col.find_one({"id": notebook_id})
-            collected_notebook = {
-                "id": notebook["id"],
-                "name": notebook["name"],
-                "items": notebook["items"]
-            }
-            collected_notebooks.append(collected_notebook)
+            if notebook:
+                collected_notebook = {
+                    "id": notebook["id"],
+                    "name": notebook["name"],
+                    "items": notebook["items"]
+                }
+                collected_notebooks.append(collected_notebook)
 
         result = {"main": collected_notebooks}
 
@@ -134,10 +135,34 @@ def update_data(auth_token):
         if getsizeof(json_data) > MAX_DATA_SIZE:
             return {"message": f"Content too large. Max size is {MAX_DATA_SIZE} bytes"}, 413, {"Access-Control-Allow-Origin": "*"}
 
+        # Etsitään käyttäjä
+        luotu_uusi_notebook = False
+        decoded_token = decode_token(auth_token)
+        user_id = decoded_token["user_id"]
+        user = users_col.find_one({"id": user_id})
+        notebooks = user['notebooks']
+
         for obj in data["main"]:
             query_filter = {'id': obj['id']}
             update_operation = {'$set': obj}
             notebooks_col.update_one(query_filter, update_operation)
+
+            if obj['id'] not in notebooks:
+                luotu_uusi_notebook = True
+                notebooks.append(obj['id'])
+                print(notebooks)
+
+        if luotu_uusi_notebook:
+            new_user = {
+                "id": user["id"],
+                "name": user["name"],
+                "password": user["password"],
+                "tokens": user["tokens"],
+                "notebooks": notebooks
+            }
+            query_filter = {'id': user['id']}
+            update_operation = {'$set': new_user}
+            users_col.update_one(query_filter, update_operation)
 
         return {"message": "Success"}, 200, {"Access-Control-Allow-Origin": "*"}
     else:
