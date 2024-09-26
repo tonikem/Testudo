@@ -32,7 +32,7 @@ const ListGroup = (props: any) => {
   }
 
   function onMouseClickAddNotebook() {
-    const allData = JSON.parse(localStorage.getItem('main-data'))
+    const allData = props.getAllData
     const name = window.prompt("Notebook name", "")
 
     if (name === null || name.trim().length === 0) {
@@ -56,7 +56,6 @@ const ListGroup = (props: any) => {
     }
     sendPutRequest(options)
 
-    //localStorage.setItem("main-data", JSON.stringify(allData))
     props.setAllData(allData)
 
     // Valitaan luotu Notebook

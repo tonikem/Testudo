@@ -423,6 +423,7 @@ class InnerContainer extends React.Component {
                     // Asetetaan uudet listan jäsenet
                     this.props.setTableItems(allData.main[showActiveListIndex].items[i])
                     this.props.setAllData(allData)
+                    this.forceUpdate()
 
                     return // Poistutaan loopista
                 }

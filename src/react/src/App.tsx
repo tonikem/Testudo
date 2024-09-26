@@ -77,7 +77,6 @@ function App() {
         }
         sendPutRequest(options)
 
-        //localStorage.setItem("main-data", JSON.stringify(allData))
         setAllData(allData)
 
         return // Poistutaan loopista
@@ -121,7 +120,7 @@ function App() {
     img.classList.add('folder-icon')
     folderTitle.prepend(img)
 
-    let allData = JSON.parse(localStorage.getItem('main-data'))
+    let allData = getAllData
 
     for (let i = 0; i < allData.main.length; ++i) {
       for (let u = 0; u < allData.main[i].items.length; ++u) {
@@ -138,7 +137,6 @@ function App() {
           }
           sendPutRequest(options)
 
-          localStorage.setItem('main-data', JSON.stringify(allData))
           setTableItems(allData.main[showActiveListIndex].items[i])
           setAllData(allData)
 
@@ -164,7 +162,7 @@ function App() {
         document.getElementsByClassName("table-item")[i].remove()
       }
 
-      let allData = JSON.parse(localStorage.getItem('main-data'))
+      let allData = getAllData
 
       for (let i = 0; i < allData.main.length; ++i) {
         if (id == allData.main[i].id) {
@@ -183,7 +181,6 @@ function App() {
           }
           sendDeleteRequest(options)
 
-          localStorage.setItem("main-data", JSON.stringify(allData))
           setAllData(allData)
 
           return // Poistutaan loopista
@@ -193,7 +190,7 @@ function App() {
   }
 
   function onAddClick(id: any) {
-    const allData = JSON.parse(localStorage.getItem('main-data'))
+    const allData = getAllData
 
     allData.main.forEach(notebook => {
       if (id == notebook.id) {
@@ -220,7 +217,6 @@ function App() {
         }
         sendPutRequest(options)
 
-        localStorage.setItem("main-data", JSON.stringify(allData))
         setAllData(allData)
       }
     })
@@ -229,7 +225,7 @@ function App() {
   function onClickTrashIcon(notebookId: string, id: string) {
     if (confirm('Are you sure you want to delete this folder?')) {
       //document.getElementById(id).remove()
-      let allData = JSON.parse(localStorage.getItem('main-data'))
+      let allData = getAllData
 
       for (let i = 0; i < allData.main.length; ++i) {
         if (notebookId == allData.main[i].id) {
@@ -247,7 +243,6 @@ function App() {
               }
               sendPutRequest(options)
 
-              localStorage.setItem('main-data', JSON.stringify(allData))
               setTableItems(allData.main[showActiveListIndex].items[i])
               setAllData(allData)
 
@@ -287,7 +282,9 @@ function App() {
     <div className="App">
       <Header />
       <Panel>
-        <ListGroup setAllData={setAllData} onMouseClick={onMouseClick}>
+        <ListGroup setAllData={setAllData}
+                  getAllData={getAllData}
+                  onMouseClick={onMouseClick}>
           {
             getAllData.main.map(function (data: any, index: any) {
               if (data && data.items) {
