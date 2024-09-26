@@ -1,8 +1,8 @@
-import Panel from './components/Panel/Panel';
+import Panel from './components/Panel/Panel'
 import Header from './components/Header/Header'
-import ListGroup from './components/ListGroup/ListGroup';
-import InnerContainer from './components/InnerContainer/InnerContainer';
-import { useEffect, useReducer, useState } from 'react';
+import ListGroup from './components/ListGroup/ListGroup'
+import InnerContainer from './components/InnerContainer/InnerContainer'
+import { useEffect, useReducer, useState } from 'react'
 import notebook from '../public/notebook.png'
 import folder from '../public/folder.png'
 import remove from '../public/remove.png'
@@ -19,7 +19,7 @@ import {
   sendPutRequest,
   sendDeleteRequest
 } from './methods/AppMethods'
-import './App.css';
+import './App.css'
 
 
 function App() {
