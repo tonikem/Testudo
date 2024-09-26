@@ -190,7 +190,7 @@ function App() {
   }
 
   function onAddClick(id: any) {
-    const allData = getAllData
+    let allData = getAllData
 
     allData.main.forEach(notebook => {
       if (id == notebook.id) {
@@ -207,19 +207,18 @@ function App() {
         } else {
           notebook.items = [newItem]
         }
-
-        const options = {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(allData)
-        }
-        sendPutRequest(options)
-
-        setAllData(allData)
       }
     })
+    const options = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(allData)
+    }
+    sendPutRequest(options)
+
+    setAllData(allData)
   }
 
   function onClickTrashIcon(notebookId: string, id: string) {
