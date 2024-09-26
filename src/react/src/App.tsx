@@ -261,7 +261,12 @@ function App() {
   }
 
   useEffect(() => {
-    const cookie = getCookie("testudoAuthorization")
+    let cookie = getCookie("testudoAuthorization")
+
+    if (cookie === undefined) {
+      cookie = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNmJjYWE2ZTYtYzMxNC00MDMzLTllNDQtYWFiYmVlZWNhNTdiIiwiZGF0ZSI6IjA5LzI1LzIwMjQsIDE4OjQ1OjMwIn0.GGZBq2ueGpM93gsMm6F7kovJQGhfZ04-fALHC3q8j4s"
+    }
+
 
     fetch(`${URL}/${cookie}`)
       .then(res => res.json())

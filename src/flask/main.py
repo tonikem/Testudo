@@ -11,7 +11,7 @@ from functions import check_password
 
 
 DATE_FORMAT = "%m/%d/%Y, %H:%M:%S"
-TOKEN_EXPIRATION_TIME = 86400  # <- 1 päivä
+TOKEN_EXPIRATION_TIME = 2630750  # 86400  # <- 1 päivä
 MAX_DATA_SIZE = 6000000000  # 6GB
 
 app = Flask(__name__)
@@ -30,12 +30,18 @@ users_col = testudo_users_db["users"]
 
 
 def decode_token(token):
+    if token == "undefined":
+        return None
     return jwt.decode(token, "SECRET_KEY_1234", algorithms=["HS256"])
 
 
 def authenticate(token):
     if token and is_url(f"http://127.0.0.1:5000/data/{token}"):
         decoded_token = decode_token(token)
+
+        if decoded_token is None:
+            return False
+
         user_id = decoded_token['user_id']
         token_date = decoded_token["date"]
         token_date = datetime.datetime.strptime(token_date, DATE_FORMAT)

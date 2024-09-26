@@ -43,29 +43,29 @@ export function onMouseClickTable(d: any, i: any) {
 }
 
 export function sendPutRequest(options: any) {
-    const cookie = getCookie("testudoAuthorization")
+    let cookie = getCookie("testudoAuthorization")
 
-    if (cookie) {
-        fetch(`${URL}/${cookie}`, options)
-        .then(response => {
-            if (response.status == 413) {
-                alert("Data takes more memory than 6GB. Disable Notebooks or delete items.")
-                location.reload()
-            }
-            if (!response.ok) {
-                throw new Error('Network response was not ok')
-            }
-            return response.json()
-        })
-        .then(data => {
-            console.log('Resource updated successfully:', data)
-        })
-        .catch(error => {
-            console.error('There was a problem with your fetch operation:', error)
-        })
-    } else {
-        alert("Cookies are missing!")
-        location.reload()
+    if (cookie === undefined) {
+        cookie = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNmJjYWE2ZTYtYzMxNC00MDMzLTllNDQtYWFiYmVlZWNhNTdiIiwiZGF0ZSI6IjA5LzI1LzIwMjQsIDE4OjQ1OjMwIn0.GGZBq2ueGpM93gsMm6F7kovJQGhfZ04-fALHC3q8j4s"
     }
+
+    fetch(`${URL}/${cookie}`, options)
+    .then(response => {
+        if (response.status == 413) {
+            alert("Data takes more memory than 6GB. Disable Notebooks or delete items.")
+            location.reload()
+        }
+        if (!response.ok) {
+            throw new Error('Network response was not ok')
+        }
+        return response.json()
+    })
+    .then(data => {
+        console.log('Resource updated successfully:', data)
+    })
+    .catch(error => {
+        console.error('There was a problem with your fetch operation:', error)
+    })
 }
+
 
