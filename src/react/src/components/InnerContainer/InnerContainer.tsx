@@ -18,21 +18,22 @@ class InnerContainer extends React.Component {
         super(props);
         this.state = {
             dragNote: 0,
-            dragOverNote: 0,
-            showActiveListIndex: this.props.showActiveListIndex
+            dragOverNote: 0
         }
     }
     arrowBooleans: any = {}
 
     setNote(clone: any, id: any) {
         const allData = this.props.getAllData
-        const items = allData.main[this.state.showActiveListIndex].items
+        const items = allData.main[this.props.showActiveListIndex].items
+
+        console.log("Notebook index:", this.props.showActiveListIndex)
 
         for (let i = 0; i < items.length; ++i) {
             if (items[i].id === id) {
                 if (items[i].content) {
                     // Asetetaan uusi listajärjestys
-                    allData.main[this.state.showActiveListIndex].items[i].content = clone
+                    allData.main[this.props.showActiveListIndex].items[i].content = clone
 
                     const options = {
                         method: 'PUT',
@@ -41,8 +42,10 @@ class InnerContainer extends React.Component {
                     }
                     sendPutRequest(options)
 
-                    this.props.setTableItems(allData.main[this.state.showActiveListIndex].items[i])
+                    this.props.setTableItems(allData.main[this.props.showActiveListIndex].items[i])
                     this.props.setAllData(allData)
+
+                    this.forceUpdate()
 
                     return // Poistutaan loopista
                 }
@@ -102,7 +105,7 @@ class InnerContainer extends React.Component {
 
     onClipBoardClick(id: string) {
         const data = this.props.getAllData
-        const items = data.main[this.state.showActiveListIndex].items
+        const items = data.main[this.props.showActiveListIndex].items
 
         for (let i = 0; i < items.length; ++i) {
             if (items[i].content) {
@@ -197,14 +200,14 @@ class InnerContainer extends React.Component {
         }
 
         const allData = this.props.getAllData
-        const items = allData.main[this.state.showActiveListIndex].items
+        const items = allData.main[this.props.showActiveListIndex].items
 
         for (let i = 0; i < items.length; ++i) {
             if (items[i].content) {
                 for (let u = 0; u < items[i].content.length; ++u) {
                     if (items[i].content[u].id === data.id) {
                         // Korvataan vanha muistiinpano uudella datalla
-                        allData.main[this.state.showActiveListIndex].items[i].content[u] = data
+                        allData.main[this.props.showActiveListIndex].items[i].content[u] = data
 
                         const options = {
                             method: 'PUT',
@@ -214,7 +217,7 @@ class InnerContainer extends React.Component {
                         sendPutRequest(options)
 
                         // Asetetaan uudet listan jäsenet
-                        this.props.setTableItems(allData.main[this.state.showActiveListIndex].items[i])
+                        this.props.setTableItems(allData.main[this.props.showActiveListIndex].items[i])
                         this.props.setAllData(allData)
 
                         // Sitten palautetaan elementti ennalleen ->
@@ -261,15 +264,15 @@ class InnerContainer extends React.Component {
     onDeleteClick(id: string) {
         if (confirm('Are you sure you want to delete this note?')) {
             const allData = this.props.getAllData
-            const items = allData.main[this.state.showActiveListIndex].items
+            const items = allData.main[this.props.showActiveListIndex].items
 
             for (let i = 0; i < items.length; ++i) {
                 if (items[i].content) {
                     for (let u = 0; u < items[i].content.length; ++u) {
                         if (items[i].content[u].id === id) {
                             // Poistetaan muistiinpano
-                            delete allData.main[this.state.showActiveListIndex].items[i].content[u]
-                            allData.main[this.state.showActiveListIndex].items[i].content = allData.main[this.state.showActiveListIndex].items[i].content.flat(0)
+                            delete allData.main[this.props.showActiveListIndex].items[i].content[u]
+                            allData.main[this.props.showActiveListIndex].items[i].content = allData.main[this.props.showActiveListIndex].items[i].content.flat(0)
 
                             const options = {
                                 method: 'PUT',
@@ -279,7 +282,7 @@ class InnerContainer extends React.Component {
                             sendPutRequest(options)
 
                             // Asetetaan uudet listan jäsenet
-                            this.props.setTableItems(allData.main[this.state.showActiveListIndex].items[i])
+                            this.props.setTableItems(allData.main[this.props.showActiveListIndex].items[i])
                             this.props.setAllData(allData)
 
                             return // Poistutaan loopista
@@ -377,7 +380,7 @@ class InnerContainer extends React.Component {
     }
 
     onPlusNoteClick(data: any) {
-        const showActiveListIndex: any = localStorage.getItem("activeList")
+        const showActiveListIndex = this.props.showActiveListIndex
         const allData = this.props.getAllData
         const items = allData.main[showActiveListIndex].items
 
