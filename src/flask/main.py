@@ -145,12 +145,16 @@ def update_data(auth_token):
         for obj in data["main"]:
             query_filter = {'id': obj['id']}
             update_operation = {'$set': obj}
-            notebooks_col.update_one(query_filter, update_operation)
+            notebook = notebooks_col.find_one(query_filter)
+
+            if notebook:
+                notebooks_col.update_one(query_filter, update_operation)
+            else:
+                notebooks_col.insert_one(obj)
 
             if obj['id'] not in notebooks:
                 luotu_uusi_notebook = True
-                notebooks.append(obj['id'])
-                print(notebooks)
+                notebooks.insert(0, obj['id'])
 
         if luotu_uusi_notebook:
             new_user = {
@@ -160,6 +164,7 @@ def update_data(auth_token):
                 "tokens": user["tokens"],
                 "notebooks": notebooks
             }
+            print(notebooks)
             query_filter = {'id': user['id']}
             update_operation = {'$set': new_user}
             users_col.update_one(query_filter, update_operation)
