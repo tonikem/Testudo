@@ -32,6 +32,20 @@ def decode_token(token):
     return jwt.decode(token, "SECRET_KEY_1234", algorithms=["HS256"])
 
 
+def get_user_by_id(user_id):
+    for user in users_db.all():
+        if user['doc']['id'] == user_id:
+            return user
+    return None
+
+
+def get_notebook_by_id(notebook_id):
+    for notebook in notebooks_db.all():
+        if notebook['doc']['id'] == notebook_id:
+            return notebook
+    return None
+
+
 def authenticate(token):
     if token and is_url(f"http://127.0.0.1:5000/data/{token}"):
         decoded_token = decode_token(token)
@@ -43,11 +57,10 @@ def authenticate(token):
         token_date = datetime.datetime.strptime(decoded_token["date"], DATE_FORMAT)
         datetime_now = datetime.datetime.now()
 
-        for user in users_db.all():
-            if user['doc']['id'] is user_id:
-                print(user)
-                expiration = token_date + datetime.timedelta(seconds=TOKEN_EXPIRATION_TIME)
-                return user and datetime_now < expiration
+        user = get_user_by_id(user_id)
+
+        expiration = token_date + datetime.timedelta(seconds=TOKEN_EXPIRATION_TIME)
+        return user and datetime_now < expiration
 
     return False
 
