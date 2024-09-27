@@ -1,6 +1,8 @@
+import os
 import jwt
 import json
 import datetime
+import pycouchdb
 from string_utils.validation import is_url
 from sys import getsizeof
 from flask import Flask, render_template, request, redirect
@@ -17,15 +19,8 @@ app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-#mongo_client = MongoClient("localhost", 27017)
-
-# Tietokannat
-#testudo_users_db = mongo_client["TestudoUsers"]
-#testudo_data_db = mongo_client["TestudoData"]
-
-# Tietokanta sarakkeet
-#notebooks_col = testudo_data_db["notebooks"]
-#users_col = testudo_users_db["users"]
+PYCOUCH_DB_PASSWORD = os.environ['PYCOUCH_DB_PASSWORD']
+server = pycouchdb.Server(f"http://tonikem:{PYCOUCH_DB_PASSWORD}@localhost:5984/")
 
 
 def decode_token(token):
