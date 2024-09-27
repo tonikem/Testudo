@@ -39,6 +39,13 @@ def get_user_by_id(user_id):
     return None
 
 
+def get_user_by_name(username):
+    for user in users_db.all():
+        if user['doc']['username'] == username:
+            return user
+    return None
+
+
 def get_notebook_by_id(notebook_id):
     for notebook in notebooks_db.all():
         if notebook['doc']['id'] == notebook_id:
@@ -65,11 +72,12 @@ def authenticate(token):
     return False
 
 
-
-auth = authenticate('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNmJjYWE2ZTYtYzMxNC00MDMzLTllNDQtYWFiYmVlZWNhNTdiIiwiZGF0ZSI6IjA5LzI1LzIwMjQsIDE4OjQ1OjMwIn0.GGZBq2ueGpM93gsMm6F7kovJQGhfZ04-fALHC3q8j4s')
-
-
-quit()
+def update_notebook(id, json):
+    doc = get_notebook_by_id(id)
+    doc["firstName"] = json["firstName"]
+    doc = notebooks_db.save(doc)
+    print(doc['_id'], doc['_rev'])
+    print("Saved!")
 
 
 @app.route('/')
@@ -93,10 +101,10 @@ def test_json(auth_token):
             return {"Status": "Failure. Missing token!"}, 404
 
         user_id = decoded_token["user_id"]
-        user = users_col.find_one({"id": user_id})
+        user = get_user_by_id(user_id)  # users_col.find_one({"id": user_id})
 
         for notebook_id in user["notebooks"]:
-            notebook = notebooks_col.find_one({"id": notebook_id})
+            notebook = get_notebook_by_id(notebook_id)  # notebooks_col.find_one({"id": notebook_id})
             if notebook:
                 collected_notebook = {
                     "id": notebook["id"],
@@ -123,13 +131,14 @@ def login_to_user():
         username = data["username"]
         password = data["password"]
 
-        response = users_col.find_one({'name': username})
+        user = get_user_by_name(username)  # users_col.find_one({'name': username})
+        print(user)
 
-        if response is None:
+        if user is None:
             return {"Status": "Failure. User not found!"}, 404
 
-        hashed_password = response['password']
-        user_id = response["id"]
+        hashed_password = user['password']
+        user_id = user["id"]
 
         if check_password(password, hashed_password):
             token_date = datetime.datetime.now().strftime(DATE_FORMAT)
@@ -166,18 +175,19 @@ def update_data(auth_token):
             return {"Status": "Failure. Missing token!"}, 404
 
         user_id = decoded_token["user_id"]
-        user = users_col.find_one({"id": user_id})
+        user = get_user_by_id(user_id)  # users_col.find_one({"id": user_id})
         notebooks = user['notebooks']
 
         for obj in data["main"]:
-            query_filter = {'id': obj['id']}
-            update_operation = {'$set': obj}
-            notebook = notebooks_col.find_one(query_filter)
+            # query_filter = {'id': obj['id']}
+            notebook = get_notebook_by_id(obj['id'])  # notebooks_col.find_one(query_filter)
 
             if notebook:
-                notebooks_col.update_one(query_filter, update_operation)
+                # notebooks_col.update_one(query_filter, update_operation
+                pass
             else:
-                notebooks_col.insert_one(obj)
+                # notebooks_col.insert_one(obj)
+                pass
 
             if obj['id'] not in notebooks:
                 luotu_uusi_notebook = True
