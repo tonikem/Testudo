@@ -13,6 +13,9 @@ import './style.css'
 import { sendPutRequest, uuidv4 } from '../../methods/AppMethods'
 
 
+let audioFiles: any = {}
+
+
 class InnerContainer extends React.Component {
     constructor(props: any) {
         super(props);
@@ -22,13 +25,10 @@ class InnerContainer extends React.Component {
         }
     }
     arrowBooleans: any = {}
-    audioFiles: any = {}
 
     setNote(clone: any, id: any) {
         const allData = this.props.getAllData
         const items = allData.main[this.props.showActiveListIndex].items
-
-        console.log("Notebook index:", this.props.showActiveListIndex)
 
         for (let i = 0; i < items.length; ++i) {
             if (items[i].id === id) {
@@ -77,7 +77,7 @@ class InnerContainer extends React.Component {
                 method: "HEAD",
                 mode: 'no-cors'
             }).then(res => {
-                if (res.status === 404) {
+                if (res.status == 404) {
                     return callback("orange")
                 }
                 callback("green")
@@ -186,6 +186,10 @@ class InnerContainer extends React.Component {
         data.payload = payloadInput.value
         data.type = selector.value
 
+        if (payloadInput.type == "file") {
+            data.payload = audioFiles[data.id]
+        }
+
         if (codeStyle) {
             data.codeStyle = codeStyle.value.toLowerCase()
             if (codeStyle.value.toLowerCase() === "c++") {
@@ -219,6 +223,7 @@ class InnerContainer extends React.Component {
                         // Asetetaan uudet listan jäsenet
                         this.props.setTableItems(allData.main[this.props.showActiveListIndex].items[i])
                         this.props.setAllData(allData)
+                        this.forceUpdate()
 
                         // Sitten palautetaan elementti ennalleen ->
                         const saveButton = li.getElementsByClassName('save-icon')[0]
@@ -301,8 +306,8 @@ class InnerContainer extends React.Component {
         const file = e.target.files[0]
         var reader = new FileReader()
         reader.onload = function(event) {
-            var data = event.target.result.split(','), decodedData = btoa(data[1]) // the actual conversion of data from binary to base64 forma
-            
+            var data = event.target.result.split(','), decodedData = btoa(data[1])
+            audioFiles[id] = decodedData
         }
         reader.readAsDataURL(file)
     }
@@ -684,7 +689,7 @@ class InnerContainer extends React.Component {
                                                 </p>
                                                 <div className='hidden-element'>
                                                     <audio controls="controls" autobuffer="autobuffer">
-                                                        <source src={`data:audio/mpeg;base64,${this.audioFiles[d.id]}`} />
+                                                        <source src={`data:audio/mpeg;base64,${d.payload}`} />
                                                     </audio>
                                                     <div className='text-field'></div>
                                                 </div>

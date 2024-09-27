@@ -2,7 +2,6 @@ import jwt
 import json
 import datetime
 from string_utils.validation import is_url
-from pymongo import MongoClient
 from sys import getsizeof
 from flask import Flask, render_template, request, redirect
 from flask_cors import CORS, cross_origin
@@ -18,15 +17,15 @@ app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-mongo_client = MongoClient("localhost", 27017)
+#mongo_client = MongoClient("localhost", 27017)
 
 # Tietokannat
-testudo_users_db = mongo_client["TestudoUsers"]
-testudo_data_db = mongo_client["TestudoData"]
+#testudo_users_db = mongo_client["TestudoUsers"]
+#testudo_data_db = mongo_client["TestudoData"]
 
 # Tietokanta sarakkeet
-notebooks_col = testudo_data_db["notebooks"]
-users_col = testudo_users_db["users"]
+#notebooks_col = testudo_data_db["notebooks"]
+#users_col = testudo_users_db["users"]
 
 
 def decode_token(token):
@@ -69,6 +68,10 @@ def test_json(auth_token):
     if authenticate(auth_token):
         collected_notebooks = []
         decoded_token = decode_token(auth_token)
+
+        if decoded_token is None:
+            return {"Status": "Failure. Missing token!"}, 404
+
         user_id = decoded_token["user_id"]
         user = users_col.find_one({"id": user_id})
 
@@ -138,6 +141,10 @@ def update_data(auth_token):
         # Etsitään käyttäjä
         luotu_uusi_notebook = False
         decoded_token = decode_token(auth_token)
+
+        if decoded_token is None:
+            return {"Status": "Failure. Missing token!"}, 404
+
         user_id = decoded_token["user_id"]
         user = users_col.find_one({"id": user_id})
         notebooks = user['notebooks']
@@ -178,6 +185,10 @@ def update_data(auth_token):
 def delete_data(auth_token):
     if authenticate(auth_token):
         decoded_token = decode_token(auth_token)
+
+        if decoded_token is None:
+            return {"Status": "Failure. Missing token!"}, 404
+
         user_id = decoded_token["user_id"]
         user = users_col.find_one({"id": user_id})
         notebooks = user['notebooks']

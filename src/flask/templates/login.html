@@ -41,8 +41,11 @@
           }
           return res.json()
         }).then(res => {
-          document.cookie = `testudoAuthorization=${res.data.token}`;
-          window.location.reload(true);
+          cookieStore.delete("testudoAuthorization")
+          setTimeout(() => {
+            document.cookie = `testudoAuthorization=${res.data.token}`;
+            window.location.reload(true);
+          }, 400)
         })
         .catch((error) => {
           //alert(error);
