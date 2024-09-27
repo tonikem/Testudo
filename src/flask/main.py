@@ -20,7 +20,10 @@ cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 PYCOUCH_DB_PASSWORD = os.environ['PYCOUCH_DB_PASSWORD']
-server = pycouchdb.Server(f"http://tonikem:{PYCOUCH_DB_PASSWORD}@localhost:5984/")
+server = pycouchdb.Server(f"http://admin:{PYCOUCH_DB_PASSWORD}@localhost:5984")
+
+notebooks_db = server.database("notebooks")
+users_db = server.database("users")
 
 
 def decode_token(token):
@@ -37,14 +40,23 @@ def authenticate(token):
             return False
 
         user_id = decoded_token['user_id']
-        token_date = decoded_token["date"]
-        token_date = datetime.datetime.strptime(token_date, DATE_FORMAT)
+        token_date = datetime.datetime.strptime(decoded_token["date"], DATE_FORMAT)
         datetime_now = datetime.datetime.now()
-        auth_user = users_col.find_one({"id": user_id})
-        expiration = token_date + datetime.timedelta(seconds=TOKEN_EXPIRATION_TIME)
-        return auth_user and datetime_now < expiration
-    else:
-        return False
+
+        for user in users_db.all():
+            if user['doc']['id'] is user_id:
+                print(user)
+                expiration = token_date + datetime.timedelta(seconds=TOKEN_EXPIRATION_TIME)
+                return user and datetime_now < expiration
+
+    return False
+
+
+
+auth = authenticate('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNmJjYWE2ZTYtYzMxNC00MDMzLTllNDQtYWFiYmVlZWNhNTdiIiwiZGF0ZSI6IjA5LzI1LzIwMjQsIDE4OjQ1OjMwIn0.GGZBq2ueGpM93gsMm6F7kovJQGhfZ04-fALHC3q8j4s')
+
+
+quit()
 
 
 @app.route('/')
