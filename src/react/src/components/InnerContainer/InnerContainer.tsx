@@ -9,6 +9,7 @@ import notePlus from '../../../public/note-plus.png'
 import open from '../../../public/open.png'
 import save from '../../../public/save.png'
 import trash from '../../../public/trash.png'
+import spinner from '../../../public/spinner.png'
 import './style.css'
 import { BaseURL, sendPutRequest, uuidv4, getCookie } from '../../methods/AppMethods'
 
@@ -308,37 +309,13 @@ class InnerContainer extends React.Component {
         var reader = new FileReader()
         reader.onload = function(event) {
             var data = event.target.result.split(','), decodedData = btoa(data[1])
-            
-            let cookie = getCookie("testudoAuthorization")
-
-            if (cookie === undefined) {
-                cookie = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNmJjYWE2ZTYtYzMxNC00MDMzLTllNDQtYWFiYmVlZWNhNTdiIiwiZGF0ZSI6IjA5LzI1LzIwMjQsIDE4OjQ1OjMwIn0.GGZBq2ueGpM93gsMm6F7kovJQGhfZ04-fALHC3q8j4s"
-            }
-
-            const options = {
-                method: 'POST',
-                headers: {'Access-Control-Allow-Origin': '*'},
-                body: decodedData
-            }
-            fetch(`${BaseURL}/base64/${cookie}`, options)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok')
-                }
-                return response.json()
-            })
-            .then(data => {
-                audioFiles[id] = data["result"]
-            })
-            .catch(error => {
-                console.error('There was a problem with your fetch operation:', error)
-            })
+            audioFiles[id] = decodedData
         }
         reader.readAsDataURL(file)
 
         setTimeout(() => {
             this.forceUpdate()
-        }, 2000)
+        }, 3000)
     }
 
     setSelectedValue(value: string, id: string) {
@@ -717,7 +694,7 @@ class InnerContainer extends React.Component {
                                                     {d.name}
                                                 </p>
                                                 <div className='hidden-element'>
-                                                    <audio controls="controls" autobuffer="autobuffer">
+                                                    <audio controls="controls" autobuffer="autobuffer" autoPlay="autoplay">
                                                         <source src={`data:audio/mpeg;base64,${d.payload}`} />
                                                     </audio>
                                                     <div className='text-field'></div>
@@ -806,21 +783,11 @@ class InnerContainer extends React.Component {
                 </div>
             )
         } else {
-            if (this.props.data) {
-                return (
-                    <div id="inner-container" style={this.initialStyle}>
-                        <ul className='table-list'></ul>
-                        <img className='note-plus'
-                            src={notePlus}
-                            onClick={() => this.onPlusNoteClick(this.props.data)} />
-                        <img className='open-icon'
-                            src={open}
-                            onClick={() => this.onOpenClick()} />
-                    </div>
-                )
-            } else {
-                return <div id="inner-container" style={this.initialStyle}></div>
-            }
+            return (
+                <div id="inner-container" style={this.initialStyle}>
+                    <img id="spinner" src={spinner}/>
+                </div>
+            )
         }
     }
 }

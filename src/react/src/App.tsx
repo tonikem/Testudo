@@ -277,6 +277,9 @@ function App() {
           // Asetetaan koko data
           setAllData(mainData)
         }
+      }).finally(() => {
+        const spinner = document.getElementById('spinner')
+        spinner.style.display = "none"
       })
   }, [])
 

@@ -247,17 +247,6 @@ def delete_data(auth_token):
     return {"Status": "Failure. Missing token!"}, 404
 
 
-@cross_origin()
-@app.route('/base64/<auth_token>', methods=["POST"])
-def get_base64(auth_token):
-    if authenticate(auth_token):
-        result = base64.b64decode(request.data)
-        coded = result.decode('UTF-8')
-        return {"result": coded}, 200, {"Access-Control-Allow-Origin": "*"}
-
-    return {"Status": "Failure. Missing token!"}, 404
-
-
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
 
