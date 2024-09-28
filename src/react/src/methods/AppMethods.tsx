@@ -1,4 +1,5 @@
-export const URL = "http://localhost:5000/data"
+export const BaseURL = "http://localhost:5000"
+export const URL = BaseURL + "/data"
 
 export function uuidv4() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'

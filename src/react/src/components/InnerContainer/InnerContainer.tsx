@@ -1,7 +1,7 @@
-import React from 'react';
-import { useEffect, useReducer, useRef, useState } from 'react'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { twilight } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import React from 'react'
+//import { useEffect, useReducer, useRef, useState } from 'react'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { twilight } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
 import copy from '../../../public/copy.png'
 import edit from '../../../public/edit.png'
@@ -10,7 +10,7 @@ import open from '../../../public/open.png'
 import save from '../../../public/save.png'
 import trash from '../../../public/trash.png'
 import './style.css'
-import { sendPutRequest, uuidv4 } from '../../methods/AppMethods'
+import { BaseURL, sendPutRequest, uuidv4, getCookie } from '../../methods/AppMethods'
 
 
 let audioFiles: any = {}
@@ -271,10 +271,8 @@ class InnerContainer extends React.Component {
 
     onDeleteClick(id: string) {
         if (confirm('Are you sure you want to delete this note?')) {
-            // Häivytetään elementti
-            document.getElementById(id).style.display = "none"
 
-            const allData = this.props.getAllData
+            const allData = structuredClone(this.props.getAllData)
             const items = allData.main[this.props.showActiveListIndex].items
 
             for (let i = 0; i < items.length; ++i) {
@@ -310,9 +308,37 @@ class InnerContainer extends React.Component {
         var reader = new FileReader()
         reader.onload = function(event) {
             var data = event.target.result.split(','), decodedData = btoa(data[1])
-            audioFiles[id] = decodedData
+            
+            let cookie = getCookie("testudoAuthorization")
+
+            if (cookie === undefined) {
+                cookie = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNmJjYWE2ZTYtYzMxNC00MDMzLTllNDQtYWFiYmVlZWNhNTdiIiwiZGF0ZSI6IjA5LzI1LzIwMjQsIDE4OjQ1OjMwIn0.GGZBq2ueGpM93gsMm6F7kovJQGhfZ04-fALHC3q8j4s"
+            }
+
+            const options = {
+                method: 'POST',
+                headers: {'Access-Control-Allow-Origin': '*'},
+                body: decodedData
+            }
+            fetch(`${BaseURL}/base64/${cookie}`, options)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok')
+                }
+                return response.json()
+            })
+            .then(data => {
+                audioFiles[id] = data["result"]
+            })
+            .catch(error => {
+                console.error('There was a problem with your fetch operation:', error)
+            })
         }
         reader.readAsDataURL(file)
+
+        setTimeout(() => {
+            this.forceUpdate()
+        }, 2000)
     }
 
     setSelectedValue(value: string, id: string) {
