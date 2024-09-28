@@ -148,8 +148,8 @@ function App() {
   function onMouseClick(index: any) {
     localStorage.setItem("activeList", index.toString())
     setActiveListIndex(index)
-    const allData = getAllData
-    setTableItems(allData.main[showActiveListIndex].items[i])
+    const allData = structuredClone(getAllData)
+    //setTableItems(allData.main[showActiveListIndex].items[i])
     setAllData(allData)
   }
 
@@ -163,7 +163,7 @@ function App() {
         document.getElementsByClassName("table-item")[i].remove()
       }
 
-      let allData = getAllData
+      let allData = structuredClone(getAllData)
 
       for (let i = 0; i < allData.main.length; ++i) {
         if (id == allData.main[i].id) {
@@ -182,9 +182,9 @@ function App() {
           }
           sendDeleteRequest(options)
 
-          setTableItems(allData.main[showActiveListIndex].items[i])
+          //setTableItems(allData.main[showActiveListIndex].items[i])
           setAllData(allData)
-          onMouseClick('0')
+          //onMouseClick('0')
 
           return // Poistutaan loopista
         }

@@ -32,7 +32,7 @@ const ListGroup = (props: any) => {
   }
 
   function onMouseClickAddNotebook() {
-    const allData = props.getAllData
+    const allData = structuredClone(props.getAllData)
     const name = window.prompt("Notebook name", "")
 
     if (name === null || name.trim().length === 0) {
@@ -59,7 +59,7 @@ const ListGroup = (props: any) => {
     props.setAllData(allData)
 
     // Valitaan luotu Notebook
-    props.onMouseClick("0")
+    //props.onMouseClick("0")
   }
 
   return (
