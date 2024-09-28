@@ -27,7 +27,7 @@ users_db = server.database("users")
 
 
 def decode_token(token):
-    if token == "undefined":
+    if token == "undefined" or len(token) == 0 or token is None:
         return None
     return jwt.decode(token, "SECRET_KEY_1234", algorithms=["HS256"])
 
@@ -157,7 +157,7 @@ def update_data(auth_token):
         new_notebooks_found = False
 
         if getsizeof(json_data) > MAX_DATA_SIZE:
-            return {"message": f"Content too large. Max size is {MAX_DATA_SIZE} bytes"}, 413, {"Access-Control-Allow-Origin": "*"}
+            return {"message": f"Content too large. Max size is {MAX_DATA_SIZE} bytes"}, 413
 
         decoded_token = decode_token(auth_token)
 
@@ -169,20 +169,21 @@ def update_data(auth_token):
         notebooks = user['doc']['notebooks']
 
         for notebook in data["main"]:
-            found_notebook = get_notebook_by_id(notebook['id'])
-
             if notebook['id'] not in notebooks:
                 new_notebooks_found = True
                 notebooks.insert(0, notebook['id'])
+                notebooks_db.save(notebook)
+            else:
+                found_notebook = get_notebook_by_id(notebook['id'])
+                notebook_to_be_saved = {
+                    '_id': found_notebook['doc']['_id'],
+                    '_rev': found_notebook['doc']['_rev'],
+                    'id': notebook['id'],
+                    'items': notebook['items'],
+                    'name': notebook['name']
+                }
+                notebooks_db.save(notebook_to_be_saved)
 
-            notebook_to_be_saved = {
-                '_id': found_notebook['doc']['_id'],
-                '_rev': found_notebook['doc']['_rev'],
-                'id': notebook['id'],
-                'items': notebook['items'],
-                'name': notebook['name']
-            }
-            notebooks_db.save(notebook_to_be_saved)
 
         if new_notebooks_found:
             user_to_be_saved = {
