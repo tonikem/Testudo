@@ -137,7 +137,6 @@ function App() {
           }
           sendPutRequest(options)
 
-          setTableItems(allData.main[showActiveListIndex].items[i])
           setAllData(allData)
 
           return // Poistutaan loopista
@@ -156,6 +155,8 @@ function App() {
 
   function onRemoveClick(id: any) {
     if (confirm('Are you sure you want to delete this notebook?')) {
+      const li = document.getElementById(id)
+      li.remove()
 
       // Poistetaan Notebookin osat käyttöliittymästä
       const items = document.getElementsByClassName("table-item")
@@ -219,6 +220,7 @@ function App() {
     }
     sendPutRequest(options)
 
+    setTableItems(allData.main[showActiveListIndex].items[i])
     setAllData(allData)
   }
 

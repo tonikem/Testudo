@@ -184,7 +184,6 @@ def update_data(auth_token):
                 }
                 notebooks_db.save(notebook_to_be_saved)
 
-
         if new_notebooks_found:
             user_to_be_saved = {
                 "_id": user['doc']['_id'],
@@ -211,8 +210,8 @@ def delete_data(auth_token):
             return {"Status": "Failure. Missing token!"}, 404
 
         user_id = decoded_token["user_id"]
-        user = users_col.find_one({"id": user_id})
-        notebooks = user['notebooks']
+        user = get_user_by_id(user_id)
+        notebooks = user['doc']['notebooks']
 
         data = json.loads(request.data)
         notebook_id = data['id']
@@ -221,23 +220,26 @@ def delete_data(auth_token):
         if notebook_id not in notebooks:
             return {"message": "You don't own this notebook."}, 401
 
-        # Poistetaan notebook
-        notebooks_col.delete_one({'id': notebook_id})
+        found_notebook = get_notebook_by_id(notebook_id)
+
+        # Poistetaan notebook tietokannasta
+        notebook_to_be_deleted = {
+            '_id': found_notebook['doc']['_id']
+        }
+        notebooks_db.delete(notebook_to_be_deleted)
 
         # poistetaan notebook id käyttäjältä
         notebooks.remove(notebook_id)
 
-        new_user = {
-            "id": user["id"],
-            "name": user["name"],
-            "password": user["password"],
-            "tokens": user["tokens"],
+        user_to_be_saved = {
+            "_id": user['doc']['_id'],
+            '_rev': user['doc']['_rev'],
+            "id": user['doc']['id'],
+            "name": user['doc']['name'],
+            "password": user['doc']['password'],
             "notebooks": notebooks
         }
-
-        query_filter = {'id': user['id']}
-        update_operation = {'$set': new_user}
-        users_col.update_one(query_filter, update_operation)
+        users_db.save(user_to_be_saved)
 
         return {"message": "Deleted notebook."}, 200, {"Access-Control-Allow-Origin": "*"}
 
