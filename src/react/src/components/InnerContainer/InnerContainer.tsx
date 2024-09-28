@@ -783,11 +783,25 @@ class InnerContainer extends React.Component {
                 </div>
             )
         } else {
-            return (
-                <div id="inner-container" style={this.initialStyle}>
-                    <img id="spinner" src={spinner}/>
-                </div>
-            )
+            if (this.props.data) {
+                return (
+                    <div id="inner-container" style={this.initialStyle}>
+                        <img id="spinner" src={spinner}/>
+
+                        <ul className='table-list'></ul>
+                        <img className='note-plus'
+                            src={notePlus}
+                            onClick={() => this.onPlusNoteClick(this.props.data)} />
+                        <img className='open-icon'
+                            src={open}
+                            onClick={() => this.onOpenClick()} />
+                    </div>
+                )
+            } else {
+                return <div id="inner-container" style={this.initialStyle}>
+                <img id="spinner" src={spinner}/>
+            </div>
+            }
         }
     }
 }

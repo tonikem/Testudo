@@ -260,6 +260,9 @@ function App() {
   }
 
   useEffect(() => {
+    const spinner = document.getElementById('spinner')
+    spinner.style.display = "block"
+
     let cookie = getCookie("testudoAuthorization")
 
     if (cookie === undefined) {
@@ -278,7 +281,6 @@ function App() {
           setAllData(mainData)
         }
       }).finally(() => {
-        const spinner = document.getElementById('spinner')
         spinner.style.display = "none"
       })
   }, [])

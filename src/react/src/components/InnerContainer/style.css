@@ -211,6 +211,9 @@
 }
 
 #spinner {
+    display: none;
+    margin-left: auto;
+    margin-right: auto;
     animation-name: spin;
     animation-duration: 4000ms;
     animation-iteration-count: infinite;
