@@ -155,8 +155,8 @@ function App() {
 
   function onRemoveClick(id: any) {
     if (confirm('Are you sure you want to delete this notebook?')) {
-      const li = document.getElementById(id)
-      li.remove()
+      // Häivytetään elementti
+      document.getElementById(id).style.display = "none"
 
       // Poistetaan Notebookin osat käyttöliittymästä
       const items = document.getElementsByClassName("table-item")
@@ -183,6 +183,7 @@ function App() {
           }
           sendDeleteRequest(options)
 
+          setTableItems(allData.main.items)
           setAllData(allData)
 
           return // Poistutaan loopista
@@ -220,13 +221,15 @@ function App() {
     }
     sendPutRequest(options)
 
-    setTableItems(allData.main[showActiveListIndex].items[i])
+    setTableItems(allData.main.items)
     setAllData(allData)
   }
 
   function onClickTrashIcon(notebookId: string, id: string) {
     if (confirm('Are you sure you want to delete this folder?')) {
-      //document.getElementById(id).remove()
+      // Häivytetään elementti
+      document.getElementById(id).style.display = "none"
+      
       let allData = getAllData
 
       for (let i = 0; i < allData.main.length; ++i) {
@@ -286,7 +289,8 @@ function App() {
       <Panel>
         <ListGroup setAllData={setAllData}
                   getAllData={getAllData}
-                  onMouseClick={onMouseClick}>
+                  onMouseClick={onMouseClick}
+                  setTableItems={setTableItems}>
           {
             getAllData.main.map(function (data: any, index: any) {
               if (data && data.items) {

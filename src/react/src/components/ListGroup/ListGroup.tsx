@@ -57,6 +57,9 @@ const ListGroup = (props: any) => {
     sendPutRequest(options)
 
     props.setAllData(allData)
+
+    // Valitaan luotu Notebook
+    props.onMouseClick("0")
   }
 
   return (

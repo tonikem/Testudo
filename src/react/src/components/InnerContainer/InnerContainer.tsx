@@ -271,6 +271,9 @@ class InnerContainer extends React.Component {
 
     onDeleteClick(id: string) {
         if (confirm('Are you sure you want to delete this note?')) {
+            // Häivytetään elementti
+            document.getElementById(id).style.display = "none"
+
             const allData = this.props.getAllData
             const items = allData.main[this.props.showActiveListIndex].items
 
