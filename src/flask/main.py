@@ -72,12 +72,6 @@ def authenticate(token):
     return False
 
 
-def update_notebook(id, json):
-    doc = get_notebook_by_id(id)
-    doc["firstName"] = json["firstName"]
-    doc = notebooks_db.save(doc)
-
-
 @app.route('/')
 def index():
     if request.cookies:
@@ -99,10 +93,10 @@ def test_json(auth_token):
             return {"Status": "Failure. Missing token!"}, 404
 
         user_id = decoded_token["user_id"]
-        user = get_user_by_id(user_id)  # users_col.find_one({"id": user_id})
+        user = get_user_by_id(user_id)
 
         for notebook_id in user['doc']["notebooks"]:
-            notebook = get_notebook_by_id(notebook_id)  # notebooks_col.find_one({"id": notebook_id})
+            notebook = get_notebook_by_id(notebook_id)
             if notebook:
                 collected_notebook = {
                     "id": notebook['doc']["id"],
@@ -129,7 +123,7 @@ def login_to_user():
         username = data["username"]
         password = data["password"]
 
-        user = get_user_by_name(username)  # users_col.find_one({'name': username})
+        user = get_user_by_name(username)
 
         if user is None:
             return {"Status": "Failure. User not found!"}, 404
@@ -160,6 +154,7 @@ def update_data(auth_token):
     if authenticate(auth_token):
         data = json.loads(request.data)
         json_data = json.dumps(data, indent=4)
+        new_notebooks_found = False
 
         if getsizeof(json_data) > MAX_DATA_SIZE:
             return {"message": f"Content too large. Max size is {MAX_DATA_SIZE} bytes"}, 413, {"Access-Control-Allow-Origin": "*"}
@@ -170,25 +165,35 @@ def update_data(auth_token):
             return {"Status": "Failure. Missing token!"}, 404
 
         user_id = decoded_token["user_id"]
-        user = get_user_by_id(user_id)  # users_col.find_one({"id": user_id})
+        user = get_user_by_id(user_id)
         notebooks = user['doc']['notebooks']
 
         for notebook in data["main"]:
-            found_notebook = get_notebook_by_id(notebook['id'])  # notebooks_col.find_one(query_filter)
-            notebook['_id'] = found_notebook['doc']['_id']
+            found_notebook = get_notebook_by_id(notebook['id'])
 
             if notebook['id'] not in notebooks:
+                new_notebooks_found = True
                 notebooks.insert(0, notebook['id'])
 
-        user_to_be_saved = {
-            "_id": user['doc']['_id'],
-            '_rev': user['doc']['_rev'],
-            "id": user['doc']['id'],
-            "name": user['doc']['name'],
-            "password": user['doc']['password'],
-            "notebooks": notebooks
-        }
-        users_db.save(user_to_be_saved)
+            notebook_to_be_saved = {
+                '_id': found_notebook['doc']['_id'],
+                '_rev': found_notebook['doc']['_rev'],
+                'id': notebook['id'],
+                'items': notebook['items'],
+                'name': notebook['name']
+            }
+            notebooks_db.save(notebook_to_be_saved)
+
+        if new_notebooks_found:
+            user_to_be_saved = {
+                "_id": user['doc']['_id'],
+                '_rev': user['doc']['_rev'],
+                "id": user['doc']['id'],
+                "name": user['doc']['name'],
+                "password": user['doc']['password'],
+                "notebooks": notebooks
+            }
+            users_db.save(user_to_be_saved)
 
         return {"message": "Success"}, 200, {"Access-Control-Allow-Origin": "*"}
     else:
