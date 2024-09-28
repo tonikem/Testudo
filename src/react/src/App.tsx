@@ -149,14 +149,13 @@ function App() {
     localStorage.setItem("activeList", index.toString())
     setActiveListIndex(index)
     const allData = getAllData
-    setTableItems(allData.main.items)
+    setTableItems(allData.main[showActiveListIndex].items[i])
     setAllData(allData)
   }
 
   function onRemoveClick(id: any) {
     if (confirm('Are you sure you want to delete this notebook?')) {
       // Häivytetään elementti
-      document.getElementById(id).style.display = "none"
 
       // Poistetaan Notebookin osat käyttöliittymästä
       const items = document.getElementsByClassName("table-item")
@@ -183,8 +182,9 @@ function App() {
           }
           sendDeleteRequest(options)
 
-          setTableItems(allData.main.items)
+          setTableItems(allData.main[showActiveListIndex].items[i])
           setAllData(allData)
+          onMouseClick('0')
 
           return // Poistutaan loopista
         }
