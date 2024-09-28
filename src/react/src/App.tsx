@@ -148,14 +148,14 @@ function App() {
   function onMouseClick(index: any) {
     localStorage.setItem("activeList", index.toString())
     setActiveListIndex(index)
+
     const allData = structuredClone(getAllData)
-    //setTableItems(allData.main[showActiveListIndex].items[i])
+
     setAllData(allData)
   }
 
   function onRemoveClick(id: any) {
     if (confirm('Are you sure you want to delete this notebook?')) {
-      // Häivytetään elementti
 
       // Poistetaan Notebookin osat käyttöliittymästä
       const items = document.getElementsByClassName("table-item")
@@ -182,9 +182,7 @@ function App() {
           }
           sendDeleteRequest(options)
 
-          //setTableItems(allData.main[showActiveListIndex].items[i])
           setAllData(allData)
-          //onMouseClick('0')
 
           return // Poistutaan loopista
         }
@@ -193,7 +191,7 @@ function App() {
   }
 
   function onAddClick(id: any) {
-    let allData = getAllData
+    let allData = structuredClone(getAllData)
 
     allData.main.forEach(notebook => {
       if (id == notebook.id) {
@@ -221,7 +219,6 @@ function App() {
     }
     sendPutRequest(options)
 
-    setTableItems(allData.main.items)
     setAllData(allData)
   }
 
@@ -230,7 +227,7 @@ function App() {
       // Häivytetään elementti
       document.getElementById(id).style.display = "none"
       
-      let allData = getAllData
+      let allData = structuredClone(getAllData)
 
       for (let i = 0; i < allData.main.length; ++i) {
         if (notebookId == allData.main[i].id) {
