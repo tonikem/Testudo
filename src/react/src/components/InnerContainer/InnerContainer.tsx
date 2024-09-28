@@ -476,6 +476,26 @@ class InnerContainer extends React.Component {
         }
     }
 
+    componentDidUpdate() {
+        // Asetetaan kaikki audio tiedostot
+        const audioElements = document.getElementsByTagName('audio')
+
+        let cookie = getCookie("testudoAuthorization")
+
+        if (cookie === undefined) {
+          cookie = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNmJjYWE2ZTYtYzMxNC00MDMzLTllNDQtYWFiYmVlZWNhNTdiIiwiZGF0ZSI6IjA5LzI1LzIwMjQsIDE4OjQ1OjMwIn0.GGZBq2ueGpM93gsMm6F7kovJQGhfZ04-fALHC3q8j4s"
+        }
+        
+        for (let i = 0; i < audioElements.length; ++i) {
+            const data = audioElements[i].getElementsByClassName('data')[0]
+            const uuid = data.getAttribute('data-uuid')
+            
+            const source = document.createElement("source")
+            source.src = `${BaseURL}/files/${cookie}/${uuid}`
+            audioElements[i].appendChild(source)
+        }
+    }
+
     render() {
         if (this.props.data && this.props.data.content) {
             return (
@@ -695,9 +715,7 @@ class InnerContainer extends React.Component {
                                                 </p>
                                                 <div className='hidden-element'>
                                                     <audio controls="controls" autobuffer="autobuffer">
-                                                        <source src={
-                                                            "http://localhost:5000/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNmJjYWE2ZTYtYzMxNC00MDMzLTllNDQtYWFiYmVlZWNhNTdiIiwiZGF0ZSI6IjA5LzI1LzIwMjQsIDE4OjQ1OjMwIn0.GGZBq2ueGpM93gsMm6F7kovJQGhfZ04-fALHC3q8j4s/a0922723-c9d2-4288-8c45-217a3bc2fa4b"
-                                                        } />
+                                                        <div className='data' data-uuid={d.payload}/>
                                                     </audio>
                                                     <div className='text-field'></div>
                                                 </div>

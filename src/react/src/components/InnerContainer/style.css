@@ -210,6 +210,12 @@
     flex-direction: column;
 }
 
+audio {
+    margin-top: 16px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 #spinner {
     display: none;
     margin-left: auto;
