@@ -9,6 +9,6 @@ def get_hashed_password(plain_text_password):
 
 
 def check_password(plain_text_password, hashed_password):
-    return bcrypt.checkpw(plain_text_password.encode('UTF-8'), hashed_password)
+    return bcrypt.checkpw(plain_text_password.encode('UTF-8'), bytes(hashed_password, 'UTF-8'))
 
 

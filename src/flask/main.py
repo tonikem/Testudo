@@ -41,7 +41,7 @@ def get_user_by_id(user_id):
 
 def get_user_by_name(username):
     for user in users_db.all():
-        if user['doc']['username'] == username:
+        if user['doc']['name'] == username:
             return user
     return None
 
@@ -76,8 +76,6 @@ def update_notebook(id, json):
     doc = get_notebook_by_id(id)
     doc["firstName"] = json["firstName"]
     doc = notebooks_db.save(doc)
-    print(doc['_id'], doc['_rev'])
-    print("Saved!")
 
 
 @app.route('/')
@@ -103,13 +101,13 @@ def test_json(auth_token):
         user_id = decoded_token["user_id"]
         user = get_user_by_id(user_id)  # users_col.find_one({"id": user_id})
 
-        for notebook_id in user["notebooks"]:
+        for notebook_id in user['doc']["notebooks"]:
             notebook = get_notebook_by_id(notebook_id)  # notebooks_col.find_one({"id": notebook_id})
             if notebook:
                 collected_notebook = {
-                    "id": notebook["id"],
-                    "name": notebook["name"],
-                    "items": notebook["items"]
+                    "id": notebook['doc']["id"],
+                    "name": notebook['doc']["name"],
+                    "items": notebook['doc']["items"]
                 }
                 collected_notebooks.append(collected_notebook)
 
@@ -132,13 +130,12 @@ def login_to_user():
         password = data["password"]
 
         user = get_user_by_name(username)  # users_col.find_one({'name': username})
-        print(user)
 
         if user is None:
             return {"Status": "Failure. User not found!"}, 404
 
-        hashed_password = user['password']
-        user_id = user["id"]
+        hashed_password = user['doc']['password']
+        user_id = user['doc']["id"]
 
         if check_password(password, hashed_password):
             token_date = datetime.datetime.now().strftime(DATE_FORMAT)
@@ -167,8 +164,6 @@ def update_data(auth_token):
         if getsizeof(json_data) > MAX_DATA_SIZE:
             return {"message": f"Content too large. Max size is {MAX_DATA_SIZE} bytes"}, 413, {"Access-Control-Allow-Origin": "*"}
 
-        # Etsitään käyttäjä
-        luotu_uusi_notebook = False
         decoded_token = decode_token(auth_token)
 
         if decoded_token is None:
@@ -176,34 +171,24 @@ def update_data(auth_token):
 
         user_id = decoded_token["user_id"]
         user = get_user_by_id(user_id)  # users_col.find_one({"id": user_id})
-        notebooks = user['notebooks']
+        notebooks = user['doc']['notebooks']
 
-        for obj in data["main"]:
-            # query_filter = {'id': obj['id']}
-            notebook = get_notebook_by_id(obj['id'])  # notebooks_col.find_one(query_filter)
+        for notebook in data["main"]:
+            found_notebook = get_notebook_by_id(notebook['id'])  # notebooks_col.find_one(query_filter)
+            notebook['_id'] = found_notebook['doc']['_id']
 
-            if notebook:
-                # notebooks_col.update_one(query_filter, update_operation
-                pass
-            else:
-                # notebooks_col.insert_one(obj)
-                pass
+            if notebook['id'] not in notebooks:
+                notebooks.insert(0, notebook['id'])
 
-            if obj['id'] not in notebooks:
-                luotu_uusi_notebook = True
-                notebooks.insert(0, obj['id'])
-
-        if luotu_uusi_notebook:
-            new_user = {
-                "id": user["id"],
-                "name": user["name"],
-                "password": user["password"],
-                "tokens": user["tokens"],
-                "notebooks": notebooks
-            }
-            query_filter = {'id': user['id']}
-            update_operation = {'$set': new_user}
-            users_col.update_one(query_filter, update_operation)
+        user_to_be_saved = {
+            "_id": user['doc']['_id'],
+            '_rev': user['doc']['_rev'],
+            "id": user['doc']['id'],
+            "name": user['doc']['name'],
+            "password": user['doc']['password'],
+            "notebooks": notebooks
+        }
+        users_db.save(user_to_be_saved)
 
         return {"message": "Success"}, 200, {"Access-Control-Allow-Origin": "*"}
     else:
