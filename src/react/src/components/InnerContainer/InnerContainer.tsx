@@ -694,8 +694,10 @@ class InnerContainer extends React.Component {
                                                     {d.name}
                                                 </p>
                                                 <div className='hidden-element'>
-                                                    <audio controls="controls" autobuffer="autobuffer" autoPlay="autoplay">
-                                                        <source src={`data:audio/mpeg;base64,${d.payload}`} />
+                                                    <audio controls="controls" autobuffer="autobuffer">
+                                                        <source src={
+                                                            "http://localhost:5000/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNmJjYWE2ZTYtYzMxNC00MDMzLTllNDQtYWFiYmVlZWNhNTdiIiwiZGF0ZSI6IjA5LzI1LzIwMjQsIDE4OjQ1OjMwIn0.GGZBq2ueGpM93gsMm6F7kovJQGhfZ04-fALHC3q8j4s/a0922723-c9d2-4288-8c45-217a3bc2fa4b"
+                                                        } />
                                                     </audio>
                                                     <div className='text-field'></div>
                                                 </div>

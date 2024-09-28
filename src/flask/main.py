@@ -4,9 +4,9 @@ import base64
 import json
 import datetime
 import pycouchdb
-from string_utils.validation import is_url
+from string_utils.validation import is_url, is_uuid
 from sys import getsizeof
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, send_file
 from flask_cors import CORS, cross_origin
 from flask_restful import Resource, Api
 from functions import check_password
@@ -81,6 +81,14 @@ def index():
             return render_template("index.html")
 
     return render_template('login.html')
+
+
+@app.route('/files/<auth_token>/<filename>')
+def files(auth_token, filename):
+    if authenticate(auth_token) and is_uuid(filename):
+        return send_file(f"./files/{filename}.mp3", as_attachment=True)
+
+    return {"Status": "Failure. Missing token!"}, 404
 
 
 @cross_origin()

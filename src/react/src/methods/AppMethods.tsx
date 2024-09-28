@@ -1,5 +1,5 @@
 export const BaseURL = "http://localhost:5000"
-export const URL = BaseURL + "/data"
+export const DataURL = BaseURL + "/data"
 
 export function uuidv4() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
@@ -48,7 +48,7 @@ export function sendPutRequest(options: any) {
         cookie = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNmJjYWE2ZTYtYzMxNC00MDMzLTllNDQtYWFiYmVlZWNhNTdiIiwiZGF0ZSI6IjA5LzI1LzIwMjQsIDE4OjQ1OjMwIn0.GGZBq2ueGpM93gsMm6F7kovJQGhfZ04-fALHC3q8j4s"
     }
 
-    fetch(`${URL}/${cookie}`, options)
+    fetch(`${DataURL}/${cookie}`, options)
     .then(response => {
         if (response.status == 413) {
             alert("Data takes more memory than 6GB. Disable Notebooks or delete items.")
@@ -74,7 +74,7 @@ export function sendDeleteRequest(options: any) {
         cookie = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNmJjYWE2ZTYtYzMxNC00MDMzLTllNDQtYWFiYmVlZWNhNTdiIiwiZGF0ZSI6IjA5LzI1LzIwMjQsIDE4OjQ1OjMwIn0.GGZBq2ueGpM93gsMm6F7kovJQGhfZ04-fALHC3q8j4s"
     }
 
-    fetch(`${URL}/${cookie}`, options)
+    fetch(`${DataURL}/${cookie}`, options)
     .then(response => {
         if (!response.ok) {
             throw new Error('Network response was not ok')
