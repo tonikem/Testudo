@@ -65,6 +65,10 @@
     width: calc(100% - 220px);
 }
 
+.audio-submit {
+    width: 200px;
+}
+
 .item-name {
     width: calc(100% - 220px);
     font-size: 18px;

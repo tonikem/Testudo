@@ -312,6 +312,8 @@ class InnerContainer extends React.Component {
     }
 
     onChangeFile(event: any, id: string) {
+        console.log(event)
+        
         const input = event.target
 
         const reader = new FileReader()
@@ -417,6 +419,7 @@ class InnerContainer extends React.Component {
                 input.style.width = "calc(100% - 220px)"
                 input.classList.add("payload-input")
                 input.style.display = "block"
+                input.addEventListener("change", (e: any) => {this.onChangeFile(e, id)})
                 break;
             default:
                 if (codeStyle) {
@@ -732,11 +735,11 @@ class InnerContainer extends React.Component {
                                                     <input className='title-input'
                                                         type="text"
                                                         defaultValue={d.name} />
-                                                    <div onChange={(e) => this.onChangeFile(e, d.id)}>
-                                                        <input className='payload-input'
+
+                                                    <input className='payload-input'
                                                         style={{display: 'none'}}
-                                                        type="file" />
-                                                    </div>
+                                                        type="file"
+                                                        onChange={(e) => this.onChangeFile(e, d.id)}/>
                                                 </div>
 
                                                 <p className='item-name'>
@@ -750,10 +753,7 @@ class InnerContainer extends React.Component {
                                                 </div>
                                                 <img className='save-icon'
                                                     src={save}
-                                                    onClick={() => {
-                                                        this.endEditing(d)
-                                                        this.forceUpdate()
-                                                    }} />
+                                                    onClick={() => this.endEditing(d)} />
                                             </li>
                                         )
                                     default:
