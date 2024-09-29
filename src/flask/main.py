@@ -105,7 +105,7 @@ def get_files(auth_token, filename):
 @cross_origin()
 @app.route('/files/<auth_token>/<filename>', methods=["POST"])
 def save_file(auth_token, filename):
-    if authenticate(auth_token):
+    if authenticate(auth_token) and is_full_string(filename) and filename != 'undefined':
         decoded_token = decode_token(auth_token)
 
         if decoded_token is None:
@@ -123,7 +123,21 @@ def save_file(auth_token, filename):
 
         return {"message": "Successfully saved a file"}, 200, {"Access-Control-Allow-Origin": "*"}
 
-    return {"Status": "Failure. Missing token!"}, 404
+    return {"Status": "Failure. Missing token or filename!"}, 404
+
+
+@cross_origin()
+@app.route('/files/<auth_token>/<filename>')
+def delete_files(auth_token, filename):
+    if authenticate(auth_token) and is_full_string(filename) and filename != 'undefined':
+        decoded_token = decode_token(auth_token)
+
+        if decoded_token is None:
+            return {"Status": "Failure. Missing token!"}, 404
+
+        user_id = decoded_token["user_id"]
+
+    return {"Status": "Failure. Missing token or filename!"}, 404
 
 
 @cross_origin()
