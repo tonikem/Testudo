@@ -1,7 +1,7 @@
 import os
 import jwt
-import base64
 import json
+# import pyclamd
 import datetime
 import pycouchdb
 from string_utils.validation import is_url, is_string
@@ -15,6 +15,7 @@ from functions import check_password
 DATE_FORMAT = "%m/%d/%Y, %H:%M:%S"
 TOKEN_EXPIRATION_TIME = 2630750  # 86400  # <- 1 päivä
 MAX_DATA_SIZE = 6000000000  # 6GB
+MAX_AUDIO_SIZE = 1000000000  # 2GB
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -25,6 +26,9 @@ server = pycouchdb.Server(f"http://admin:{PYCOUCH_DB_PASSWORD}@localhost:5984")
 
 notebooks_db = server.database("notebooks")
 users_db = server.database("users")
+
+# clam = pyclamd.ClamdAgnostic()
+
 
 
 def decode_token(token):
@@ -96,8 +100,13 @@ def files(auth_token, filename):
 def save_file(auth_token, filename):
     if authenticate(auth_token):
 
-        with open(f'./files/{filename}', "wb") as file:
-            file.write(request.data)
+        if getsizeof(request.data) > MAX_AUDIO_SIZE:
+            return {"message": f"Content too large. Max size is {MAX_AUDIO_SIZE} bytes"}, 413
+
+        file = f'./files/{filename}'
+
+        with open(file, "wb") as f:
+            f.write(request.data)
 
         return {"message": "Successfully saved a file"}, 200, {"Access-Control-Allow-Origin": "*"}
 

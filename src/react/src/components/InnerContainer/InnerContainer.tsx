@@ -225,7 +225,6 @@ class InnerContainer extends React.Component {
                         // Asetetaan uudet listan jäsenet
                         this.props.setTableItems(allData.main[this.props.showActiveListIndex].items[i])
                         this.props.setAllData(allData)
-                        this.forceUpdate()
 
                         // Sitten palautetaan elementti ennalleen ->
                         const saveButton = li.getElementsByClassName('save-icon')[0]
@@ -307,7 +306,6 @@ class InnerContainer extends React.Component {
     onChangeFile(e: any, id: string) {
         const file = e.target.files[0]
         const name = file.name.replace(/\s/g, '')
-        console.log(name)
 
         localStorage.setItem(`audio-${id}`, name)
 
@@ -321,12 +319,12 @@ class InnerContainer extends React.Component {
 
         if (cookie === undefined) {
             cookie = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNmJjYWE2ZTYtYzMxNC00MDMzLTllNDQtYWFiYmVlZWNhNTdiIiwiZGF0ZSI6IjA5LzI1LzIwMjQsIDE4OjQ1OjMwIn0.GGZBq2ueGpM93gsMm6F7kovJQGhfZ04-fALHC3q8j4s"
-        }    
-        
+        }
+
         fetch(`${BaseURL}/files/${cookie}/${name}`, options)
             .then(response => {
                 if (response.status == 413) {
-                    alert("Data takes more memory than 6GB. Disable Notebooks or delete items.")
+                    alert("Data takes more memory than 1GB!")
                     location.reload()
                 }
                 if (!response.ok) {
@@ -507,16 +505,17 @@ class InnerContainer extends React.Component {
         let cookie = getCookie("testudoAuthorization")
 
         if (cookie === undefined) {
-          cookie = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNmJjYWE2ZTYtYzMxNC00MDMzLTllNDQtYWFiYmVlZWNhNTdiIiwiZGF0ZSI6IjA5LzI1LzIwMjQsIDE4OjQ1OjMwIn0.GGZBq2ueGpM93gsMm6F7kovJQGhfZ04-fALHC3q8j4s"
+            cookie = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNmJjYWE2ZTYtYzMxNC00MDMzLTllNDQtYWFiYmVlZWNhNTdiIiwiZGF0ZSI6IjA5LzI1LzIwMjQsIDE4OjQ1OjMwIn0.GGZBq2ueGpM93gsMm6F7kovJQGhfZ04-fALHC3q8j4s"
         }
-        
+
         for (let i = 0; i < audioElements.length; ++i) {
             const data = audioElements[i].getElementsByClassName('data')[0]
-            const uuid = data.getAttribute('data-uuid')
-            
+            const name = data.getAttribute('data-name')
+
             const source = document.createElement("source")
-            source.src = `${BaseURL}/files/${cookie}/${uuid}`
+            source.src = `${BaseURL}/files/${cookie}/${name}`
             audioElements[i].appendChild(source)
+            console.log(name)
         }
     }
 
@@ -733,7 +732,7 @@ class InnerContainer extends React.Component {
                                                     <input className='payload-input'
                                                         style={{ display: "none" }}
                                                         type="file"
-                                                        onChange={e => this.onChangeFile(e, d.id)}/>
+                                                        onChange={e => this.onChangeFile(e, d.id)} />
                                                 </div>
 
                                                 <p className='item-name'>
@@ -741,7 +740,7 @@ class InnerContainer extends React.Component {
                                                 </p>
                                                 <div className='hidden-element'>
                                                     <audio controls="controls" autobuffer="autobuffer">
-                                                        <div className='data' data-uuid={d.payload}/>
+                                                        <div className='data' data-name={d.payload} />
                                                     </audio>
                                                     <div className='text-field'></div>
                                                 </div>
@@ -832,7 +831,7 @@ class InnerContainer extends React.Component {
             if (this.props.data) {
                 return (
                     <div id="inner-container" style={this.initialStyle}>
-                        <img id="spinner" src={spinner}/>
+                        <img id="spinner" src={spinner} />
 
                         <ul className='table-list'></ul>
                         <img className='note-plus'
@@ -845,8 +844,8 @@ class InnerContainer extends React.Component {
                 )
             } else {
                 return <div id="inner-container" style={this.initialStyle}>
-                <img id="spinner" src={spinner}/>
-            </div>
+                    <img id="spinner" src={spinner} />
+                </div>
             }
         }
     }
