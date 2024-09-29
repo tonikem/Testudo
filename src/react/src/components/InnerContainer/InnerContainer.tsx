@@ -187,7 +187,7 @@ class InnerContainer extends React.Component {
         data.name = titleInput.value
         data.type = selector.value
 
-        if (payloadInput.type == "file") {
+        if (payloadInput.type === "file") {
             data.payload = audioFiles[data.id]
         } else {
             data.payload = payloadInput.value
@@ -226,6 +226,7 @@ class InnerContainer extends React.Component {
                         // Asetetaan uudet listan jäsenet
                         this.props.setTableItems(allData.main[this.props.showActiveListIndex].items[i])
                         this.props.setAllData(allData)
+                        this.forceUpdate()
 
                         // Sitten palautetaan elementti ennalleen ->
                         const saveButton = li.getElementsByClassName('save-icon')[0]
@@ -259,10 +260,13 @@ class InnerContainer extends React.Component {
                             itemPayload.style.display = "block"
                         }
 
-                        li.getElementsByClassName("hidden-element")[0].style.display = "flex"
+                        li.getElementsByClassName("hidden-element")[0].style.display = "block"
                         li.style.height = "auto"
                         li.getElementsByClassName("arrow")[0].style.transform = "rotate(45deg)"
                         this.arrowBooleans[data.id] = true
+
+                        const audio = li.getElementsByClassName("hidden-element")[0].getElementsByClassName('audio')[0]
+                        audio.style.display = "block"
 
                         return // Lopetetaan looppaaminen
                     }
@@ -343,9 +347,6 @@ class InnerContainer extends React.Component {
             audioFiles[id] = name
         }
         reader.readAsArrayBuffer(input.files[0])
-        setTimeout(() => {
-            this.forceUpdate()
-          }, 1000)
     }
 
     setSelectedValue(value: string, id: string) {
@@ -726,7 +727,7 @@ class InnerContainer extends React.Component {
                                                     {d.name}
                                                 </p>
                                                 <div className='hidden-element'>
-                                                    <audio controls="controls" autobuffer="autobuffer">
+                                                    <audio className='audio' controls="controls" autobuffer="autobuffer">
                                                         <source src={`${BaseURL}/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNmJjYWE2ZTYtYzMxNC00MDMzLTllNDQtYWFiYmVlZWNhNTdiIiwiZGF0ZSI6IjA5LzI1LzIwMjQsIDE4OjQ1OjMwIn0.GGZBq2ueGpM93gsMm6F7kovJQGhfZ04-fALHC3q8j4s/Nicki Minaj - Anaconda.mp3`}/>
                                                     </audio>
                                                     <div className='text-field'></div>

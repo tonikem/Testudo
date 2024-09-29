@@ -210,10 +210,10 @@
     flex-direction: column;
 }
 
-audio {
+.audio {
     margin-top: 16px;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 10px;
+    width: calc(100% - 100px);
 }
 
 #spinner {
