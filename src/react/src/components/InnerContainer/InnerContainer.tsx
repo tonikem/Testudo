@@ -22,7 +22,8 @@ class InnerContainer extends React.Component {
         super(props);
         this.state = {
             dragNote: 0,
-            dragOverNote: 0
+            dragOverNote: 0,
+            file: {}
         }
     }
     arrowBooleans: any = {}
@@ -187,7 +188,7 @@ class InnerContainer extends React.Component {
         data.type = selector.value
 
         if (payloadInput.type == "file") {
-            data.payload = localStorage.getItem(`audio-${data.id}`)
+            data.payload = audioFiles[data.id]
         } else {
             data.payload = payloadInput.value
         }
@@ -303,41 +304,14 @@ class InnerContainer extends React.Component {
         }
     }
 
-    onChangeFile(e: any, id: string) {
-        const file = e.target.files[0]
-        const name = file.name.replace(/\s/g, '')
-
-        localStorage.setItem(`audio-${id}`, name)
-
-        const options = {
-            method: 'POST',
-            headers: {},
-            body: file
-        }
-
-        let cookie = getCookie("testudoAuthorization")
-
-        if (cookie === undefined) {
-            cookie = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNmJjYWE2ZTYtYzMxNC00MDMzLTllNDQtYWFiYmVlZWNhNTdiIiwiZGF0ZSI6IjA5LzI1LzIwMjQsIDE4OjQ1OjMwIn0.GGZBq2ueGpM93gsMm6F7kovJQGhfZ04-fALHC3q8j4s"
-        }
-
-        fetch(`${BaseURL}/files/${cookie}/${name}`, options)
-            .then(response => {
-                if (response.status == 413) {
-                    alert("Data takes more memory than 1GB!")
-                    location.reload()
-                }
-                if (!response.ok) {
-                    throw new Error('Network response was not ok')
-                }
-                return response.json()
-            })
-            .then(data => {
-                console.log('File saved successfully:', data)
-            })
-            .catch(error => {
-                console.error('There was a problem with your fetch operation:', error)
-            })
+    onChangeFile(event: any, id: string) {
+        var input = event.target
+        var reader = new FileReader()
+        reader.onload = function () {
+            var binary = reader.result
+            audioFiles[id] = binary
+        };
+        reader.readAsText(input.files[0])
     }
 
     setSelectedValue(value: string, id: string) {
@@ -495,27 +469,6 @@ class InnerContainer extends React.Component {
 
             listItems[i].getElementsByClassName("hidden-element")[0].style.display = "flex"
             listItems[i].style.height = "auto"
-        }
-    }
-
-    componentDidUpdate() {
-        // Asetetaan kaikki audio tiedostot
-        const audioElements = document.getElementsByTagName('audio')
-
-        let cookie = getCookie("testudoAuthorization")
-
-        if (cookie === undefined) {
-            cookie = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNmJjYWE2ZTYtYzMxNC00MDMzLTllNDQtYWFiYmVlZWNhNTdiIiwiZGF0ZSI6IjA5LzI1LzIwMjQsIDE4OjQ1OjMwIn0.GGZBq2ueGpM93gsMm6F7kovJQGhfZ04-fALHC3q8j4s"
-        }
-
-        for (let i = 0; i < audioElements.length; ++i) {
-            const data = audioElements[i].getElementsByClassName('data')[0]
-            const name = data.getAttribute('data-name')
-
-            const source = document.createElement("source")
-            source.src = `${BaseURL}/files/${cookie}/${name}`
-            audioElements[i].appendChild(source)
-            console.log(name)
         }
     }
 
@@ -740,7 +693,7 @@ class InnerContainer extends React.Component {
                                                 </p>
                                                 <div className='hidden-element'>
                                                     <audio controls="controls" autobuffer="autobuffer">
-                                                        <div className='data' data-name={d.payload} />
+                                                        <source src={`data:audio/wav;base64${d.payload}`}/>
                                                     </audio>
                                                     <div className='text-field'></div>
                                                 </div>

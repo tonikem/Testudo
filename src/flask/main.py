@@ -115,7 +115,7 @@ def save_file(auth_token, filename):
 
 @cross_origin()
 @app.route('/data/<auth_token>')
-def test_json(auth_token):
+def get_data(auth_token):
     if authenticate(auth_token):
         collected_notebooks = []
         decoded_token = decode_token(auth_token)
@@ -135,6 +135,14 @@ def test_json(auth_token):
                     "items": notebook['doc']["items"]
                 }
                 collected_notebooks.append(collected_notebook)
+
+        for notebook in collected_notebooks:
+            for item in notebook['items']:
+                for note in item['content']:
+                    if note['type'] == "Audio":
+                        print(note['payload'])
+
+        quit()
 
         result = {"main": collected_notebooks}
 
