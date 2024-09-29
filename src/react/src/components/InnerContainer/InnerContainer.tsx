@@ -734,13 +734,11 @@ class InnerContainer extends React.Component {
                                                     <input className='title-input'
                                                         type="text"
                                                         defaultValue={d.name} />
-
-                                                    <input className='payload-input'
+                                                    <div onChange={(e) => this.onChangeFile(e, d.id)}>
+                                                        <input className='payload-input'
                                                         style={{display: 'none'}}
-                                                        type="file"
-                                                        onInput={(e) => this.onChangeFile(e, d.id)}
-                                                        /* onChange={(e) => console.log(e.target.value)} */
-                                                        />
+                                                        type="file" />
+                                                    </div>
                                                 </div>
 
                                                 <p className='item-name'>
