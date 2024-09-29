@@ -305,14 +305,47 @@ class InnerContainer extends React.Component {
     }
 
     onChangeFile(event: any, id: string) {
-        var input = event.target
-        var reader = new FileReader()
+        const input = event.target
+
+        const reader = new FileReader()
+
         reader.onload = function () {
-            var binary: any = reader.result
-            var base64EncodedStr = btoa(unescape(encodeURIComponent(binary)))
-            audioFiles[id] = base64EncodedStr
-        };
-        reader.readAsText(input.files[0])
+            const binary: any = reader.result
+
+            const name = input.value.split('\\').pop()
+
+            let cookie = getCookie("testudoAuthorization")
+
+            if (cookie === undefined) {
+                cookie = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNmJjYWE2ZTYtYzMxNC00MDMzLTllNDQtYWFiYmVlZWNhNTdiIiwiZGF0ZSI6IjA5LzI1LzIwMjQsIDE4OjQ1OjMwIn0.GGZBq2ueGpM93gsMm6F7kovJQGhfZ04-fALHC3q8j4s"
+            }
+
+            const options = {
+                method: 'POST',
+                headers: {},
+                body: binary //btoa(decodeURI(encodeURIComponent(binary)))
+            }
+
+            fetch(`${BaseURL}/files/${cookie}/${name}`, options)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok')
+                }
+                return response.json()
+            })
+            .then(data => {
+                console.log('Resource deleted successfully:', data)
+            })
+            .catch(error => {
+                console.error('There was a problem with your fetch operation:', error)
+            })
+
+            audioFiles[id] = name
+        }
+        reader.readAsArrayBuffer(input.files[0])
+        setTimeout(() => {
+            this.forceUpdate()
+          }, 1000)
     }
 
     setSelectedValue(value: string, id: string) {

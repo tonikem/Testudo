@@ -1,8 +1,7 @@
-import base64
 import os
 import jwt
 import json
-# import pyclamd
+import base64
 import datetime
 import pycouchdb
 from string_utils.validation import is_url, is_string
