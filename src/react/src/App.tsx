@@ -151,7 +151,7 @@ function App() {
 
     const allData = structuredClone(getAllData)
 
-    setTableItems(undefined)
+    setTableItems([])
     setAllData(allData)
   }
 

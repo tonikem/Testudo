@@ -11,7 +11,7 @@ import save from '../../../public/save.png'
 import trash from '../../../public/trash.png'
 import spinner from '../../../public/spinner.png'
 import './style.css'
-import { BaseURL, sendPutRequest, uuidv4, getCookie } from '../../methods/AppMethods'
+import { BaseURL, DataURL, sendPutRequest, uuidv4, getCookie } from '../../methods/AppMethods'
 
 
 let audioFiles: any = {}
@@ -184,11 +184,12 @@ class InnerContainer extends React.Component {
 
         // Asetetaan uudet arvot
         data.name = titleInput.value
-        data.payload = payloadInput.value
         data.type = selector.value
 
         if (payloadInput.type == "file") {
-            data.payload = audioFiles[data.id]
+            data.payload = localStorage.getItem(`audio-${data.id}`)
+        } else {
+            data.payload = payloadInput.value
         }
 
         if (codeStyle) {
@@ -305,9 +306,40 @@ class InnerContainer extends React.Component {
 
     onChangeFile(e: any, id: string) {
         const file = e.target.files[0]
-        const name = `${uuidv4()}`
-        const newFile = {file, name}
-        console.log(newFile)
+        const name = file.name.replace(/\s/g, '')
+        console.log(name)
+
+        localStorage.setItem(`audio-${id}`, name)
+
+        const options = {
+            method: 'POST',
+            headers: {},
+            body: file
+        }
+
+        let cookie = getCookie("testudoAuthorization")
+
+        if (cookie === undefined) {
+            cookie = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNmJjYWE2ZTYtYzMxNC00MDMzLTllNDQtYWFiYmVlZWNhNTdiIiwiZGF0ZSI6IjA5LzI1LzIwMjQsIDE4OjQ1OjMwIn0.GGZBq2ueGpM93gsMm6F7kovJQGhfZ04-fALHC3q8j4s"
+        }    
+        
+        fetch(`${BaseURL}/files/${cookie}/${name}`, options)
+            .then(response => {
+                if (response.status == 413) {
+                    alert("Data takes more memory than 6GB. Disable Notebooks or delete items.")
+                    location.reload()
+                }
+                if (!response.ok) {
+                    throw new Error('Network response was not ok')
+                }
+                return response.json()
+            })
+            .then(data => {
+                console.log('File saved successfully:', data)
+            })
+            .catch(error => {
+                console.error('There was a problem with your fetch operation:', error)
+            })
     }
 
     setSelectedValue(value: string, id: string) {

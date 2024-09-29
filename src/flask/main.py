@@ -4,7 +4,7 @@ import base64
 import json
 import datetime
 import pycouchdb
-from string_utils.validation import is_url, is_uuid
+from string_utils.validation import is_url, is_string
 from sys import getsizeof
 from flask import Flask, render_template, request, redirect, send_file
 from flask_cors import CORS, cross_origin
@@ -85,8 +85,21 @@ def index():
 
 @app.route('/files/<auth_token>/<filename>')
 def files(auth_token, filename):
-    if authenticate(auth_token) and is_uuid(filename):
+    if authenticate(auth_token) and is_string(filename):
         return send_file(f"./files/{filename}", as_attachment=True)
+
+    return {"Status": "Failure. Missing token!"}, 404
+
+
+@cross_origin()
+@app.route('/files/<auth_token>/<filename>', methods=["POST"])
+def save_file(auth_token, filename):
+    if authenticate(auth_token):
+
+        with open(f'./files/{filename}', "wb") as file:
+            file.write(request.data)
+
+        return {"message": "Successfully saved a file"}, 200, {"Access-Control-Allow-Origin": "*"}
 
     return {"Status": "Failure. Missing token!"}, 404
 
