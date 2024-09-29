@@ -312,8 +312,6 @@ class InnerContainer extends React.Component {
     }
 
     onChangeFile(event: any, id: string) {
-        console.log(event)
-        
         const input = event.target
 
         const reader = new FileReader()
@@ -752,7 +750,10 @@ class InnerContainer extends React.Component {
                                                 </div>
                                                 <img className='save-icon'
                                                     src={save}
-                                                    onClick={() => this.endEditing(d)} />
+                                                    onClick={() => {
+                                                        this.endEditing(d)
+                                                        this.forceUpdate()
+                                                    }} />
                                             </li>
                                         )
                                     default:
