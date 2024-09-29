@@ -188,7 +188,7 @@ class InnerContainer extends React.Component {
         data.type = selector.value
 
         if (payloadInput.type === "file") {
-            data.payload = localStorage.getItem(data.id)
+            data.payload = audioFiles[data.id]
         } else {
             data.payload = payloadInput.value
         }
@@ -309,6 +309,8 @@ class InnerContainer extends React.Component {
     }
 
     onChangeFile(event: any, id: string) {
+        console.log(event)
+        
         const input = event.target
 
         const reader = new FileReader()
@@ -339,7 +341,7 @@ class InnerContainer extends React.Component {
             })
             .then(data => {
                 console.log('File saved successfully:', data)
-                localStorage.setItem(id, name)
+                audioFiles[id] = name
             })
             .catch(error => {
                 console.error('There was a problem with your fetch operation:', error)
@@ -504,6 +506,10 @@ class InnerContainer extends React.Component {
             listItems[i].getElementsByClassName("hidden-element")[0].style.display = "flex"
             listItems[i].style.height = "auto"
         }
+    }
+
+    componentDidUpdate(prevProps: Readonly<{}>, prevState: Readonly<{}>, snapshot?: any): void {
+        console.log("Moikka!")
     }
 
     render() {
@@ -717,8 +723,9 @@ class InnerContainer extends React.Component {
                                                         defaultValue={d.name} />
 
                                                     <input className='payload-input'
+                                                        style={{display: 'none'}}
                                                         type="file"
-                                                        onChange={e => this.onChangeFile(e, d.id)} />
+                                                        onChange={(e) => {this.onChangeFile(e, d.id)}} />
                                                 </div>
 
                                                 <p className='item-name'>
