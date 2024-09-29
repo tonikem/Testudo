@@ -5,7 +5,7 @@ import base64
 import datetime
 import pycouchdb
 from pathlib import Path
-from string_utils.validation import is_url, is_string
+from string_utils.validation import is_url, is_string, is_full_string
 from sys import getsizeof
 from flask import Flask, render_template, request, redirect, send_file
 from flask_cors import CORS, cross_origin
@@ -17,6 +17,7 @@ DATE_FORMAT = "%m/%d/%Y, %H:%M:%S"
 TOKEN_EXPIRATION_TIME = 2630750  # 86400  # <- 1 päivä
 MAX_DATA_SIZE = 6000000000  # 6GB
 MAX_AUDIO_SIZE = 1000000000  # 2GB
+SECRET_KEY = "SECRET_KEY_1234"
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -27,15 +28,6 @@ server = pycouchdb.Server(f"http://admin:{PYCOUCH_DB_PASSWORD}@localhost:5984")
 
 notebooks_db = server.database("notebooks")
 users_db = server.database("users")
-
-# clam = pyclamd.ClamdAgnostic()
-
-
-
-def decode_token(token):
-    if token == "undefined" or len(token) == 0 or token is None:
-        return None
-    return jwt.decode(token, "SECRET_KEY_1234", algorithms=["HS256"])
 
 
 def get_user_by_id(user_id):
@@ -59,8 +51,14 @@ def get_notebook_by_id(notebook_id):
     return None
 
 
+def decode_token(token):
+    if is_full_string(token) and token != 'undefined':
+        return jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+    return None
+
+
 def authenticate(token):
-    if token and is_url(f"http://127.0.0.1:5000/data/{token}"):
+    if is_full_string(token) and token != 'undefined':
         decoded_token = decode_token(token)
 
         if decoded_token is None:
@@ -91,7 +89,7 @@ def index():
 @cross_origin()
 @app.route('/files/<auth_token>/<filename>')
 def get_files(auth_token, filename):
-    if authenticate(auth_token) and is_string(filename):
+    if authenticate(auth_token) and is_full_string(filename) and filename != 'undefined':
         decoded_token = decode_token(auth_token)
 
         if decoded_token is None:
