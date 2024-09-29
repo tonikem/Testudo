@@ -512,6 +512,16 @@ class InnerContainer extends React.Component {
     }
 
     componentDidUpdate(prevProps: Readonly<{}>, prevState: Readonly<{}>, snapshot?: any): void {
+        /* const payloadInputs = document.getElementsByClassName('payload-input')
+
+        for (let i = 0; i < payloadInputs.length; ++i) {
+            if (payloadInputs[i] && payloadInputs[i].type === "file") {
+                payloadInputs[i].addEventListener("change click", (event) => {
+                    console.log("Event: " + event)
+                    //this.onChangeFile(event)
+                })
+            }
+        } */
     }
 
     render() {
@@ -728,7 +738,9 @@ class InnerContainer extends React.Component {
                                                     <input className='payload-input'
                                                         style={{display: 'none'}}
                                                         type="file"
-                                                        onChange={(e) => {this.onChangeFile(e, d.id)}} />
+                                                        onInput={(e) => this.onChangeFile(e, d.id)}
+                                                        /* onChange={(e) => console.log(e.target.value)} */
+                                                        />
                                                 </div>
 
                                                 <p className='item-name'>
