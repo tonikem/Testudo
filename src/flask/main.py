@@ -1,3 +1,4 @@
+import base64
 import os
 import jwt
 import json
@@ -87,8 +88,9 @@ def index():
     return render_template('login.html')
 
 
+@cross_origin()
 @app.route('/files/<auth_token>/<filename>')
-def files(auth_token, filename):
+def get_files(auth_token, filename):
     if authenticate(auth_token) and is_string(filename):
         return send_file(f"./files/{filename}", as_attachment=True)
 
@@ -135,14 +137,6 @@ def get_data(auth_token):
                     "items": notebook['doc']["items"]
                 }
                 collected_notebooks.append(collected_notebook)
-
-        for notebook in collected_notebooks:
-            for item in notebook['items']:
-                for note in item['content']:
-                    if note['type'] == "Audio":
-                        print(note['payload'])
-
-        quit()
 
         result = {"main": collected_notebooks}
 

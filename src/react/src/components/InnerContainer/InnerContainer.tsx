@@ -308,8 +308,9 @@ class InnerContainer extends React.Component {
         var input = event.target
         var reader = new FileReader()
         reader.onload = function () {
-            var binary = reader.result
-            audioFiles[id] = binary
+            var binary: any = reader.result
+            var base64EncodedStr = btoa(unescape(encodeURIComponent(binary)))
+            audioFiles[id] = base64EncodedStr
         };
         reader.readAsText(input.files[0])
     }
@@ -693,7 +694,7 @@ class InnerContainer extends React.Component {
                                                 </p>
                                                 <div className='hidden-element'>
                                                     <audio controls="controls" autobuffer="autobuffer">
-                                                        <source src={`data:audio/wav;base64${d.payload}`}/>
+                                                        <source src={`${BaseURL}/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNmJjYWE2ZTYtYzMxNC00MDMzLTllNDQtYWFiYmVlZWNhNTdiIiwiZGF0ZSI6IjA5LzI1LzIwMjQsIDE4OjQ1OjMwIn0.GGZBq2ueGpM93gsMm6F7kovJQGhfZ04-fALHC3q8j4s/Nicki Minaj - Anaconda.mp3`}/>
                                                     </audio>
                                                     <div className='text-field'></div>
                                                 </div>
