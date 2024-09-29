@@ -188,7 +188,7 @@ class InnerContainer extends React.Component {
         data.type = selector.value
 
         if (payloadInput.type === "file") {
-            data.payload = audioFiles[data.id]
+            data.payload = localStorage.getItem(data.id)
         } else {
             data.payload = payloadInput.value
         }
@@ -326,8 +326,8 @@ class InnerContainer extends React.Component {
 
             const options = {
                 method: 'POST',
-                headers: {},
-                body: binary //btoa(decodeURI(encodeURIComponent(binary)))
+                headers: {'Connection': 'Keep-Alive'},
+                body: binary
             }
 
             fetch(`${BaseURL}/files/${cookie}/${name}`, options)
@@ -338,13 +338,12 @@ class InnerContainer extends React.Component {
                 return response.json()
             })
             .then(data => {
-                console.log('Resource deleted successfully:', data)
+                console.log('File saved successfully:', data)
+                localStorage.setItem(id, name)
             })
             .catch(error => {
                 console.error('There was a problem with your fetch operation:', error)
             })
-
-            audioFiles[id] = name
         }
         reader.readAsArrayBuffer(input.files[0])
     }
@@ -718,7 +717,6 @@ class InnerContainer extends React.Component {
                                                         defaultValue={d.name} />
 
                                                     <input className='payload-input'
-                                                        style={{ display: "none" }}
                                                         type="file"
                                                         onChange={e => this.onChangeFile(e, d.id)} />
                                                 </div>

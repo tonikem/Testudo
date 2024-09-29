@@ -104,10 +104,8 @@ def save_file(auth_token, filename):
         if getsizeof(request.data) > MAX_AUDIO_SIZE:
             return {"message": f"Content too large. Max size is {MAX_AUDIO_SIZE} bytes"}, 413
 
-        file = f'./files/{filename}'
-
-        with open(file, "wb") as f:
-            f.write(request.data)
+        with open(f'./files/{filename}', "wb") as file:
+            file.write(request.data)
 
         return {"message": "Successfully saved a file"}, 200, {"Access-Control-Allow-Origin": "*"}
 
