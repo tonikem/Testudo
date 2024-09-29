@@ -14,6 +14,9 @@ import './style.css'
 import { BaseURL, DataURL, sendPutRequest, uuidv4, getCookie } from '../../methods/AppMethods'
 
 
+let audioFiles: any = {}
+
+
 class InnerContainer extends React.Component {
     constructor(props: any) {
         super(props);
@@ -185,7 +188,7 @@ class InnerContainer extends React.Component {
         data.type = selector.value
 
         if (payloadInput.type === "file") {
-            data.payload = ""
+            data.payload = audioFiles[data.id]
         } else {
             data.payload = payloadInput.value
         }
@@ -263,7 +266,10 @@ class InnerContainer extends React.Component {
                         this.arrowBooleans[data.id] = true
 
                         const audio = li.getElementsByClassName("hidden-element")[0].getElementsByClassName('audio')[0]
-                        audio.style.display = "block"
+
+                        if (audio) {
+                            audio.style.display = "block"
+                        }
 
                         return // Lopetetaan looppaaminen
                     }
@@ -338,6 +344,7 @@ class InnerContainer extends React.Component {
             })
             .then(data => {
                 console.log('File saved successfully:', data)
+                audioFiles[id] = name
             })
             .catch(error => {
                 console.error('There was a problem with your fetch operation:', error)
@@ -505,7 +512,6 @@ class InnerContainer extends React.Component {
     }
 
     componentDidUpdate(prevProps: Readonly<{}>, prevState: Readonly<{}>, snapshot?: any): void {
-        console.log("Moikka!")
     }
 
     render() {
@@ -674,6 +680,7 @@ class InnerContainer extends React.Component {
                                         if (this.arrowBooleans[d.id] === undefined || this.arrowBooleans[d.id] === null) {
                                             this.arrowBooleans[d.id] = false
                                         }
+                                        const set_cookie = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNmJjYWE2ZTYtYzMxNC00MDMzLTllNDQtYWFiYmVlZWNhNTdiIiwiZGF0ZSI6IjA5LzI1LzIwMjQsIDE4OjQ1OjMwIn0.GGZBq2ueGpM93gsMm6F7kovJQGhfZ04-fALHC3q8j4s'
                                         return (
                                             <li id={d.id} key={d.id}
                                                 className="table-item"
@@ -729,7 +736,7 @@ class InnerContainer extends React.Component {
                                                 </p>
                                                 <div className='hidden-element'>
                                                     <audio className='audio' controls="controls" autobuffer="autobuffer">
-                                                        <source src={`${BaseURL}/files/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNmJjYWE2ZTYtYzMxNC00MDMzLTllNDQtYWFiYmVlZWNhNTdiIiwiZGF0ZSI6IjA5LzI1LzIwMjQsIDE4OjQ1OjMwIn0.GGZBq2ueGpM93gsMm6F7kovJQGhfZ04-fALHC3q8j4s/Nicki Minaj - Anaconda.mp3`}/>
+                                                        <source src={`${BaseURL}/files/${set_cookie}/${d.payload}`}/>
                                                     </audio>
                                                     <div className='text-field'></div>
                                                 </div>
