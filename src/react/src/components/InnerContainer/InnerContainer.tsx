@@ -14,9 +14,6 @@ import './style.css'
 import { BaseURL, DataURL, sendPutRequest, uuidv4, getCookie } from '../../methods/AppMethods'
 
 
-let audioFiles: any = {}
-
-
 class InnerContainer extends React.Component {
     constructor(props: any) {
         super(props);
@@ -188,7 +185,7 @@ class InnerContainer extends React.Component {
         data.type = selector.value
 
         if (payloadInput.type === "file") {
-            data.payload = audioFiles[data.id]
+            data.payload = ""
         } else {
             data.payload = payloadInput.value
         }
@@ -341,7 +338,6 @@ class InnerContainer extends React.Component {
             })
             .then(data => {
                 console.log('File saved successfully:', data)
-                audioFiles[id] = name
             })
             .catch(error => {
                 console.error('There was a problem with your fetch operation:', error)
