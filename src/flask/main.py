@@ -4,6 +4,7 @@ import json
 import base64
 import datetime
 import pycouchdb
+from pathlib import Path
 from string_utils.validation import is_url, is_string
 from sys import getsizeof
 from flask import Flask, render_template, request, redirect, send_file
@@ -91,7 +92,14 @@ def index():
 @app.route('/files/<auth_token>/<filename>')
 def get_files(auth_token, filename):
     if authenticate(auth_token) and is_string(filename):
-        return send_file(f"./files/{filename}", as_attachment=True)
+        decoded_token = decode_token(auth_token)
+
+        if decoded_token is None:
+            return {"Status": "Failure. Missing token!"}, 404
+
+        user_id = decoded_token["user_id"]
+
+        return send_file(f"./files/{user_id}/{filename}", as_attachment=True)
 
     return {"Status": "Failure. Missing token!"}, 404
 
@@ -100,11 +108,19 @@ def get_files(auth_token, filename):
 @app.route('/files/<auth_token>/<filename>', methods=["POST"])
 def save_file(auth_token, filename):
     if authenticate(auth_token):
+        decoded_token = decode_token(auth_token)
+
+        if decoded_token is None:
+            return {"Status": "Failure. Missing token!"}, 404
+
+        user_id = decoded_token["user_id"]
+        folder = f'./files/{user_id}/'
+        Path(folder).mkdir(parents=True, exist_ok=True)
 
         if getsizeof(request.data) > MAX_AUDIO_SIZE:
             return {"message": f"Content too large. Max size is {MAX_AUDIO_SIZE} bytes"}, 413
 
-        with open(f'./files/{filename}', "wb") as file:
+        with open(folder + filename, "wb") as file:
             file.write(request.data)
 
         return {"message": "Successfully saved a file"}, 200, {"Access-Control-Allow-Origin": "*"}
