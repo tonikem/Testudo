@@ -86,7 +86,7 @@ def index():
 @app.route('/files/<auth_token>/<filename>')
 def files(auth_token, filename):
     if authenticate(auth_token) and is_uuid(filename):
-        return send_file(f"./files/{filename}.mp3", as_attachment=True)
+        return send_file(f"./files/{filename}", as_attachment=True)
 
     return {"Status": "Failure. Missing token!"}, 404
 

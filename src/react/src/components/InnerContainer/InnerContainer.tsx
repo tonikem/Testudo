@@ -304,18 +304,10 @@ class InnerContainer extends React.Component {
     }
 
     onChangeFile(e: any, id: string) {
-        e.preventDefault()
         const file = e.target.files[0]
-        var reader = new FileReader()
-        reader.onload = function(event) {
-            var data = event.target.result.split(','), decodedData = btoa(data[1])
-            audioFiles[id] = decodedData
-        }
-        reader.readAsDataURL(file)
-
-        setTimeout(() => {
-            this.forceUpdate()
-        }, 3000)
+        const name = `${uuidv4()}`
+        const newFile = {file, name}
+        console.log(newFile)
     }
 
     setSelectedValue(value: string, id: string) {
@@ -507,9 +499,11 @@ class InnerContainer extends React.Component {
                                     case 'URL':
                                         this.urlExists(d.payload, (color: string) => {
                                             const container = document.getElementById(d.id)
-                                            const statusBar = container.getElementsByClassName('status-bar')[0]
-                                            const status = statusBar.getElementsByTagName('div')[0]
-                                            status.style.backgroundColor = color
+                                            if (container) {
+                                                const statusBar = container.getElementsByClassName('status-bar')[0]
+                                                const status = statusBar.getElementsByTagName('div')[0]
+                                                status.style.backgroundColor = color
+                                            }
                                         })
                                         if (this.arrowBooleans[d.id] === undefined || this.arrowBooleans[d.id] === null) {
                                             this.arrowBooleans[d.id] = false
@@ -707,7 +701,7 @@ class InnerContainer extends React.Component {
                                                     <input className='payload-input'
                                                         style={{ display: "none" }}
                                                         type="file"
-                                                        onChange={(e) => this.onChangeFile(e, d.id)}/>
+                                                        onChange={e => this.onChangeFile(e, d.id)}/>
                                                 </div>
 
                                                 <p className='item-name'>
