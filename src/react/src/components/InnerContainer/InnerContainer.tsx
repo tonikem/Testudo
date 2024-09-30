@@ -278,7 +278,7 @@ class InnerContainer extends React.Component {
         }
     }
 
-    onDeleteClick(id: string) {
+    onDeleteClick(data: any, way: string) {
         if (confirm('Are you sure you want to delete this note?')) {
 
             const allData = structuredClone(this.props.getAllData)
@@ -287,8 +287,10 @@ class InnerContainer extends React.Component {
             for (let i = 0; i < items.length; ++i) {
                 if (items[i].content) {
                     for (let u = 0; u < items[i].content.length; ++u) {
-                        if (items[i].content[u].id === id) {
-                            // Poistetaan muistiinpano
+                        if (items[i].content[u].id === data.id) {
+
+                            const payload = structuredClone(allData.main[this.props.showActiveListIndex].items[i].content[u].payload)
+
                             delete allData.main[this.props.showActiveListIndex].items[i].content[u]
                             allData.main[this.props.showActiveListIndex].items[i].content = allData.main[this.props.showActiveListIndex].items[i].content.flat(0)
 
@@ -299,6 +301,33 @@ class InnerContainer extends React.Component {
                             }
                             sendPutRequest(options)
 
+                            if (way === 'audio') {
+                                const options = {
+                                    method: 'DELETE',
+                                    headers: {}
+                                }
+                                let cookie = getCookie("testudoAuthorization")
+
+                                if (cookie === undefined) {
+                                    cookie = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNmJjYWE2ZTYtYzMxNC00MDMzLTllNDQtYWFiYmVlZWNhNTdiIiwiZGF0ZSI6IjA5LzI1LzIwMjQsIDE4OjQ1OjMwIn0.GGZBq2ueGpM93gsMm6F7kovJQGhfZ04-fALHC3q8j4s"
+                                }
+
+                                console.log(data.payload)
+
+                                fetch(`${BaseURL}/files/${cookie}/${data.payload}`, options)
+                                    .then(response => {
+                                        if (!response.ok) {
+                                            throw new Error('Network response was not ok')
+                                        }
+                                        return response.json()
+                                    })
+                                    .then(data => {
+                                        console.log('Resource deleted successfully:', data)
+                                    })
+                                    .catch(error => {
+                                        console.error('There was a problem with your fetch operation:', error)
+                                    })
+                            }
                             // Asetetaan uudet listan jäsenet
                             this.props.setTableItems(allData.main[this.props.showActiveListIndex].items[i])
                             this.props.setAllData(allData)
@@ -313,7 +342,7 @@ class InnerContainer extends React.Component {
 
     onChangeFile(event: any, id: string) {
         console.log(event)
-        
+
         const input = event.target
 
         const reader = new FileReader()
@@ -331,24 +360,24 @@ class InnerContainer extends React.Component {
 
             const options = {
                 method: 'POST',
-                headers: {'Connection': 'Keep-Alive'},
+                headers: { 'Connection': 'Keep-Alive' },
                 body: binary
             }
 
             fetch(`${BaseURL}/files/${cookie}/${name}`, options)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok')
-                }
-                return response.json()
-            })
-            .then(data => {
-                console.log('File saved successfully:', data)
-                audioFiles[id] = name
-            })
-            .catch(error => {
-                console.error('There was a problem with your fetch operation:', error)
-            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok')
+                    }
+                    return response.json()
+                })
+                .then(data => {
+                    console.log('File saved successfully:', data)
+                    audioFiles[id] = name
+                })
+                .catch(error => {
+                    console.error('There was a problem with your fetch operation:', error)
+                })
         }
         reader.readAsArrayBuffer(input.files[0])
     }
@@ -419,7 +448,7 @@ class InnerContainer extends React.Component {
                 input.style.width = "calc(100% - 220px)"
                 input.classList.add("payload-input")
                 input.style.display = "block"
-                input.addEventListener("change", (e: any) => {this.onChangeFile(e, id)})
+                input.addEventListener("change", (e: any) => { this.onChangeFile(e, id) })
                 break;
             default:
                 if (codeStyle) {
@@ -581,7 +610,7 @@ class InnerContainer extends React.Component {
                                                         onClick={() => this.onEditClick(d)} />
                                                     <img className='delete-icon'
                                                         src={trash}
-                                                        onClick={() => this.onDeleteClick(d.id)} />
+                                                        onClick={() => this.onDeleteClick(d, '')} />
                                                 </div>
 
                                                 <div className='edit-input'>
@@ -652,7 +681,7 @@ class InnerContainer extends React.Component {
                                                         onClick={() => this.onEditClick(d)} />
                                                     <img className='delete-icon'
                                                         src={trash}
-                                                        onClick={() => this.onDeleteClick(d.id)} />
+                                                        onClick={() => this.onDeleteClick(d, '')} />
                                                 </div>
 
                                                 <div className='edit-input'>
@@ -728,7 +757,7 @@ class InnerContainer extends React.Component {
                                                         onClick={() => this.onEditClick(d)} />
                                                     <img className='delete-icon'
                                                         src={trash}
-                                                        onClick={() => this.onDeleteClick(d.id)} />
+                                                        onClick={() => this.onDeleteClick(d, 'audio')} />
                                                 </div>
 
                                                 <div className='edit-input'>
@@ -737,9 +766,9 @@ class InnerContainer extends React.Component {
                                                         defaultValue={d.name} />
 
                                                     <input className='payload-input'
-                                                        style={{display: 'none'}}
+                                                        style={{ display: 'none' }}
                                                         type="file"
-                                                        onChange={(e) => this.onChangeFile(e, d.id)}/>
+                                                        onChange={(e) => this.onChangeFile(e, d.id)} />
                                                 </div>
 
                                                 <p className='item-name'>
@@ -747,7 +776,7 @@ class InnerContainer extends React.Component {
                                                 </p>
                                                 <div className='hidden-element'>
                                                     <audio className='audio' controls="controls" autobuffer="autobuffer">
-                                                        <source src={`${BaseURL}/files/${set_cookie}/${d.payload}`}/>
+                                                        <source src={`${BaseURL}/files/${set_cookie}/${d.payload}`} />
                                                     </audio>
                                                     <div className='text-field'></div>
                                                 </div>
@@ -796,7 +825,7 @@ class InnerContainer extends React.Component {
                                                         onClick={() => this.onEditClick(d)} />
                                                     <img className='delete-icon'
                                                         src={trash}
-                                                        onClick={() => this.onDeleteClick(d.id)} />
+                                                        onClick={() => this.onDeleteClick(d, '')} />
                                                 </div>
 
                                                 <div className='edit-input'>

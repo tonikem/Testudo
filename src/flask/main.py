@@ -127,8 +127,8 @@ def save_file(auth_token, filename):
 
 
 @cross_origin()
-@app.route('/files/<auth_token>/<filename>')
-def delete_files(auth_token, filename):
+@app.route('/files/<auth_token>/<filename>', methods=['GET', 'DELETE'])
+def delete_file(auth_token, filename):
     if authenticate(auth_token) and is_full_string(filename) and filename != 'undefined':
         decoded_token = decode_token(auth_token)
 
@@ -136,6 +136,12 @@ def delete_files(auth_token, filename):
             return {"Status": "Failure. Missing token!"}, 404
 
         user_id = decoded_token["user_id"]
+
+        print(f'./files/{user_id}/{filename}')
+
+        os.remove(f'./files/{user_id}/{filename}')
+
+        return {"message": "Successfully deleted an audio file"}, 200
 
     return {"Status": "Failure. Missing token or filename!"}, 404
 
