@@ -266,7 +266,7 @@ class InnerContainer extends React.Component {
                             li.style.height = "auto"
                             li.getElementsByClassName("arrow")[0].style.transform = "rotate(45deg)"
                             this.arrowBooleans[data.id] = true
-                        }, 80)
+                        }, 40)
 
                         return // Lopetetaan looppaaminen
                     }
