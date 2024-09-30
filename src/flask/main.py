@@ -1,15 +1,13 @@
 import os
 import jwt
 import json
-import base64
 import datetime
 import pycouchdb
 from pathlib import Path
-from string_utils.validation import is_url, is_string, is_full_string
+from string_utils.validation import is_full_string
 from sys import getsizeof
-from flask import Flask, render_template, request, redirect, send_file
+from flask import Flask, render_template, request, send_file
 from flask_cors import CORS, cross_origin
-from flask_restful import Resource, Api
 from functions import check_password
 
 
@@ -17,7 +15,7 @@ DATE_FORMAT = "%m/%d/%Y, %H:%M:%S"
 TOKEN_EXPIRATION_TIME = 2630750  # 86400  # <- 1 päivä
 MAX_DATA_SIZE = 6000000000  # 6GB
 MAX_AUDIO_SIZE = 1000000000  # 2GB
-MAX_DIRECTORY_SIZE = 12000000000
+MAX_DIRECTORY_SIZE = 12000000000 # 12GB
 SECRET_KEY = "SECRET_KEY_1234"
 CLAM_SCAN = 'C:/"Program Files (x86)/"ClamWin/bin/clamscan.exe'
 

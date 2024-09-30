@@ -27,7 +27,7 @@ function App() {
   const [showTableItems, setTableItems] = useState([])
 
   const [showActiveListIndex, setActiveListIndex] = useState(localStorage.getItem("activeList"))
-  const [showActiveFolderIndex, setActiveFolderIndex] = useState(localStorage.getItem("activeFolder"))
+  const [showActiveFolderIndex, setActiveFolderIndex] = useState()//localStorage.getItem("activeFolder")
 
   function onNotebookEditClick(id: string) {
     setTableItems(getAllData.main.items)
