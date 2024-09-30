@@ -181,7 +181,6 @@ class InnerContainer extends React.Component {
         const titleInput = li.getElementsByClassName('title-input')[0]
         const selector = li.getElementsByClassName('selector')[0]
         let payloadInput = li.getElementsByClassName('payload-input')[0]
-        const codeStyle = li.getElementsByClassName('code-style')[0]
 
         // Asetetaan uudet arvot
         data.name = titleInput.value
@@ -193,6 +192,8 @@ class InnerContainer extends React.Component {
             data.payload = payloadInput.value
         }
 
+        const codeStyle = li.getElementsByClassName('code-style')[0]
+        
         if (codeStyle) {
             data.codeStyle = codeStyle.value.toLowerCase()
             if (codeStyle.value.toLowerCase() === "c++") {
@@ -266,6 +267,8 @@ class InnerContainer extends React.Component {
                         this.arrowBooleans[data.id] = true
 
                         const audio = li.getElementsByClassName('audio')[0]
+
+                        console.log(audio)
 
                         if (audio) {
                             audio.style.display = "block"
@@ -702,7 +705,7 @@ class InnerContainer extends React.Component {
                                         if (this.arrowBooleans[d.id] === undefined || this.arrowBooleans[d.id] === null) {
                                             this.arrowBooleans[d.id] = false
                                         }
-                                        const set_cookie = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNmJjYWE2ZTYtYzMxNC00MDMzLTllNDQtYWFiYmVlZWNhNTdiIiwiZGF0ZSI6IjA5LzI1LzIwMjQsIDE4OjQ1OjMwIn0.GGZBq2ueGpM93gsMm6F7kovJQGhfZ04-fALHC3q8j4s'
+                                        const set_cookie = getCookie("testudoAuthorization")
                                         return (
                                             <li id={d.id} key={d.id}
                                                 className="table-item"
