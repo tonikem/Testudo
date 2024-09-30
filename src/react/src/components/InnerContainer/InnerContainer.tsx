@@ -260,12 +260,12 @@ class InnerContainer extends React.Component {
                             itemPayload.style.display = "block"
                         }
 
-                        li.getElementsByClassName("hidden-element")[0].style.display = "block"
+                        li.getElementsByClassName("hidden-element")[0].style.display = "flex"
                         li.style.height = "auto"
                         li.getElementsByClassName("arrow")[0].style.transform = "rotate(45deg)"
                         this.arrowBooleans[data.id] = true
 
-                        const audio = li.getElementsByClassName("hidden-element")[0].getElementsByClassName('audio')[0]
+                        const audio = li.getElementsByClassName('audio')[0]
 
                         if (audio) {
                             audio.style.display = "block"
@@ -354,6 +354,10 @@ class InnerContainer extends React.Component {
 
             fetch(`${BaseURL}/files/${cookie}/${name}`, options)
                 .then(response => {
+                    if (response.status == 413) {
+                        alert("Data takes more than 12GB space. Please remove something to continue")
+                        location.reload()
+                    }
                     if (!response.ok) {
                         throw new Error('Network response was not ok')
                     }

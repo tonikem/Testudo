@@ -17,6 +17,7 @@ DATE_FORMAT = "%m/%d/%Y, %H:%M:%S"
 TOKEN_EXPIRATION_TIME = 2630750  # 86400  # <- 1 päivä
 MAX_DATA_SIZE = 6000000000  # 6GB
 MAX_AUDIO_SIZE = 1000000000  # 2GB
+MAX_DIRECTORY_SIZE = 12000000000
 SECRET_KEY = "SECRET_KEY_1234"
 CLAM_SCAN = 'C:/"Program Files (x86)/"ClamWin/bin/clamscan.exe'
 
@@ -118,6 +119,18 @@ def save_file(auth_token, filename):
 
         if getsizeof(request.data) > MAX_AUDIO_SIZE:
             return {"message": f"Content too large. Max size is {MAX_AUDIO_SIZE} bytes"}, 413
+
+        total_size = 0
+
+        for path, dirs, files in os.walk(folder):
+            for f in files:
+                fp = os.path.join(path, f)
+                total_size += os.path.getsize(fp)
+
+        total_size += getsizeof(request.data)
+
+        if total_size > MAX_DIRECTORY_SIZE:
+            return {"message": f"Content too large. Max size is {MAX_DIRECTORY_SIZE} bytes"}, 413
 
         with open(folder + filename, "wb") as file:
             file.write(request.data)
