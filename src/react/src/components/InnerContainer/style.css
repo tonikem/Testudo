@@ -243,6 +243,8 @@
     #inner-container {
         position: relative;
         margin-left: 0;
+        margin-right: 0;
+        margin-top: 0;
     }
     .item-payload {
         min-width: 300px;
