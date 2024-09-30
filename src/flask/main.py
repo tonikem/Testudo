@@ -122,13 +122,7 @@ def save_file(auth_token, filename):
         with open(folder + filename, "wb") as file:
             file.write(request.data)
 
-        res = os.system(f"{CLAM_SCAN} {folder}{filename}")
-
-        if "Known viruses: 0" in res:
-            return {"message": "Successfully saved a file"}, 200, {"Access-Control-Allow-Origin": "*"}
-        else:
-            os.remove(f"{folder}{filename}")
-            return {"Status": "Failure. Virus found from the file!"}, 403
+        return {"message": "Successfully saved a file"}, 200, {"Access-Control-Allow-Origin": "*"}
 
     return {"Status": "Failure. Missing token or filename!"}, 404
 
