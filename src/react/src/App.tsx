@@ -2,8 +2,9 @@ import Panel from './components/Panel/Panel'
 import Header from './components/Header/Header'
 import ListGroup from './components/ListGroup/ListGroup'
 import InnerContainer from './components/InnerContainer/InnerContainer'
-import { Link, Route, Switch } from "wouter"
-import { useEffect, useReducer, useState } from 'react'
+import NotebookContainer from './components/NotebookContainer/NotebookContainer'
+import { Route, Switch } from "wouter"
+import { useEffect, useState } from 'react'
 import notebook from '../public/notebook.png'
 import folder from '../public/folder.png'
 import remove from '../public/remove.png'
@@ -414,16 +415,10 @@ function App() {
             setTableItems={setTableItems}
             setAllData={setAllData} />
         </Route>
-        <Route path="/jotain">
+        <Route path="/notebooks">
           <Header />
           {/* TODO: Tee tämä työmaa */}
-          <InnerContainer data={showTableItems}
-            setActiveFolderIndex={setActiveFolderIndex}
-            showActiveListIndex={showActiveListIndex}
-            showActiveFolderIndex={showActiveFolderIndex}
-            getAllData={getAllData}
-            setTableItems={setTableItems}
-            setAllData={setAllData} />
+          <NotebookContainer />
         </Route>
       </Switch>
     </div>

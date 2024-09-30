@@ -27,8 +27,8 @@ function Header() {
                              className="main-logo"
                              onClick={onMouseClick}/>
                         
-                        <li className="active"><a href="/">Home</a></li>
-                        <li><a href="#">Page 1</a></li>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/notebooks">Notebooks</a></li>
                         <li><a href="#">Page 2</a></li>
                         <li><a href="#">Page 3</a></li>
                     </ul>
