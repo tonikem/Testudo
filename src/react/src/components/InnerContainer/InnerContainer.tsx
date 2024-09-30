@@ -308,8 +308,6 @@ class InnerContainer extends React.Component {
                                 }
                                 let cookie = getCookie("testudoAuthorization")
 
-                                console.log(data.payload)
-
                                 fetch(`${BaseURL}/files/${cookie}/${data.payload}`, options)
                                     .then(response => {
                                         if (!response.ok) {
@@ -337,8 +335,6 @@ class InnerContainer extends React.Component {
     }
 
     onChangeFile(event: any, id: string) {
-        console.log(event)
-
         const input = event.target
 
         const reader = new FileReader()
@@ -534,16 +530,6 @@ class InnerContainer extends React.Component {
     }
 
     componentDidUpdate(prevProps: Readonly<{}>, prevState: Readonly<{}>, snapshot?: any): void {
-        /* const payloadInputs = document.getElementsByClassName('payload-input')
-
-        for (let i = 0; i < payloadInputs.length; ++i) {
-            if (payloadInputs[i] && payloadInputs[i].type === "file") {
-                payloadInputs[i].addEventListener("change click", (event) => {
-                    console.log("Event: " + event)
-                    //this.onChangeFile(event)
-                })
-            }
-        } */
     }
 
     render() {

@@ -18,6 +18,7 @@ TOKEN_EXPIRATION_TIME = 2630750  # 86400  # <- 1 päivä
 MAX_DATA_SIZE = 6000000000  # 6GB
 MAX_AUDIO_SIZE = 1000000000  # 2GB
 SECRET_KEY = "SECRET_KEY_1234"
+CLAM_SCAN = 'C:/"Program Files (x86)/"ClamWin/bin/clamscan.exe'
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -121,7 +122,13 @@ def save_file(auth_token, filename):
         with open(folder + filename, "wb") as file:
             file.write(request.data)
 
-        return {"message": "Successfully saved a file"}, 200, {"Access-Control-Allow-Origin": "*"}
+        res = os.system(f"{CLAM_SCAN} {folder}{filename}")
+
+        if "Known viruses: 0" in res:
+            return {"message": "Successfully saved a file"}, 200, {"Access-Control-Allow-Origin": "*"}
+        else:
+            os.remove(f"{folder}{filename}")
+            return {"Status": "Failure. Virus found from the file!"}, 403
 
     return {"Status": "Failure. Missing token or filename!"}, 404
 

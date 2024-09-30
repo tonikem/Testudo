@@ -23,7 +23,7 @@ import './App.css'
 
 
 function App() {
-  const [getAllData, setAllData] = useState({ main: [] })
+  const [getAllData, setAllData] = useState({"main": []})
   const [showTableItems, setTableItems] = useState([])
 
   const [showActiveListIndex, setActiveListIndex] = useState(localStorage.getItem("activeList"))
