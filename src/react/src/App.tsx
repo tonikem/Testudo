@@ -2,6 +2,7 @@ import Panel from './components/Panel/Panel'
 import Header from './components/Header/Header'
 import ListGroup from './components/ListGroup/ListGroup'
 import InnerContainer from './components/InnerContainer/InnerContainer'
+import { Link, Route, Switch } from "wouter"
 import { useEffect, useReducer, useState } from 'react'
 import notebook from '../public/notebook.png'
 import folder from '../public/folder.png'
@@ -23,7 +24,7 @@ import './App.css'
 
 
 function App() {
-  const [getAllData, setAllData] = useState({"main": []})
+  const [getAllData, setAllData] = useState({ "main": [] })
   const [showTableItems, setTableItems] = useState([])
 
   const [showActiveListIndex, setActiveListIndex] = useState(localStorage.getItem("activeList"))
@@ -229,7 +230,7 @@ function App() {
     if (confirm('Are you sure you want to delete this folder?')) {
       // Häivytetään elementti
       document.getElementById(id).style.display = "none"
-      
+
       let allData = structuredClone(getAllData)
 
       for (let i = 0; i < allData.main.length; ++i) {
@@ -274,7 +275,7 @@ function App() {
         if (mainData.Status === "Failure. Missing token!") {
           // Varoitetaan tokenin puuttumisesta
           alert("You are missing token!")
-          setAllData({"main": []})
+          setAllData({ "main": [] })
         } else {
           // Asetetaan koko data
           setAllData(mainData)
@@ -286,130 +287,145 @@ function App() {
 
   return (
     <div className="App">
-      <Header />
-      <Panel>
-        <ListGroup setAllData={setAllData}
-                  getAllData={getAllData}
-                  onMouseClick={onMouseClick}
-                  setTableItems={setTableItems}>
-          {
-            getAllData.main.map(function (data: any, index: any) {
-              if (data && data.items) {
-                if (index == showActiveListIndex) {
-                  return (
-                    <li id={data.id} key={data.id} className="list-group-item active-item">
-                      <div className="notebook-icon">
-                        <div className='data-name-div'>
-                          <img src={notebook} alt="Notebook-icon" />
-                          {data.name}
-                        </div>
-                        <input className='notebook-input' defaultValue={data.name} />
-                      </div>
-                      <img src={save}
-                        className='save-notebook-icon'
-                        onClick={() => endEditing(data, index)} />
-                      <div className="data-items-listed">
-                        {
-                          // Listataan yksittäiset osat
-                          data.items.map(function (d: any, i: any) {
-                            if (i == showActiveFolderIndex) {
-                              return (
-                                <div key={d.id} onClick={() => {
-                                  localStorage.setItem("activeFolder", i.toString())
-                                  setActiveFolderIndex(i)
-                                  onMouseClickTable(d, i)
-                                  setTableItems(d)
-                                }}
-                                  className='item'
-                                  id={d.id}>
-                                  <div className='folder-title'>
-                                    <img className='folder-icon' src={folder} />
-                                    {d.name}
+      <Switch>
+        <Route path="/">
+          <Header />
+          <Panel>
+            <ListGroup setAllData={setAllData}
+              getAllData={getAllData}
+              onMouseClick={onMouseClick}
+              setTableItems={setTableItems}>
+              {
+                getAllData.main.map(function (data: any, index: any) {
+                  if (data && data.items) {
+                    if (index == showActiveListIndex) {
+                      return (
+                        <li id={data.id} key={data.id} className="list-group-item active-item">
+                          <div className="notebook-icon">
+                            <div className='data-name-div'>
+                              <img src={notebook} alt="Notebook-icon" />
+                              {data.name}
+                            </div>
+                            <input className='notebook-input' defaultValue={data.name} />
+                          </div>
+                          <img src={save}
+                            className='save-notebook-icon'
+                            onClick={() => endEditing(data, index)} />
+                          <div className="data-items-listed">
+                            {
+                              // Listataan yksittäiset osat
+                              data.items.map(function (d: any, i: any) {
+                                if (i == showActiveFolderIndex) {
+                                  return (
+                                    <div key={d.id} onClick={() => {
+                                      localStorage.setItem("activeFolder", i.toString())
+                                      setActiveFolderIndex(i)
+                                      onMouseClickTable(d, i)
+                                      setTableItems(d)
+                                    }}
+                                      className='item'
+                                      id={d.id}>
+                                      <div className='folder-title'>
+                                        <img className='folder-icon' src={folder} />
+                                        {d.name}
+                                      </div>
+
+                                      <input className='folder-input' />
+
+                                      <img className='trash-icon' src={trash}
+                                        onClick={() => onClickTrashIcon(data.id, d.id)} />
+                                      <img className='edit-folder-icon' src={edit}
+                                        onClick={() => onFolderEditClick(d.id)} />
+                                      <img className='save-folder-icon' src={save}
+                                        onClick={() => onFolderSave(d.id)} />
+                                    </div>
+                                  )
+                                }
+                                return (
+                                  <div key={d.id} onClick={() => {
+                                    localStorage.setItem("activeFolder", i.toString())
+                                    setActiveFolderIndex(i)
+                                    onMouseClickTable(d, i)
+                                    setTableItems(d)
+                                  }}
+                                    className='item'
+                                    id={d.id}>
+                                    <div className='folder-title'>
+                                      <img className='folder-icon' src={folder} />
+                                      {d.name}
+                                    </div>
+
+                                    <input className='folder-input' />
+
+                                    <img className='trash-icon' src={trash}
+                                      onClick={() => onClickTrashIcon(data.id, d.id)} />
+                                    <img className='edit-folder-icon' src={edit}
+                                      onClick={() => onFolderEditClick(d.id)} />
+                                    <img className='save-folder-icon' src={save}
+                                      onClick={() => onFolderSave(d.id)} />
                                   </div>
-
-                                  <input className='folder-input' />
-
-                                  <img className='trash-icon' src={trash}
-                                    onClick={() => onClickTrashIcon(data.id, d.id)} />
-                                  <img className='edit-folder-icon' src={edit}
-                                    onClick={() => onFolderEditClick(d.id)} />
-                                  <img className='save-folder-icon' src={save}
-                                    onClick={() => onFolderSave(d.id)} />
-                                </div>
-                              )
+                                )
+                              })
                             }
-                            return (
-                              <div key={d.id} onClick={() => {
-                                localStorage.setItem("activeFolder", i.toString())
-                                setActiveFolderIndex(i)
-                                onMouseClickTable(d, i)
-                                setTableItems(d)
-                              }}
-                                className='item'
-                                id={d.id}>
-                                <div className='folder-title'>
-                                  <img className='folder-icon' src={folder} />
-                                  {d.name}
-                                </div>
-
-                                <input className='folder-input' />
-
-                                <img className='trash-icon' src={trash}
-                                  onClick={() => onClickTrashIcon(data.id, d.id)} />
-                                <img className='edit-folder-icon' src={edit}
-                                  onClick={() => onFolderEditClick(d.id)} />
-                                <img className='save-folder-icon' src={save}
-                                  onClick={() => onFolderSave(d.id)} />
-                              </div>
-                            )
-                          })
-                        }
-                      </div>
-                      <div className='buttons'>
-                        <img className='pencil-button'
-                          src={pencil}
-                          onClick={() => onNotebookEditClick(data.id)} />
-                        <img className='plus-sign'
-                          src={plus}
-                          onClick={() => onAddClick(data.id)} />
-                        <img className='remove-button'
-                          src={remove}
-                          onClick={() => onRemoveClick(data.id)} />
-                      </div>
-                    </li>
-                  )
-                }
-                else {
-                  return (
-                    <li id={data.id} key={data.id}
-                      onClick={() => onMouseClick(index)} className="list-group-item">
-                      <div className="notebook-icon">
-                        <div className='data-name-div'>
-                          <img src={notebook} alt="Notebook-icon" />
-                          {data.name}
-                        </div>
-                        <input className='notebook-input' defaultValue={data.name} />
-                        <img src={save}
-                          className='save-notebook-icon'
-                          onClick={() => endEditing(data, index)} />
-                      </div>
-                    </li>
-                  )
-                }
-              } else {
-                return <div></div>
+                          </div>
+                          <div className='buttons'>
+                            <img className='pencil-button'
+                              src={pencil}
+                              onClick={() => onNotebookEditClick(data.id)} />
+                            <img className='plus-sign'
+                              src={plus}
+                              onClick={() => onAddClick(data.id)} />
+                            <img className='remove-button'
+                              src={remove}
+                              onClick={() => onRemoveClick(data.id)} />
+                          </div>
+                        </li>
+                      )
+                    }
+                    else {
+                      return (
+                        <li id={data.id} key={data.id}
+                          onClick={() => onMouseClick(index)} className="list-group-item">
+                          <div className="notebook-icon">
+                            <div className='data-name-div'>
+                              <img src={notebook} alt="Notebook-icon" />
+                              {data.name}
+                            </div>
+                            <input className='notebook-input' defaultValue={data.name} />
+                            <img src={save}
+                              className='save-notebook-icon'
+                              onClick={() => endEditing(data, index)} />
+                          </div>
+                        </li>
+                      )
+                    }
+                  } else {
+                    return <div></div>
+                  }
+                })
               }
-            })
-          }
-        </ListGroup>
-      </Panel>
-      <InnerContainer data={showTableItems}
-        setActiveFolderIndex={setActiveFolderIndex}
-        showActiveListIndex={showActiveListIndex}
-        showActiveFolderIndex={showActiveFolderIndex}
-        getAllData={getAllData}
-        setTableItems={setTableItems}
-        setAllData={setAllData} />
+            </ListGroup>
+          </Panel>
+          <InnerContainer data={showTableItems}
+            setActiveFolderIndex={setActiveFolderIndex}
+            showActiveListIndex={showActiveListIndex}
+            showActiveFolderIndex={showActiveFolderIndex}
+            getAllData={getAllData}
+            setTableItems={setTableItems}
+            setAllData={setAllData} />
+        </Route>
+        <Route path="/jotain">
+          <Header />
+          {/* TODO: Tee tämä työmaa */}
+          <InnerContainer data={showTableItems}
+            setActiveFolderIndex={setActiveFolderIndex}
+            showActiveListIndex={showActiveListIndex}
+            showActiveFolderIndex={showActiveFolderIndex}
+            getAllData={getAllData}
+            setTableItems={setTableItems}
+            setAllData={setAllData} />
+        </Route>
+      </Switch>
     </div>
   )
 }

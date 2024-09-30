@@ -12,12 +12,11 @@ from functions import check_password
 
 
 DATE_FORMAT = "%m/%d/%Y, %H:%M:%S"
-TOKEN_EXPIRATION_TIME = 2630750  # 86400  # <- 1 päivä
+TOKEN_EXPIRATION_TIME = 2630750  # 86400
 MAX_DATA_SIZE = 6000000000  # 6GB
 MAX_AUDIO_SIZE = 1000000000  # 2GB
-MAX_DIRECTORY_SIZE = 12000000000 # 12GB
+MAX_DIRECTORY_SIZE = 12000000000  # 12GB
 SECRET_KEY = "SECRET_KEY_1234"
-CLAM_SCAN = 'C:/"Program Files (x86)/"ClamWin/bin/clamscan.exe'
 
 app = Flask(__name__)
 cors = CORS(app)
