@@ -118,7 +118,7 @@ def save_file(auth_token, filename):
         if getsizeof(request.data) > MAX_AUDIO_SIZE:
             return {"message": f"Content too large. Max size is {MAX_AUDIO_SIZE} bytes"}, 413
 
-        total_size = 0
+        total_size = 0  # Lasketaan kansion tiedostojen yhteiskoko
 
         for path, dirs, files in os.walk(folder):
             for f in files:
@@ -163,6 +163,7 @@ def delete_file(auth_token, filename):
 def get_data(auth_token):
     if authenticate(auth_token):
         collected_notebooks = []
+
         decoded_token = decode_token(auth_token)
 
         if decoded_token is None:
@@ -171,9 +172,8 @@ def get_data(auth_token):
         user_id = decoded_token["user_id"]
         user = get_user_by_id(user_id)
 
-        for notebook_id in user['doc']["notebooks"]:
-            notebook = get_notebook_by_id(notebook_id)
-            if notebook:
+        for notebook in notebooks_db.all():
+            if notebook['doc']['id'] in user['doc']["notebooks"]:
                 collected_notebook = {
                     "id": notebook['doc']["id"],
                     "name": notebook['doc']["name"],
