@@ -29,8 +29,6 @@ function Header() {
                         
                         <li><a href="/">Home</a></li>
                         <li><a href="/notebooks">Notebooks</a></li>
-                        <li><a href="#">Page 2</a></li>
-                        <li><a href="#">Page 3</a></li>
                     </ul>
                 </div>
             </nav>
