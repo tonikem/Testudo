@@ -44,10 +44,6 @@ export function onMouseClickTable(d: any, i: any) {
 export function sendPutRequest(options: any) {
     let cookie = getCookie("testudoAuthorization")
 
-    if (cookie === undefined) {
-        cookie = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNmJjYWE2ZTYtYzMxNC00MDMzLTllNDQtYWFiYmVlZWNhNTdiIiwiZGF0ZSI6IjA5LzI1LzIwMjQsIDE4OjQ1OjMwIn0.GGZBq2ueGpM93gsMm6F7kovJQGhfZ04-fALHC3q8j4s"
-    }
-
     fetch(`${DataURL}/${cookie}`, options)
     .then(response => {
         if (response.status == 413) {
@@ -69,10 +65,6 @@ export function sendPutRequest(options: any) {
 
 export function sendDeleteRequest(options: any) {
     let cookie = getCookie("testudoAuthorization")
-
-    if (cookie === undefined) {
-        cookie = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNmJjYWE2ZTYtYzMxNC00MDMzLTllNDQtYWFiYmVlZWNhNTdiIiwiZGF0ZSI6IjA5LzI1LzIwMjQsIDE4OjQ1OjMwIn0.GGZBq2ueGpM93gsMm6F7kovJQGhfZ04-fALHC3q8j4s"
-    }
 
     fetch(`${DataURL}/${cookie}`, options)
     .then(response => {
