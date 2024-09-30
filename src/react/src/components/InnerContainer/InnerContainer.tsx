@@ -266,14 +266,6 @@ class InnerContainer extends React.Component {
                         li.getElementsByClassName("arrow")[0].style.transform = "rotate(45deg)"
                         this.arrowBooleans[data.id] = true
 
-                        const audio = li.getElementsByClassName('audio')[0]
-
-                        console.log(audio)
-
-                        if (audio) {
-                            audio.style.display = "block"
-                        }
-
                         return // Lopetetaan looppaaminen
                     }
                 }
