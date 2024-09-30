@@ -261,10 +261,12 @@ class InnerContainer extends React.Component {
                             itemPayload.style.display = "block"
                         }
 
-                        li.getElementsByClassName("hidden-element")[0].style.display = "flex"
-                        li.style.height = "auto"
-                        li.getElementsByClassName("arrow")[0].style.transform = "rotate(45deg)"
-                        this.arrowBooleans[data.id] = true
+                        setTimeout(() => {
+                            li.getElementsByClassName("hidden-element")[0].style.display = "flex"
+                            li.style.height = "auto"
+                            li.getElementsByClassName("arrow")[0].style.transform = "rotate(45deg)"
+                            this.arrowBooleans[data.id] = true
+                        }, 80)
 
                         return // Lopetetaan looppaaminen
                     }
