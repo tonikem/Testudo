@@ -193,7 +193,7 @@ class InnerContainer extends React.Component {
         }
 
         const codeStyle = li.getElementsByClassName('code-style')[0]
-        
+
         if (codeStyle) {
             data.codeStyle = codeStyle.value.toLowerCase()
             if (codeStyle.value.toLowerCase() === "c++") {
@@ -343,7 +343,27 @@ class InnerContainer extends React.Component {
 
             let cookie = getCookie("testudoAuthorization")
 
-            const options = {
+            let options = {
+                method: 'DELETE'
+            }
+
+            if (audioFiles[id]) {
+                fetch(`${BaseURL}/files/${cookie}/${audioFiles[id]}`, options)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok')
+                    }
+                    return response.json()
+                })
+                .then(data => {
+                    console.log('Resource deleted successfully:', data)
+                })
+                .catch(error => {
+                    console.error('There was a problem with your fetch operation:', error)
+                })
+            }
+
+            options = {
                 method: 'POST',
                 headers: { 'Connection': 'Keep-Alive' },
                 body: binary
@@ -700,6 +720,8 @@ class InnerContainer extends React.Component {
                                             this.arrowBooleans[d.id] = false
                                         }
                                         const set_cookie = getCookie("testudoAuthorization")
+
+                                        audioFiles[d.id] = d.payload
                                         return (
                                             <li id={d.id} key={d.id}
                                                 className="table-item"
