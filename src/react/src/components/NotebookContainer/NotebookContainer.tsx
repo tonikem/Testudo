@@ -18,7 +18,7 @@ class NotebookContainer extends React.Component {
 
     render() {
         return <div id="notebook-container">
-            <NotebookList />
+            <NotebookList getAllData={this.props.getAllData}/>
             <img id="spinner" src={spinner} />
         </div>
     }

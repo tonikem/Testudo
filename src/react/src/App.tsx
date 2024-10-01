@@ -427,8 +427,7 @@ function App() {
         </Route>
         <Route path="/notebooks">
           <Header />
-          {/* TODO: Tee tämä työmaa */}
-          <NotebookContainer />
+          <NotebookContainer getAllData={getAllData}/>
         </Route>
       </Switch>
     </div>
