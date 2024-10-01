@@ -1,3 +1,4 @@
+import { Link } from "wouter"
 import './style.css'
 import logo from '../../../public/turtle.png'
 
@@ -27,8 +28,14 @@ function Header() {
                              className="main-logo"
                              onClick={onMouseClick}/>
                         
-                        <li><a href="/">Home</a></li>
-                        <li><a href="/notebooks">Notebooks</a></li>
+                        <li>
+                            <Link href="/">Home</Link>
+                            {/* <a href="/">Home</a> */}
+                            </li>
+                        <li>
+                            <Link href="/notebooks">Notebooks</Link>
+                            {/* <a href="/notebooks">Notebooks</a> */}
+                        </li>
                     </ul>
                 </div>
             </nav>
