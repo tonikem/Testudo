@@ -75,7 +75,7 @@ def authenticate(token):
     return False
 
 
-@app.route('/', methods=["GET", "POST"])
+@app.route('/')
 def index():
     if request.cookies:
         auth_token = request.cookies["testudoAuthorization"]
@@ -83,7 +83,7 @@ def index():
             return render_template("index.html")
 
     # Kirjautuminen mobiililaitteita varten
-    if authenticate(request.data):
+    if authenticate(request.args.get('cookie')):
         return render_template("index.html")
 
     return render_template('login.html')
