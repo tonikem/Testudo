@@ -21,7 +21,6 @@ class InnerContainer extends React.Component {
         this.state = {
             dragNote: 0,
             dragOverNote: 0,
-            draggingOn: true,
             file: {}
         }
     }
@@ -559,7 +558,7 @@ class InnerContainer extends React.Component {
                                         return (
                                             <li id={d.id} key={d.id}
                                                 className="table-item"
-                                                draggable={this.state.draggingOn}
+                                                draggable={this.props.getDraggingOn}
                                                 onDragStart={() => this.onDragStart(index)}
                                                 onDragEnter={() => this.onDragEnter(index)}
                                                 onDragEnd={() => this.handleSort(index)}
@@ -630,7 +629,7 @@ class InnerContainer extends React.Component {
                                         return (
                                             <li id={d.id} key={d.id}
                                                 className="table-item"
-                                                draggable={this.state.draggingOn}
+                                                draggable={this.props.getDraggingOn}
                                                 onDragStart={() => this.onDragStart(index)}
                                                 onDragEnter={() => this.onDragEnter(index)}
                                                 onDragEnd={() => this.handleSort(index)}
@@ -708,7 +707,7 @@ class InnerContainer extends React.Component {
                                         return (
                                             <li id={d.id} key={d.id}
                                                 className="table-item"
-                                                draggable={this.state.draggingOn}
+                                                draggable={this.props.getDraggingOn}
                                                 onDragStart={() => this.onDragStart(index)}
                                                 onDragEnter={() => this.onDragEnter(index)}
                                                 onDragEnd={() => this.handleSort(index)}
@@ -776,7 +775,7 @@ class InnerContainer extends React.Component {
                                         return (
                                             <li id={d.id} key={d.id}
                                                 className="table-item"
-                                                draggable={this.state.draggingOn}
+                                                draggable={this.props.getDraggingOn}
                                                 onDragStart={() => this.onDragStart(index)}
                                                 onDragEnter={() => this.onDragEnter(index)}
                                                 onDragEnd={() => this.handleSort(index)}

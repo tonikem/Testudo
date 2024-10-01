@@ -28,6 +28,8 @@ function App() {
   const [getAllData, setAllData] = useState({ "main": [] })
   const [showTableItems, setTableItems] = useState([])
 
+  const [getDraggingOn, setDraggingOn] = useState(true)
+
   const [showActiveListIndex, setActiveListIndex] = useState(localStorage.getItem("activeList"))
   const [showActiveFolderIndex, setActiveFolderIndex] = useState()
 
@@ -413,7 +415,9 @@ function App() {
             showActiveFolderIndex={showActiveFolderIndex}
             getAllData={getAllData}
             setTableItems={setTableItems}
-            setAllData={setAllData} />
+            setAllData={setAllData}
+            getDraggingOn={getDraggingOn}
+            setDraggingOn={setDraggingOn}/>
         </Route>
         <Route path="/notebooks">
           <Header />
