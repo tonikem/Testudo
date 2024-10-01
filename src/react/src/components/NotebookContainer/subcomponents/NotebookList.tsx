@@ -7,10 +7,12 @@ class NotebookList extends React.Component {
         console.log(this.props.getAllData)
         return (
             <div className='list-container'>
-                <ul className='notebook-list'>
+                <ul className='list-group notebook-list'>
                     {
                         this.props.getAllData.main.map(function (data: any, index: any) {
-                            return <li key={data.id}>{data.name}</li>
+                            return <li className='list-group-item notebook-list-item' key={data.id}>
+                                {data.name}
+                            </li>
                         })
                     }
                 </ul>

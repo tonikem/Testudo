@@ -3,10 +3,16 @@
     top: 50px;
     margin-left: auto;
     margin-right: auto;
-    background-color: #2b2d30;
-    height: 100vh;
-    width: 100vw;
     margin-bottom: 40px;
+    background-color: #2b2d30;
+    height: auto;
+    width: 100%;
     padding: 24px;
 }
 
+.notebook-list-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style-type: none;
+}
