@@ -161,7 +161,42 @@ def delete_file(auth_token, filename):
 
 @cross_origin()
 @app.route('/data/<auth_token>')
-def get_data(auth_token):
+def get_notebooks_and_items(auth_token):
+    if authenticate(auth_token):
+        collected_notebooks = []
+
+        decoded_token = decode_token(auth_token)
+
+        if decoded_token is None:
+            return {"Status": "Failure. Missing token!"}, 404
+
+        user_id = decoded_token["user_id"]
+        user = get_user_by_id(user_id)
+
+        for notebook in notebooks_db.all():
+            if notebook['doc']['id'] in user['doc']["notebooks"]:
+                if notebook['doc']['visible']:
+                    collected_notebook = {
+                        "id": notebook['doc']["id"],
+                        "name": notebook['doc']["name"],
+                        "items": notebook['doc']["items"],
+                        "visible": notebook['doc']["visible"]
+                    }
+                    collected_notebooks.append(collected_notebook)
+
+        result = {"main": collected_notebooks}
+
+        if getsizeof(result) > MAX_DATA_SIZE:
+            return {"message": f"Content too large. Max size is {MAX_DATA_SIZE} bytes"}, 413, {"Access-Control-Allow-Origin": "*"}
+
+        return result
+    else:
+        return {"Status": "Failure. Missing token!"}, 404
+
+
+@cross_origin()
+@app.route('/notebooks/<auth_token>')
+def get_notebooks_without_items(auth_token):
     if authenticate(auth_token):
         collected_notebooks = []
 
@@ -178,17 +213,11 @@ def get_data(auth_token):
                 collected_notebook = {
                     "id": notebook['doc']["id"],
                     "name": notebook['doc']["name"],
-                    "items": notebook['doc']["items"],
                     "visible": notebook['doc']["visible"]
                 }
                 collected_notebooks.append(collected_notebook)
 
-        result = {"main": collected_notebooks}
-
-        if getsizeof(result) > MAX_DATA_SIZE:
-            return {"message": f"Content too large. Max size is {MAX_DATA_SIZE} bytes"}, 413, {"Access-Control-Allow-Origin": "*"}
-
-        return result
+        return {"main": collected_notebooks}
     else:
         return {"Status": "Failure. Missing token!"}, 404
 

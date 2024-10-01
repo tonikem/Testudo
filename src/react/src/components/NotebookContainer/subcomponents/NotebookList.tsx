@@ -11,7 +11,7 @@ class NotebookList extends React.Component {
                 </h1>
                 <ul className='list-group notebook-list'>
                     {
-                        this.props.getAllData.main.map(function (data: any, index: any) {
+                        this.props.getNotebooks.main.map(function (data: any, index: any) {
                             if (data.visible) {
                                 return <li className='list-group-item notebook-list-item item-active' key={data.id}>
                                     <p>{data.name}</p>
