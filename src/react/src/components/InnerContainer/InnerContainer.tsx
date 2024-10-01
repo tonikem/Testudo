@@ -303,7 +303,7 @@ class InnerContainer extends React.Component {
                                 }
                                 let cookie = getCookie("testudoAuthorization")
 
-                                fetch(`${BaseURL}/files/${cookie}/${data.payload}`, options)
+                                fetch(`${BaseURL}/audio/${cookie}/${data.payload}`, options)
                                     .then(response => {
                                         if (!response.ok) {
                                             throw new Error('Network response was not ok')
@@ -346,7 +346,7 @@ class InnerContainer extends React.Component {
             }
 
             if (audioFiles[id]) {
-                fetch(`${BaseURL}/files/${cookie}/${audioFiles[id]}`, options)
+                fetch(`${BaseURL}/audio/${cookie}/${audioFiles[id]}`, options)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok')
@@ -367,7 +367,7 @@ class InnerContainer extends React.Component {
                 body: binary
             }
 
-            fetch(`${BaseURL}/files/${cookie}/${name}`, options)
+            fetch(`${BaseURL}/audio/${cookie}/${name}`, options)
                 .then(response => {
                     if (response.status == 413) {
                         alert("Data takes more than 12GB space. Please remove something to continue")
@@ -779,7 +779,7 @@ class InnerContainer extends React.Component {
                                                 </p>
                                                 <div className='hidden-element'>
                                                     <audio className='audio' controls="controls" autobuffer="autobuffer">
-                                                        <source src={`${BaseURL}/files/${set_cookie}/${d.payload}`} />
+                                                        <source src={`${BaseURL}/audio/${set_cookie}/${d.payload}`} />
                                                     </audio>
                                                     <div className='text-field'></div>
                                                 </div>
