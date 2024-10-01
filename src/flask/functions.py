@@ -30,6 +30,3 @@ def is_valid_audio(filename):
 
     return False
 
-
-is_valid_audio("./files/6bcaa6e6-c314-4033-9e44-aabbeeeca57b/Slipknot - Psychosocial [OFFICIAL VIDEO] [HD].mp3")
-

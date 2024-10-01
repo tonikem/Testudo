@@ -329,7 +329,7 @@ class InnerContainer extends React.Component {
         }
     }
 
-    onChangeFile(event: any, id: string) {
+    onChangeAudioFile(event: any, id: string) {
         const input = event.target
 
         const reader = new FileReader()
@@ -341,7 +341,7 @@ class InnerContainer extends React.Component {
 
             let cookie = getCookie("testudoAuthorization")
 
-            let options = {
+            /* let options = {
                 method: 'DELETE'
             }
 
@@ -359,9 +359,9 @@ class InnerContainer extends React.Component {
                 .catch(error => {
                     console.error('There was a problem with your fetch operation:', error)
                 })
-            }
+            } */
 
-            options = {
+            const options = {
                 method: 'POST',
                 headers: { 'Connection': 'Keep-Alive' },
                 body: binary
@@ -459,7 +459,7 @@ class InnerContainer extends React.Component {
                 input.style.width = "calc(100% - 220px)"
                 input.classList.add("payload-input")
                 input.style.display = "block"
-                input.addEventListener("change", (e: any) => { this.onChangeFile(e, id) })
+                input.addEventListener("change", (e: any) => { this.onChangeAudioFile(e, id) })
                 break;
             default:
                 if (codeStyle) {
@@ -771,7 +771,7 @@ class InnerContainer extends React.Component {
                                                     <input className='payload-input'
                                                         style={{ display: 'none' }}
                                                         type="file"
-                                                        onChange={(e) => this.onChangeFile(e, d.id)} />
+                                                        onChange={(e) => this.onChangeAudioFile(e, d.id)} />
                                                 </div>
 
                                                 <p className='item-name'>

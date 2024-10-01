@@ -10,6 +10,7 @@ from flask import Flask, render_template, request, send_file
 from flask_cors import CORS, cross_origin
 from functions import check_password, is_valid_audio
 
+
 DATE_FORMAT = "%m/%d/%Y, %H:%M:%S"
 TOKEN_EXPIRATION_TIME = 2630750  # 86400
 MAX_DATA_SIZE = 6000000000  # 6GB
@@ -150,8 +151,6 @@ def delete_file(auth_token, filename):
             return {"Status": "Failure. Missing token!"}, 404
 
         user_id = decoded_token["user_id"]
-
-        print(f'./files/{user_id}/{filename}')
 
         os.remove(f'./files/{user_id}/{filename}')
 
