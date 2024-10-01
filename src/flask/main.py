@@ -179,14 +179,15 @@ def get_notebooks_and_items(auth_token):
 
         for notebook in notebooks_db.all():
             if notebook['doc']['id'] in user['doc']["notebooks"]:
-                if notebook['doc']['visible']:
-                    collected_notebook = {
-                        "id": notebook['doc']["id"],
-                        "name": notebook['doc']["name"],
-                        "items": notebook['doc']["items"],
-                        "visible": notebook['doc']["visible"]
-                    }
-                    collected_notebooks.append(collected_notebook)
+                if 'visible' in notebook['doc'].keys():
+                    if notebook['doc']['visible']:
+                        collected_notebook = {
+                            "id": notebook['doc']["id"],
+                            "name": notebook['doc']["name"],
+                            "items": notebook['doc']["items"],
+                            "visible": notebook['doc']["visible"]
+                        }
+                        collected_notebooks.append(collected_notebook)
 
         result = {"main": collected_notebooks}
 
@@ -216,9 +217,11 @@ def get_notebooks_without_items(auth_token):
             if notebook['doc']['id'] in user['doc']["notebooks"]:
                 collected_notebook = {
                     "id": notebook['doc']["id"],
-                    "name": notebook['doc']["name"],
-                    "visible": notebook['doc']["visible"]
+                    "name": notebook['doc']["name"]
                 }
+                if 'visible' in notebook['doc']:
+                    collected_notebook["visible"] = notebook['doc']["visible"]
+
                 collected_notebooks.append(collected_notebook)
 
         return {"main": collected_notebooks}
