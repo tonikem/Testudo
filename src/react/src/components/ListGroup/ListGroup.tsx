@@ -1,13 +1,13 @@
 import reload from '../../../public/reload.png'
 import bottom from '../../../public/bottom.png'
 import add_notebook from '../../../public/add_notebook.png'
-import notebook from '../public/notebook.png'
 import { uuidv4, sendPutRequest } from '../../methods/AppMethods'
+import { useEffect } from 'react'
 import './style.css'
 
 
 const ListGroup = (props: any) => {
-  const defaultSize = "227"
+  const defaultSize = "255"
 
   function onMouseClickReload() {
     document.getElementById("reload-icon").style["animation-name"] = "spin"
@@ -57,10 +57,11 @@ const ListGroup = (props: any) => {
     sendPutRequest(options)
 
     props.setAllData(allData)
-
-    // Valitaan luotu Notebook
-    //props.onMouseClick("0")
   }
+
+  useEffect(() => {
+    document.getElementById('drag-on-checkbox').checked = true
+  }, [])
 
   return (
     <div className="list">
@@ -74,6 +75,11 @@ const ListGroup = (props: any) => {
         <img id="add-notebook"
           src={add_notebook}
           onClick={onMouseClickAddNotebook} />
+        <label className="switch">
+          <p className='drag-on-text'>Drag on:</p>
+          <input id='drag-on-checkbox' type="checkbox"/>
+          <span className="slider round"></span>
+        </label>
       </div>
       <ul id="list-group" className="list-group">
         {props.children}

@@ -21,6 +21,7 @@ class InnerContainer extends React.Component {
         this.state = {
             dragNote: 0,
             dragOverNote: 0,
+            draggingOn: true,
             file: {}
         }
     }
@@ -339,27 +340,7 @@ class InnerContainer extends React.Component {
 
             const name = input.value.split('\\').pop()
 
-            let cookie = getCookie("testudoAuthorization")
-
-            /* let options = {
-                method: 'DELETE'
-            }
-
-            if (audioFiles[id]) {
-                fetch(`${BaseURL}/audio/${cookie}/${audioFiles[id]}`, options)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok')
-                    }
-                    return response.json()
-                })
-                .then(data => {
-                    console.log('Resource deleted successfully:', data)
-                })
-                .catch(error => {
-                    console.error('There was a problem with your fetch operation:', error)
-                })
-            } */
+            const cookie = getCookie("testudoAuthorization")
 
             const options = {
                 method: 'POST',
@@ -578,7 +559,7 @@ class InnerContainer extends React.Component {
                                         return (
                                             <li id={d.id} key={d.id}
                                                 className="table-item"
-                                                draggable
+                                                draggable={this.state.draggingOn}
                                                 onDragStart={() => this.onDragStart(index)}
                                                 onDragEnter={() => this.onDragEnter(index)}
                                                 onDragEnd={() => this.handleSort(index)}
@@ -649,7 +630,7 @@ class InnerContainer extends React.Component {
                                         return (
                                             <li id={d.id} key={d.id}
                                                 className="table-item"
-                                                draggable
+                                                draggable={this.state.draggingOn}
                                                 onDragStart={() => this.onDragStart(index)}
                                                 onDragEnter={() => this.onDragEnter(index)}
                                                 onDragEnd={() => this.handleSort(index)}
@@ -727,7 +708,7 @@ class InnerContainer extends React.Component {
                                         return (
                                             <li id={d.id} key={d.id}
                                                 className="table-item"
-                                                draggable
+                                                draggable={this.state.draggingOn}
                                                 onDragStart={() => this.onDragStart(index)}
                                                 onDragEnter={() => this.onDragEnter(index)}
                                                 onDragEnd={() => this.handleSort(index)}
@@ -795,7 +776,7 @@ class InnerContainer extends React.Component {
                                         return (
                                             <li id={d.id} key={d.id}
                                                 className="table-item"
-                                                draggable
+                                                draggable={this.state.draggingOn}
                                                 onDragStart={() => this.onDragStart(index)}
                                                 onDragEnter={() => this.onDragEnter(index)}
                                                 onDragEnd={() => this.handleSort(index)}
