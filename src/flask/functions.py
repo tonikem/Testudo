@@ -21,12 +21,7 @@ def check_password(plain_text_password, hashed_password):
 
 def is_valid_audio(filename):
     kind = filetype.guess(filename)
-
-    if kind is None:
-        return False
-
     if kind.mime in AUDIO_MIMES:
         return True
-
     return False
 

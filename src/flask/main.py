@@ -178,7 +178,8 @@ def get_data(auth_token):
                 collected_notebook = {
                     "id": notebook['doc']["id"],
                     "name": notebook['doc']["name"],
-                    "items": notebook['doc']["items"]
+                    "items": notebook['doc']["items"],
+                    "visible": notebook['doc']["visible"]
                 }
                 collected_notebooks.append(collected_notebook)
 

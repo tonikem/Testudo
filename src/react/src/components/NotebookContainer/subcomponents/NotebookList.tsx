@@ -4,15 +4,27 @@ import './style.css'
 
 class NotebookList extends React.Component {
     render() {
-        console.log(this.props.getAllData)
         return (
             <div className='list-container'>
+                <h1 className='list-header'>
+                    Choose the Notebook visibility
+                </h1>
                 <ul className='list-group notebook-list'>
                     {
                         this.props.getAllData.main.map(function (data: any, index: any) {
-                            return <li className='list-group-item notebook-list-item' key={data.id}>
-                                {data.name}
-                            </li>
+                            if (data.visible) {
+                                return <li className='list-group-item notebook-list-item item-active' key={data.id}>
+                                    <p>{data.name}</p>
+                                    <label className="checkbox-container">
+                                        <input type="checkbox" checked={true} />
+                                        <span className="checkmark"></span>
+                                    </label>
+                                </li>
+                            } else {
+                                return <li className='list-group-item notebook-list-item' key={data.id}>
+                                    <p>{data.name}</p>
+                                </li>
+                            }
                         })
                     }
                 </ul>

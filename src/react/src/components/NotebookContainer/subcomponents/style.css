@@ -1,5 +1,6 @@
 .list-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     position: fixed;
@@ -12,6 +13,10 @@
     height: auto;
     width: 100%;
     padding: 34px;
+}
+
+.list-header {
+    margin-bottom: 32px;
 }
 
 .notebook-list {
@@ -30,8 +35,16 @@
     cursor: auto;
 }
 
+.item-active {
+    background-color: #3d4047;
+}
+
 .notebook-list-item:hover {
-    background-color: #2b2d30;
+    background-color: #3d4047;
+}
+
+.checkbox-container {
+    padding-left: 8px;
 }
 
 @media only screen and (max-width: 768px) {
