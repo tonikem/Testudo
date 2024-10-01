@@ -8,7 +8,7 @@ from string_utils.validation import is_full_string
 from sys import getsizeof
 from flask import Flask, render_template, request, send_file
 from flask_cors import CORS, cross_origin
-from functions import check_password
+from functions import check_password, is_valid_mp3
 
 
 DATE_FORMAT = "%m/%d/%Y, %H:%M:%S"
@@ -130,9 +130,11 @@ def save_file(auth_token, filename):
             return {"message": f"Content too large. Max size is {MAX_DIRECTORY_SIZE} bytes"}, 413
 
         with open(folder + filename, "wb") as file:
-            file.write(request.data)
-
-        return {"message": "Successfully saved a file"}, 200, {"Access-Control-Allow-Origin": "*"}
+            if is_valid_mp3(file):
+                file.write(request.data)
+                return {"message": "Successfully saved a file"}, 200, {"Access-Control-Allow-Origin": "*"}
+            else:
+                return {"message": "File is not valid mp3!"}, 403
 
     return {"Status": "Failure. Missing token or filename!"}, 404
 

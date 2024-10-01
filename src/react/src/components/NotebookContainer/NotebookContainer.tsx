@@ -17,7 +17,7 @@ class NotebookContainer extends React.Component {
     }
 
     render() {
-        return <div id="inner-container">
+        return <div className="inner-container">
             <img id="spinner" src={spinner} />
         </div>
     }

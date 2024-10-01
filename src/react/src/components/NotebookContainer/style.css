@@ -1,4 +1,12 @@
-#inner-container {
+.inner-container {
     margin-left: 0;
+    background-color: #1e1f22;
+    border-left: 1px solid black;
+    min-height: 100vh;
+    color: #b4b4b4;
+    text-align: center;
+    align-content: center;
+    margin-right: 3px;
+    margin-top: 54px;
 }
 
