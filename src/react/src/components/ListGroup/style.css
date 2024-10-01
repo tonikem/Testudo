@@ -134,6 +134,10 @@ input:checked+.slider:before {
 }
 
 @media only screen and (max-width: 768px) {
+    .switch {
+        right: -230px;
+    }
+
     #bottom-icon {
         display: block;
         width: 32px;
