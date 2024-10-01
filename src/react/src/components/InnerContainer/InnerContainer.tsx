@@ -373,6 +373,10 @@ class InnerContainer extends React.Component {
                         alert("Data takes more than 12GB space. Please remove something to continue")
                         location.reload()
                     }
+                    if (response.status == 403) {
+                        console.log(response.status)
+                        alert("Uploaded file was not valid audio file!")
+                    }
                     if (!response.ok) {
                         throw new Error('Network response was not ok')
                     }
