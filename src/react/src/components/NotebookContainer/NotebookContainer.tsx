@@ -1,4 +1,5 @@
 import React from 'react'
+import NotebookList from './subcomponents/NotebookList'
 import spinner from '../../../public/spinner.png'
 import './style.css'
 
@@ -6,18 +7,18 @@ import './style.css'
 class NotebookContainer extends React.Component {
     constructor(props: any) {
         super(props)
-        this.state = {
-            dragNote: 0,
-            dragOverNote: 0,
-            file: {}
-        }
+        this.state = {}
     }
 
     componentDidUpdate(prevProps: Readonly<{}>, prevState: Readonly<{}>, snapshot?: any): void {
     }
 
+    componentDidMount(): void {
+    }
+
     render() {
         return <div id="notebook-container">
+            <NotebookList />
             <img id="spinner" src={spinner} />
         </div>
     }
