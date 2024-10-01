@@ -25,11 +25,14 @@ import './App.css'
 
 
 function App() {
+  // Varsinainen data
   const [getAllData, setAllData] = useState({ "main": [] })
   const [showTableItems, setTableItems] = useState([])
 
-  const [getDraggingOn, setDraggingOn] = useState(true)
+  // Drag-on ominaisuus
+  const [getDraggingOn, setDraggingOn] = useState(false)
 
+  // Valittu Notebook ja Folder
   const [showActiveListIndex, setActiveListIndex] = useState(localStorage.getItem("activeList"))
   const [showActiveFolderIndex, setActiveFolderIndex] = useState()
 
@@ -294,10 +297,13 @@ function App() {
         <Route path="/">
           <Header />
           <Panel>
-            <ListGroup setAllData={setAllData}
+            <ListGroup
+              setAllData={setAllData}
               getAllData={getAllData}
               onMouseClick={onMouseClick}
-              setTableItems={setTableItems}>
+              setTableItems={setTableItems}
+              setDraggingOn={setDraggingOn}
+              getDraggingOn={getDraggingOn}>
               {
                 getAllData.main.map(function (data: any, index: any) {
                   if (data && data.items) {

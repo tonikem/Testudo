@@ -60,7 +60,7 @@ const ListGroup = (props: any) => {
   }
 
   useEffect(() => {
-    document.getElementById('drag-on-checkbox').checked = true
+    // ComponentDidMount
   }, [])
 
   return (
@@ -77,7 +77,12 @@ const ListGroup = (props: any) => {
           onClick={onMouseClickAddNotebook} />
         <label className="switch">
           <p className='drag-on-text'>Drag on:</p>
-          <input id='drag-on-checkbox' type="checkbox"/>
+          <input id='drag-on-checkbox'
+            type="checkbox"
+            onChange={(event) => {
+              const oldValue = props.getDraggingOn
+              props.setDraggingOn(!oldValue)
+            }} />
           <span className="slider round"></span>
         </label>
       </div>
