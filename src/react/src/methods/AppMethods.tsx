@@ -1,4 +1,4 @@
-export const BaseURL = "https://localhost:5000"
+export const BaseURL = `${window.location.protocol}//${window.location.hostname}:5000`
 export const DataURL = BaseURL + "/data"
 
 export function uuidv4() {
