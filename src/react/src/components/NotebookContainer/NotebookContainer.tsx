@@ -9,6 +9,9 @@ const NotebookContainer = () => {
     const [getNotebooks, setNotebooks] = useState({main: []})
 
     useEffect(() => {
+        //const notebookSpinner: any = document.getElementById('notebook-spinner')
+        //notebookSpinner.style.display = "block"
+
         let cookie = getCookie("testudoAuthorization")
 
         fetch(`${BaseURL}/notebooks/${cookie}`)
@@ -22,13 +25,15 @@ const NotebookContainer = () => {
                     // Asetetaan koko data
                     setNotebooks(mainData)
                 }
-            })
+            }).finally(() => {
+                //notebookSpinner.style.display = "none"
+              })
       }, [])
 
     return <div id="notebook-container">
     <NotebookList getNotebooks={getNotebooks}
         setNotebooks={setNotebooks}/>
-    <img id="spinner" src={spinner} />
+    <img id="notebook-spinner" src={spinner} />
 </div>
 }
 

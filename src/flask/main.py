@@ -184,9 +184,14 @@ def get_notebooks_and_items(auth_token):
                         collected_notebook = {
                             "id": notebook['doc']["id"],
                             "name": notebook['doc']["name"],
-                            "items": notebook['doc']["items"],
                             "visible": notebook['doc']["visible"]
                         }
+
+                        if 'items' in notebook['doc'].keys():
+                            notebook['items'] = notebook['doc']['items']
+                        else:
+                            notebook['items'] = []
+
                         collected_notebooks.append(collected_notebook)
 
         result = {"main": collected_notebooks}
@@ -221,6 +226,8 @@ def get_notebooks_without_items(auth_token):
                 }
                 if 'visible' in notebook['doc']:
                     collected_notebook["visible"] = notebook['doc']["visible"]
+                else:
+                    collected_notebook["visible"] = False
 
                 collected_notebooks.append(collected_notebook)
 
@@ -238,9 +245,31 @@ def save_new_notebooks(auth_token):
         if decoded_token is None:
             return {"Status": "Failure. Missing token!"}, 404
 
-        user_id = decoded_token["user_id"]
-        user = get_user_by_id(user_id)
-        
+        bare_bone_notebooks = json.loads(request.data)
+
+        for notebook in bare_bone_notebooks['main']:
+            old_notebook = get_notebook_by_id(notebook['id'])
+
+            new_notebook = {
+                'id': notebook['id'],
+                'name': notebook['name'],
+                '_id': old_notebook['doc']['_id'],
+                '_rev': old_notebook['doc']['_rev']
+            }
+
+            if 'items' in old_notebook['doc'].keys():
+                new_notebook['items'] = old_notebook['doc']['items']
+            else:
+                new_notebook['items'] = []
+
+            if 'visible' in notebook.keys():
+                new_notebook['visible'] = notebook['visible']
+            else:
+                new_notebook['visible'] = False
+
+            notebooks_db.save(new_notebook)
+
+        return {"message": "Successfully updated Notebook"}, 200
     else:
         return {"Status": "Failure. Missing token!"}, 404
 
