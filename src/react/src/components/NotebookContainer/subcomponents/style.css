@@ -48,6 +48,13 @@
     padding-left: 8px;
 }
 
+.btn-success {
+    padding-top: 6px;
+    padding-left: 32px;
+    padding-right: 32px;
+    padding-bottom: 6px;
+}
+
 @media only screen and (max-width: 768px) {
     .notebook-list {
         min-width: 0;

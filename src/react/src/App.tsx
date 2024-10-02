@@ -25,6 +25,9 @@ import './App.css'
 
 
 function App() {
+  // Komponentin päivittämiseen
+  const [_, updateApp] = useState()
+
   // Varsinainen data
   const [getAllData, setAllData] = useState({ main: [] })
   const [showTableItems, setTableItems] = useState([])
@@ -301,6 +304,12 @@ function App() {
       })
   }, [])
 
+  /* useEffect(() => {
+		const allData = structuredClone(getAllData)
+    const filteredData = allData.main.filter((notebook) => notebook["visible"] === true)
+    console.log(filteredData)
+	}) */
+
   return (
     <div className="App">
       <Switch>
@@ -316,7 +325,7 @@ function App() {
               getDraggingOn={getDraggingOn}>
               {
                 getAllData.main.map(function (data: any, index: any) {
-                  if (data && data.items) {
+                  if (data && data.items && data.visible) {
                     if (index == showActiveListIndex) {
                       return (
                         <li id={data.id} key={data.id} className="list-group-item active-item">

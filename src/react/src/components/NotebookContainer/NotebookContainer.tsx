@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import NotebookList from './subcomponents/NotebookList'
 import spinner from '../../../public/spinner.png'
 import './style.css'
 import { BaseURL, getCookie } from '../../methods/AppMethods'
 
 
-const NotebookContainer = () => {
+const NotebookContainer = (props: any) => {
     const [getNotebooks, setNotebooks] = useState({ main: [] })
 
     useEffect(() => {
@@ -35,7 +35,8 @@ const NotebookContainer = () => {
     }, [])
 
     return <div id="notebook-container">
-        <NotebookList getNotebooks={getNotebooks}
+        <NotebookList
+            getNotebooks={getNotebooks}
             setNotebooks={setNotebooks} />
         <img id="notebook-spinner" src={spinner} />
     </div>

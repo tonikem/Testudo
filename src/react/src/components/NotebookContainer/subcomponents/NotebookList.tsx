@@ -1,6 +1,7 @@
+import { BaseURL, getCookie } from '../../../methods/AppMethods'
 import React from 'react'
 import './style.css'
-import { BaseURL, getCookie } from '../../../methods/AppMethods'
+
 
 
 class NotebookList extends React.Component {
@@ -45,6 +46,10 @@ class NotebookList extends React.Component {
         }
     }
 
+    onSaveClick = (event: any) => {
+        location.reload()
+    }
+
     render() {
         return (
             <div className='list-container'>
@@ -76,6 +81,9 @@ class NotebookList extends React.Component {
                         })
                     }
                 </ul>
+                <button type="button" className="btn btn-success" onClick={this.onSaveClick}>
+                    Save
+                </button>
             </div>
         )
     }

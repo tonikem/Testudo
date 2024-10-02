@@ -24,17 +24,15 @@ function Header() {
                     </div>
                     <ul className="nav navbar-nav">
                         <img src={logo}
-                             alt="Logo"
-                             className="main-logo"
-                             onClick={onMouseClick}/>
-                        
+                            alt="Logo"
+                            className="main-logo"
+                            onClick={onMouseClick} />
+
                         <li>
                             <Link href="/">Home</Link>
-                            {/* <a href="/">Home</a> */}
-                            </li>
+                        </li>
                         <li>
                             <Link href="/notebooks">Notebooks</Link>
-                            {/* <a href="/notebooks">Notebooks</a> */}
                         </li>
                     </ul>
                 </div>
