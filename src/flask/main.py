@@ -361,7 +361,7 @@ def delete_data(auth_token):
 
 
 if __name__ == "__main__":
-    # context = ('local.crt', 'local.key')
-    app.run(host='0.0.0.0', port=5000, debug=True, ssl_context='adhoc')
+    # context = ('./ssl/cert.pem', './ssl/key.pem')
+    app.run(host='0.0.0.0', port=5000, debug=True)  # ssl_context=context
 
 
