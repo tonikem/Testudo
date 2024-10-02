@@ -17,14 +17,7 @@ class NotebookList extends React.Component {
         for (let i = 0; i < notebooks.main.length; ++i) {
 
             if (notebooks.main[i].id == data.id) {
-
-                const visible = notebooks.main[i]['visible']
-
-                if (visible) {
-                    notebooks.main[i]['visible'] = false
-                } else {
-                    notebooks.main[i]['visible'] = true
-                }
+                const visible = e.target.checked
 
                 this.props.setNotebooks(notebooks)
 
