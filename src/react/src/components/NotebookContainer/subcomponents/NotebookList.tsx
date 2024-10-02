@@ -81,7 +81,7 @@ class NotebookList extends React.Component {
                         })
                     }
                 </ul>
-                <button type="button" className="btn btn-success" onClick={this.onSaveClick}>
+                <button id="save-notebooks-btn" type="button" className="btn btn-success" onClick={this.onSaveClick}>
                     Save
                 </button>
             </div>

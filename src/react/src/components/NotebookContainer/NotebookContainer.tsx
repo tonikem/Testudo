@@ -1,18 +1,17 @@
 import { useEffect, useState } from 'react'
 import NotebookList from './subcomponents/NotebookList'
 import spinner from '../../../public/spinner.png'
-import './style.css'
 import { BaseURL, getCookie } from '../../methods/AppMethods'
+import './style.css'
+
 
 
 const NotebookContainer = (props: any) => {
     const [getNotebooks, setNotebooks] = useState({ main: [] })
 
     useEffect(() => {
-        const notebookSpinner: any = document.getElementById('notebook-spinner')
-        if (notebookSpinner) {
-            notebookSpinner.style.display = "block"
-        }
+        const notebookSpinner = document.getElementById('notebook-spinner')
+        notebookSpinner.style.display = "block"
 
         let cookie = getCookie("testudoAuthorization")
 
@@ -27,10 +26,10 @@ const NotebookContainer = (props: any) => {
                     // Asetetaan koko data
                     setNotebooks(mainData)
                 }
+                notebookSpinner.style.display = "none"
             }).finally(() => {
-                if (notebookSpinner) {
-                    notebookSpinner.style.display = "none"
-                }
+                const saveNotebooksBtn = document.getElementById('save-notebooks-btn')
+                saveNotebooksBtn.style.display = "block"
             })
     }, [])
 

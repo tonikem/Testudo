@@ -55,6 +55,10 @@
     padding-bottom: 6px;
 }
 
+#save-notebooks-btn {
+    display: none;
+}
+
 @media only screen and (max-width: 768px) {
     .notebook-list {
         min-width: 0;

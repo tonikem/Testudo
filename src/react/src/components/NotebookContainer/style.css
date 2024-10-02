@@ -10,3 +10,22 @@
     margin-top: 54px;
 }
 
+#notebook-spinner {
+    position: absolute;
+    display: none;
+    top: 440px;
+    left: calc(100vw - 560px);
+    animation-name: spin;
+    animation-duration: 4000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear; 
+}
+  
+  @keyframes spin {
+      from {
+          transform:rotate(0deg);
+      }
+      to {
+          transform:rotate(360deg);
+      }
+  }
