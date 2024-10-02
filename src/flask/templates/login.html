@@ -36,7 +36,7 @@
     var username = document.getElementById('inputUser').value;
     var password = document.getElementById('inputPassword').value;
 
-    fetch("http://192.168.1.60:5000/login", {
+    fetch(`http://${window.location.hostname}:5000/login`, {
       method: "POST",
       body: JSON.stringify({
         "username": username,
