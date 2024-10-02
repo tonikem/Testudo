@@ -6,11 +6,13 @@ import { BaseURL, getCookie } from '../../methods/AppMethods'
 
 
 const NotebookContainer = () => {
-    const [getNotebooks, setNotebooks] = useState({main: []})
+    const [getNotebooks, setNotebooks] = useState({ main: [] })
 
     useEffect(() => {
-        //const notebookSpinner: any = document.getElementById('notebook-spinner')
-        //notebookSpinner.style.display = "block"
+        const notebookSpinner: any = document.getElementById('notebook-spinner')
+        if (notebookSpinner) {
+            notebookSpinner.style.display = "block"
+        }
 
         let cookie = getCookie("testudoAuthorization")
 
@@ -26,15 +28,17 @@ const NotebookContainer = () => {
                     setNotebooks(mainData)
                 }
             }).finally(() => {
-                //notebookSpinner.style.display = "none"
-              })
-      }, [])
+                if (notebookSpinner) {
+                    notebookSpinner.style.display = "none"
+                }
+            })
+    }, [])
 
     return <div id="notebook-container">
-    <NotebookList getNotebooks={getNotebooks}
-        setNotebooks={setNotebooks}/>
-    <img id="notebook-spinner" src={spinner} />
-</div>
+        <NotebookList getNotebooks={getNotebooks}
+            setNotebooks={setNotebooks} />
+        <img id="notebook-spinner" src={spinner} />
+    </div>
 }
 
 

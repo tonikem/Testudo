@@ -276,7 +276,10 @@ function App() {
 
   useEffect(() => {
     const spinner = document.getElementById('spinner')
-    spinner.style.display = "block"
+
+    if (spinner) {
+      spinner.style.display = "block"
+    }
 
     let cookie = getCookie("testudoAuthorization")
 
@@ -292,7 +295,9 @@ function App() {
           setAllData(mainData)
         }
       }).finally(() => {
-        spinner.style.display = "none"
+        if (spinner) {
+          spinner.style.display = "none"
+        }
       })
   }, [])
 
@@ -428,7 +433,7 @@ function App() {
             setTableItems={setTableItems}
             setAllData={setAllData}
             getDraggingOn={getDraggingOn}
-            setDraggingOn={setDraggingOn}/>
+            setDraggingOn={setDraggingOn} />
         </Route>
         <Route path="/notebooks">
           <Header />
