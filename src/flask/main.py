@@ -341,9 +341,14 @@ def update_data(auth_token):
                     '_id': found_notebook['doc']['_id'],
                     '_rev': found_notebook['doc']['_rev'],
                     'id': notebook['id'],
-                    'items': notebook['items'],
                     'name': notebook['name']
                 }
+
+                if 'items' in notebook.keys():
+                    notebook_to_be_saved['items'] = notebook['items']
+                else:
+                    notebook_to_be_saved['items'] = []
+
                 notebooks_db.save(notebook_to_be_saved)
 
         if new_notebooks_found:

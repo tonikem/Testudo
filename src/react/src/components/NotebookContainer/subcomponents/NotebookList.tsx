@@ -1,5 +1,5 @@
 import add_notebook from '../../../../public/add_notebook.png'
-import { BaseURL, getCookie, uuidv4 } from '../../../methods/AppMethods'
+import { BaseURL, getCookie, sendPutRequest, uuidv4 } from '../../../methods/AppMethods'
 import React from 'react'
 import './style.css'
 
@@ -78,8 +78,9 @@ class NotebookList extends React.Component {
 
         console.log(allData)
 
-        //sendPutRequest(options)
+        sendPutRequest(options)
         this.props.setAllData(allData)
+        this.props.setNotebooks(allData)
     }
 
     render() {
@@ -92,20 +93,18 @@ class NotebookList extends React.Component {
                     {
                         this.props.getNotebooks.main.map((data: any, index: any) => {
                             if (data.visible) {
-                                return <li className='list-group-item notebook-list-item item-active' key={data.id}
-                                    onClick={(e) => this.onCheckboxClick(e, data)}>
+                                return <li className='list-group-item notebook-list-item item-active' key={data.id}>
                                     <p>{data.name}</p>
                                     <label className="checkbox-container">
-                                        <input type="checkbox" checked={true} onClick={(e) => this.onCheckboxClick(e, data)} />
+                                        <input type="checkbox" defaultChecked={true} onClick={(e) => this.onCheckboxClick(e, data)} />
                                         <span className="checkmark"></span>
                                     </label>
                                 </li>
                             } else {
-                                return <li className='list-group-item notebook-list-item' key={data.id}
-                                    onClick={(e) => this.onCheckboxClick(e, data)}>
+                                return <li className='list-group-item notebook-list-item' key={data.id}>
                                     <p>{data.name}</p>
                                     <label className="checkbox-container">
-                                        <input type="checkbox" checked={false} onClick={(e) => this.onCheckboxClick(e, data)} />
+                                        <input type="checkbox" defaultChecked={false} onClick={(e) => this.onCheckboxClick(e, data)} />
                                         <span className="checkmark"></span>
                                     </label>
                                 </li>
