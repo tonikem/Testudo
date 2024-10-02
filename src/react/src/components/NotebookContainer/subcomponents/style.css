@@ -59,6 +59,13 @@
     display: none;
 }
 
+#add-notebook-to-list {
+    display: none;
+    width: 46px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
 @media only screen and (max-width: 768px) {
     .notebook-list {
         min-width: 0;

@@ -28,13 +28,16 @@ const NotebookContainer = (props: any) => {
                 }
                 notebookSpinner.style.display = "none"
             }).finally(() => {
+                const addNotebookToList = document.getElementById('add-notebook-to-list')
                 const saveNotebooksBtn = document.getElementById('save-notebooks-btn')
+                addNotebookToList.style.display = "block"
                 saveNotebooksBtn.style.display = "block"
             })
     }, [])
 
     return <div id="notebook-container">
         <NotebookList
+            setAllData={props.setAllData}
             getNotebooks={getNotebooks}
             setNotebooks={setNotebooks} />
         <img id="notebook-spinner" src={spinner} />

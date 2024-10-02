@@ -1,4 +1,5 @@
-import { BaseURL, getCookie } from '../../../methods/AppMethods'
+import add_notebook from '../../../../public/add_notebook.png'
+import { BaseURL, getCookie, uuidv4 } from '../../../methods/AppMethods'
 import React from 'react'
 import './style.css'
 
@@ -50,6 +51,37 @@ class NotebookList extends React.Component {
         location.reload()
     }
 
+    onMouseClickAddNotebook = () => {
+        const allData = structuredClone(this.props.getNotebooks)
+        const name = window.prompt("Notebook name", "")
+    
+        if (name === null || name.trim().length === 0) {
+          return alert("Name cannot be empty")
+        }
+    
+        const newNotebook = {
+          "id": uuidv4(),
+          "items": [],
+          "name": name,
+          'visible': true
+        }
+    
+        allData.main.unshift(newNotebook)
+    
+        const options = {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(allData)
+        }
+
+        console.log(allData)
+
+        //sendPutRequest(options)
+        this.props.setAllData(allData)
+    }
+
     render() {
         return (
             <div className='list-container'>
@@ -81,6 +113,9 @@ class NotebookList extends React.Component {
                         })
                     }
                 </ul>
+                <img id="add-notebook-to-list"
+                    src={add_notebook}
+                    onClick={this.onMouseClickAddNotebook} />
                 <button id="save-notebooks-btn" type="button" className="btn btn-success" onClick={this.onSaveClick}>
                     Save
                 </button>

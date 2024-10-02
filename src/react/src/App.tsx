@@ -446,7 +446,7 @@ function App() {
         </Route>
         <Route path="/notebooks">
           <Header />
-          <NotebookContainer />
+          <NotebookContainer setAllData={setAllData}/>
         </Route>
       </Switch>
     </div>
