@@ -230,6 +230,22 @@ def get_notebooks_without_items(auth_token):
 
 
 @cross_origin()
+@app.route('/notebooks/<auth_token>', methods=['PUT'])
+def save_new_notebooks(auth_token):
+    if authenticate(auth_token):
+        decoded_token = decode_token(auth_token)
+
+        if decoded_token is None:
+            return {"Status": "Failure. Missing token!"}, 404
+
+        user_id = decoded_token["user_id"]
+        user = get_user_by_id(user_id)
+        
+    else:
+        return {"Status": "Failure. Missing token!"}, 404
+
+
+@cross_origin()
 @app.route('/login', methods=["POST"])
 def login_to_user():
     try:

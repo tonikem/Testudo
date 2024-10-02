@@ -427,7 +427,7 @@ function App() {
         </Route>
         <Route path="/notebooks">
           <Header />
-          <NotebookContainer getAllData={getAllData}/>
+          <NotebookContainer />
         </Route>
       </Switch>
     </div>
