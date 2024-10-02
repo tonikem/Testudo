@@ -17,7 +17,6 @@ export function getCookie(name: string) {
 }
 
 export function onMouseClickTable(d: any, i: any) {
-    console.log(d, i)
     const table: any = document.getElementById(d.id)
 
     if (table) {

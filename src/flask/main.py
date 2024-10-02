@@ -91,7 +91,7 @@ def index():
 
 @cross_origin()
 @app.route('/audio/<auth_token>/<filename>')
-def get_files(auth_token, filename):
+def get_audio_files(auth_token, filename):
     if authenticate(auth_token) and is_full_string(filename) and filename != 'undefined':
         decoded_token = decode_token(auth_token)
 
@@ -107,7 +107,7 @@ def get_files(auth_token, filename):
 
 @cross_origin()
 @app.route('/audio/<auth_token>/<filename>', methods=["POST"])
-def save_file(auth_token, filename):
+def save_audio_file(auth_token, filename):
     if authenticate(auth_token) and is_full_string(filename) and filename != 'undefined':
         decoded_token = decode_token(auth_token)
 
@@ -147,7 +147,7 @@ def save_file(auth_token, filename):
 
 @cross_origin()
 @app.route('/audio/<auth_token>/<filename>', methods=['GET', 'DELETE'])
-def delete_file(auth_token, filename):
+def delete_audio_file(auth_token, filename):
     if authenticate(auth_token) and is_full_string(filename) and filename != 'undefined':
         decoded_token = decode_token(auth_token)
 
@@ -184,7 +184,8 @@ def get_notebooks_and_items(auth_token):
                         collected_notebook = {
                             "id": notebook['doc']["id"],
                             "name": notebook['doc']["name"],
-                            "visible": notebook['doc']["visible"]
+                            "visible": notebook['doc']["visible"],
+                            "items": notebook['doc']["items"]
                         }
 
                         if 'items' in notebook['doc'].keys():
@@ -192,7 +193,8 @@ def get_notebooks_and_items(auth_token):
                         else:
                             notebook['items'] = []
 
-                        collected_notebooks.append(collected_notebook)
+                        if collected_notebook['visible']:
+                            collected_notebooks.append(collected_notebook)
 
         result = {"main": collected_notebooks}
 
@@ -334,6 +336,7 @@ def update_data(auth_token):
                 notebooks_db.save(notebook)
             else:
                 found_notebook = get_notebook_by_id(notebook['id'])
+
                 notebook_to_be_saved = {
                     '_id': found_notebook['doc']['_id'],
                     '_rev': found_notebook['doc']['_rev'],

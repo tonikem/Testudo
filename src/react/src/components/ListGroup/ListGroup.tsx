@@ -42,7 +42,8 @@ const ListGroup = (props: any) => {
     const newNotebook = {
       "id": uuidv4(),
       "items": [],
-      "name": name
+      "name": name,
+      'visible': true
     }
 
     allData.main.unshift(newNotebook)

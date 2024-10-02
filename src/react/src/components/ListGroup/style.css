@@ -17,9 +17,10 @@
 
 .drag-on-text {
     position: relative;
-    margin-top: 4px;
+    margin-top: -8px;
     left: -70px;
     float: left;
+    font-size: medium;
 }
 
 /* Hide default HTML checkbox */
