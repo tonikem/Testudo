@@ -217,8 +217,7 @@ function App() {
         const newItem = {
           "name": result,
           "id": uuidv4(),
-          "items": [],
-          "visible": true
+          "items": []
         }
 
         if (notebook.items) {

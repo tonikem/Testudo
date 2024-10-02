@@ -847,7 +847,7 @@ class InnerContainer extends React.Component {
                 </div>
             )
         } else {
-            if (this.props.data && this.props.showActiveFolderIndex) {
+            if (this.props.data) {
                 return (
                     <div id="inner-container" style={this.initialStyle}>
                         <img id="spinner" src={spinner} />

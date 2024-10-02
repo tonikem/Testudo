@@ -79,7 +79,7 @@ class NotebookList extends React.Component {
         console.log(allData)
 
         sendPutRequest(options)
-        this.props.setAllData(allData)
+        //this.props.setAllData(allData)
         this.props.setNotebooks(allData)
     }
 
