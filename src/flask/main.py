@@ -84,10 +84,6 @@ def index():
         if authenticate(auth_token):
             return render_template("index.html")
 
-    # Kirjautuminen mobiililaitteita varten
-    if authenticate(request.args.get('cookie')):
-        return render_template("index.html")
-
     return render_template('login.html')
 
 
@@ -182,21 +178,20 @@ def get_notebooks_and_items(auth_token):
         for notebook in notebooks_db.all():
             if notebook['doc']['id'] in user['doc']["notebooks"]:
                 if 'visible' in notebook['doc'].keys():
-                    if notebook['doc']['visible']:
-                        collected_notebook = {
-                            "id": notebook['doc']["id"],
-                            "name": notebook['doc']["name"],
-                            "visible": notebook['doc']["visible"],
-                            "items": notebook['doc']["items"]
-                        }
+                    collected_notebook = {
+                        "id": notebook['doc']["id"],
+                        "name": notebook['doc']["name"],
+                        "visible": notebook['doc']["visible"],
+                        "items": notebook['doc']["items"]
+                    }
 
-                        if 'items' in notebook['doc'].keys():
-                            notebook['items'] = notebook['doc']['items']
-                        else:
-                            notebook['items'] = []
+                    if 'items' in notebook['doc'].keys():
+                        notebook['items'] = notebook['doc']['items']
+                    else:
+                        notebook['items'] = []
 
-                        if collected_notebook['visible']:
-                            collected_notebooks.append(collected_notebook)
+                    if collected_notebook['visible']:
+                        collected_notebooks.append(collected_notebook)
 
         result = {"main": collected_notebooks}
 
