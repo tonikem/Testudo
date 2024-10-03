@@ -22,6 +22,7 @@ import {
   sendDeleteRequest
 } from './methods/AppMethods'
 import './App.css'
+import AllContainer from './components/AllContainer/AllContainer'
 
 
 function App() {
@@ -303,16 +304,14 @@ function App() {
       })
   }, [])
 
-  /* useEffect(() => {
-		const allData = structuredClone(getAllData)
-    const filteredData = allData.main.filter((notebook) => notebook["visible"] === true)
-    console.log(filteredData)
-	}) */
-
   return (
     <div className="App">
       <Switch>
-        <Route path="/">
+      <Route path="/">
+        <Header />
+        <AllContainer />
+      </Route>
+        <Route path="/Home">
           <Header />
           <Panel>
             <ListGroup

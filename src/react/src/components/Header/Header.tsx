@@ -29,7 +29,10 @@ function Header() {
                             onClick={onMouseClick} />
 
                         <li>
-                            <Link href="/">Home</Link>
+                            <Link href="/">All</Link>
+                        </li>
+                        <li>
+                            <Link href="/home">Home</Link>
                         </li>
                         <li>
                             <Link href="/notebooks">Notebooks</Link>
