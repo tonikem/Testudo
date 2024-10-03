@@ -1,6 +1,7 @@
 import os
 import jwt
 import json
+import uuid
 import datetime
 import pycouchdb
 from pathlib import Path
@@ -179,6 +180,7 @@ def get_notebooks_and_items(auth_token):
             if notebook['doc']['id'] in user['doc']["notebooks"]:
                 if 'visible' in notebook['doc'].keys() and notebook['doc']["visible"]:
                     collected_notebook = {
+                        '_id': notebook['doc']["_id"],
                         "id": notebook['doc']["id"],
                         "name": notebook['doc']["name"],
                         "visible": notebook['doc']["visible"],
@@ -246,7 +248,6 @@ def save_new_notebooks(auth_token):
         bare_bone_notebooks = json.loads(request.data)
 
         for notebook in bare_bone_notebooks['main']:
-            print(notebook)
             old_notebook = get_notebook_by_id(notebook['id'])
 
             new_notebook = {
@@ -327,6 +328,13 @@ def update_data(auth_token):
         notebooks = user['doc']['notebooks']
 
         for notebook in data["main"]:
+            # Luodaan uudet UUID-arvot
+            for item in notebook["items"]:
+                item['id'] = str(uuid.uuid4())
+                if 'content' in item.keys():
+                    for content in item['content']:
+                        content['id'] = str(uuid.uuid4())
+
             if notebook['id'] not in notebooks:
                 new_notebooks_found = True
                 notebooks.insert(0, notebook['id'])

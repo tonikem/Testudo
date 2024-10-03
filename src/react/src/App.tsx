@@ -58,7 +58,7 @@ function App() {
   }
 
   function endEditing(data: any, index: any) {
-    const li = document.getElementById(data.id)
+    const li = document.getElementById(data._id)
 
     const notebookInput = li.getElementsByClassName('notebook-input')[0]
     notebookInput.style.display = "none"
@@ -77,7 +77,7 @@ function App() {
     let allData = structuredClone(getAllData)
 
     for (let i = 0; i < allData.main.length; ++i) {
-      if (data.id === allData.main[i].id) {
+      if (data._id === allData.main[i].id) {
 
         allData.main[i].name = newName
 
@@ -328,7 +328,7 @@ function App() {
                   if (data && data.items && data.visible) {
                     if (index == showActiveListIndex) {
                       return (
-                        <li id={data.id} key={data.id} className="list-group-item active-item">
+                        <li id={data._id} key={data._id} className="list-group-item active-item">
                           <div className="notebook-icon">
                             <div className='data-name-div'>
                               <img src={notebook} alt="Notebook-icon" />
@@ -360,7 +360,7 @@ function App() {
                                       <input className='folder-input' />
 
                                       <img className='trash-icon' src={trash}
-                                        onClick={() => onClickTrashIcon(data.id, d.id)} />
+                                        onClick={() => onClickTrashIcon(data._id, d.id)} />
                                       <img className='edit-folder-icon' src={edit}
                                         onClick={() => onFolderEditClick(d.id)} />
                                       <img className='save-folder-icon' src={save}
@@ -385,7 +385,7 @@ function App() {
                                     <input className='folder-input' />
 
                                     <img className='trash-icon' src={trash}
-                                      onClick={() => onClickTrashIcon(data.id, d.id)} />
+                                      onClick={() => onClickTrashIcon(data._id, d.id)} />
                                     <img className='edit-folder-icon' src={edit}
                                       onClick={() => onFolderEditClick(d.id)} />
                                     <img className='save-folder-icon' src={save}
@@ -398,20 +398,20 @@ function App() {
                           <div className='buttons'>
                             <img className='pencil-button'
                               src={pencil}
-                              onClick={() => onNotebookEditClick(data.id)} />
+                              onClick={() => onNotebookEditClick(data._id)} />
                             <img className='plus-sign'
                               src={plus}
-                              onClick={() => onAddClick(data.id)} />
+                              onClick={() => onAddClick(data._id)} />
                             <img className='remove-button'
                               src={remove}
-                              onClick={() => onRemoveClick(data.id)} />
+                              onClick={() => onRemoveClick(data._id)} />
                           </div>
                         </li>
                       )
                     }
                     else {
                       return (
-                        <li id={data.id} key={data.id}
+                        <li id={data._id} key={data._id}
                           onClick={() => onMouseClick(index)} className="list-group-item">
                           <div className="notebook-icon">
                             <div className='data-name-div'>

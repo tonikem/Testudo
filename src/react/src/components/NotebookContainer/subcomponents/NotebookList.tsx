@@ -15,7 +15,7 @@ class NotebookList extends React.Component {
         const notebooks: any = structuredClone(this.props.getNotebooks)
 
         for (let i = 0; i < notebooks.main.length; ++i) {
-            if (notebooks.main[i].id == data.id) {
+            if (notebooks.main[i].id == data._id) {
                 notebooks.main[i].visible = e.target.checked
 
                 this.props.setNotebooks(notebooks)
@@ -87,7 +87,7 @@ class NotebookList extends React.Component {
                     {
                         this.props.getNotebooks.main.map((data: any, index: any) => {
                             if (data.visible) {
-                                return <li className='list-group-item notebook-list-item item-active' key={data.id}>
+                                return <li className='list-group-item notebook-list-item item-active' key={data._id}>
                                     <p>{data.name}</p>
                                     <label className="checkbox-container">
                                         <input type="checkbox" defaultChecked={true} onClick={(e) => this.onCheckboxClick(e, data)} />
@@ -95,7 +95,7 @@ class NotebookList extends React.Component {
                                     </label>
                                 </li>
                             } else {
-                                return <li className='list-group-item notebook-list-item' key={data.id}>
+                                return <li className='list-group-item notebook-list-item' key={data._id}>
                                     <p>{data.name}</p>
                                     <label className="checkbox-container">
                                         <input type="checkbox" defaultChecked={false} onClick={(e) => this.onCheckboxClick(e, data)} />
