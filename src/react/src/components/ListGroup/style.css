@@ -134,6 +134,15 @@ input:checked+.slider:before {
     background-color: #3d4047;
 }
 
+#hamburger-icon {
+    display: none
+}
+
+#hamburger-menu {
+    display: none;
+    height: 0;
+}
+
 @media only screen and (max-width: 768px) {
     .switch {
         display: none;
@@ -154,6 +163,28 @@ input:checked+.slider:before {
 
     #reload-icon {
         display: none;
+    }
+
+    #hamburger-icon {
+        display: block;
+        margin-top: -2px;
+        margin-left: 20px;
+    }
+
+    #hamburger-menu {
+        display: block;
+        height: 0;
+        overflow: hidden;
+    }
+    
+    .flex-container {
+        display: flex;
+        flex-direction: row;
+        padding: 12px;
+    }
+
+    .link-item {
+        margin-left: 24px;
     }
 
     .list-header {

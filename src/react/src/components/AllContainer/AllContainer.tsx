@@ -11,7 +11,6 @@ class InnerContainer extends React.Component {
     render() {
         return (
             <div className="all-container">
-                Moikka
             </div>
         )
     }

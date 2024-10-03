@@ -1,7 +1,12 @@
 .all-container {
     background-color: #1e1f22;
-    /* border: 2px solid blue; */
     width: 100vw;
     height: 100vh;
 }
 
+@media only screen and (max-width: 768px) {
+    .all-container {
+        position: relative;
+        top: 0;
+    }
+}

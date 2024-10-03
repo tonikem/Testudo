@@ -36,10 +36,19 @@
     .main-logo {
         display: none
     }
-    .navbar-header {
-        display: none;
+    
+    .container-fluid {
+        display: flex;
+        flex-direction: row;
     }
-    .main-header {
-        display: none;
+
+    .navbar-header {
+        display: flex;
+    }
+
+    .ul-navbar {
+        display: flex;
+        flex-direction: row;
+        margin-left: 24px;
     }
 }

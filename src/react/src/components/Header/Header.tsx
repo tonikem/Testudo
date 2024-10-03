@@ -23,7 +23,7 @@ function Header() {
                             <b>Testudo</b>
                         </a>
                     </div>
-                    <ul className="nav navbar-nav">
+                    <ul className="nav navbar-nav ul-navbar">
                         <img src={logo}
                             alt="Logo"
                             className="main-logo"

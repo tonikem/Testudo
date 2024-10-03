@@ -72,4 +72,8 @@
     .notebook-list {
         min-width: 0;
     }
+    .list-container {
+        position: relative;
+        top: 0;
+    }
   }
