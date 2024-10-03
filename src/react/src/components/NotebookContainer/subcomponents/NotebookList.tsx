@@ -26,7 +26,7 @@ class NotebookList extends React.Component {
     }
 
     onSaveClick = (e: any) => {
-        const notebooks: any = { ...this.props.getNotebooks }
+        const notebooks: any = structuredClone(this.props.getNotebooks)
 
         const cookie = getCookie("testudoAuthorization")
 

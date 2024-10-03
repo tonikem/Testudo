@@ -246,6 +246,7 @@ def save_new_notebooks(auth_token):
         bare_bone_notebooks = json.loads(request.data)
 
         for notebook in bare_bone_notebooks['main']:
+            print(notebook)
             old_notebook = get_notebook_by_id(notebook['id'])
 
             new_notebook = {
@@ -260,8 +261,8 @@ def save_new_notebooks(auth_token):
             else:
                 new_notebook['items'] = []
 
-            if 'visible' in old_notebook['doc'].keys():
-                new_notebook['visible'] = old_notebook['doc']['visible']
+            if 'visible' in notebook.keys():
+                new_notebook['visible'] = notebook['visible']
             else:
                 new_notebook['visible'] = False
 
@@ -349,8 +350,6 @@ def update_data(auth_token):
                     new_notebook['visible'] = notebook['visible']
                 else:
                     new_notebook['visible'] = False
-
-                print(new_notebook)
 
                 notebooks_db.save(new_notebook)
 
