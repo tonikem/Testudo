@@ -350,7 +350,7 @@ class InnerContainer extends React.Component {
             fetch(`${BaseURL}/audio/${cookie}/${name}`, options)
                 .then(response => {
                     if (response.status == 413) {
-                        alert("Data takes more than 12GB space. Please remove something to continue")
+                        alert(response['message'])
                         location.reload()
                     }
                     if (response.status == 403) {

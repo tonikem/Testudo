@@ -47,7 +47,7 @@ export function sendPutRequest(options: any) {
     fetch(`${DataURL}/${cookie}`, options)
     .then(response => {
         if (response.status == 413) {
-            alert("Data takes more memory than 6GB. Disable Notebooks or delete items.")
+            alert(response['message'])
             location.reload()
         }
         if (!response.ok) {
