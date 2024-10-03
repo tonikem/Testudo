@@ -341,14 +341,16 @@ def update_data(auth_token):
                 }
 
                 if 'items' in found_notebook['doc'].keys():
-                    new_notebook['items'] = found_notebook['doc']['items']
+                    new_notebook['items'] = notebook['items']
                 else:
                     new_notebook['items'] = []
 
                 if 'visible' in found_notebook['doc'].keys():
-                    new_notebook['visible'] = found_notebook['doc']['visible']
+                    new_notebook['visible'] = notebook['visible']
                 else:
                     new_notebook['visible'] = False
+
+                print(new_notebook)
 
                 notebooks_db.save(new_notebook)
 

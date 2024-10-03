@@ -490,8 +490,6 @@ class InnerContainer extends React.Component {
             }]
         }
 
-        console.log(allData.main[showActiveListIndex])
-
         if (items) {
             for (let i = 0; i < items.length; ++i) {
                 if (items[i].id == data.id) {
