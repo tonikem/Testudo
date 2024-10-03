@@ -12,61 +12,62 @@ class NotebookList extends React.Component {
     }
 
     onCheckboxClick = (e: any, data: any) => {
-        const notebooks: any = { ...this.props.getNotebooks }
+        const notebooks: any = structuredClone(this.props.getNotebooks)
 
         for (let i = 0; i < notebooks.main.length; ++i) {
-
             if (notebooks.main[i].id == data.id) {
-                const visible = e.target.checked
+                notebooks.main[i].visible = e.target.checked
 
                 this.props.setNotebooks(notebooks)
 
-                const cookie = getCookie("testudoAuthorization")
-
-                const options = {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(notebooks)
-                }
-
-                fetch(`${BaseURL}/notebooks/${cookie}`, options)
-                    .then(res => res.json())
-                    .then(response => {
-                        console.log(response)
-                    })
-
-                return // Lopetetaan looppaaminen
+                return  // Lopetetaan looppi
             }
         }
     }
 
-    onSaveClick = (event: any) => {
-        location.reload()
+    onSaveClick = (e: any) => {
+        const notebooks: any = { ...this.props.getNotebooks }
+
+        const cookie = getCookie("testudoAuthorization")
+
+        const options = {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(notebooks)
+        }
+
+        fetch(`${BaseURL}/notebooks/${cookie}`, options)
+            .then(res => res.json())
+            .then(response => {
+                console.log(response)
+            }).finally(() => {
+                location.reload()
+            })
     }
 
     onMouseClickAddNotebook = () => {
         const allData = structuredClone(this.props.getNotebooks)
         const name = window.prompt("Notebook name", "")
-    
+
         if (name === null || name.trim().length === 0) {
-          return alert("Name cannot be empty")
+            return alert("Name cannot be empty")
         }
-    
+
         const newNotebook = {
-          "id": uuidv4(),
-          "items": [],
-          "name": name,
-          'visible': true
+            "id": uuidv4(),
+            "items": [],
+            "name": name,
+            'visible': true
         }
-    
+
         allData.main.unshift(newNotebook)
-    
+
         const options = {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(allData)
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(allData)
         }
 
         console.log(allData)
@@ -108,7 +109,7 @@ class NotebookList extends React.Component {
                 <img id="add-notebook-to-list"
                     src={add_notebook}
                     onClick={this.onMouseClickAddNotebook} />
-                <button id="save-notebooks-btn" type="button" className="btn btn-success" onClick={this.onSaveClick}>
+                <button id="save-notebooks-btn" type="button" className="btn btn-success" onClick={(e) => this.onSaveClick(e)}>
                     Save
                 </button>
             </div>

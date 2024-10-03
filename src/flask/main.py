@@ -317,8 +317,6 @@ def update_data(auth_token):
         json_data = json.dumps(data, indent=4)
         new_notebooks_found = False
 
-        print(json_data)
-
         if getsizeof(json_data) > MAX_DATA_SIZE:
             return {"message": f"Content too large. Max size is {MAX_DATA_SIZE} bytes"}, 413
 

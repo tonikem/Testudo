@@ -27,8 +27,8 @@ class InnerContainer extends React.Component {
     arrowBooleans: any = {}
 
     setNote(clone: any, id: any) {
-        const allData = this.props.getAllData
-        const items = allData.main[this.props.showActiveListIndex].items
+        const allData = structuredClone(this.props.getAllData)
+        const items = structuredClone(allData.main[this.props.showActiveListIndex].items)
 
         for (let i = 0; i < items.length; ++i) {
             if (items[i].id === id) {
@@ -104,16 +104,16 @@ class InnerContainer extends React.Component {
     }
 
     onClipBoardClick(id: string) {
-        const data = this.props.getAllData
-        const items = data.main[this.props.showActiveListIndex].items
+        const data = structuredClone(this.props.getAllData)
+        const items = structuredClone(data.main[this.props.showActiveListIndex].items)
 
         for (let i = 0; i < items.length; ++i) {
             if (items[i].content) {
                 for (let u = 0; u < items[i].content.length; ++u) {
                     if (items[i].content[u].id === id) {
                         // Kopioidaan "payload"
-                        navigator.clipboard.writeText(items[i].content[u].payload);
-                        alert("Copied the text: " + items[i].content[u].payload);
+                        navigator.clipboard.writeText(items[i].content[u].payload)
+                        alert("Copied the text: " + items[i].content[u].payload)
                     }
                 }
             }
@@ -205,8 +205,8 @@ class InnerContainer extends React.Component {
             hiddenElement.style.display = "none"
         }
 
-        const allData = this.props.getAllData
-        const items = allData.main[this.props.showActiveListIndex].items
+        const allData = structuredClone(this.props.getAllData)
+        const items = structuredClone(allData.main[this.props.showActiveListIndex].items)
 
         for (let i = 0; i < items.length; ++i) {
             if (items[i].content) {
@@ -277,7 +277,7 @@ class InnerContainer extends React.Component {
         if (confirm('Are you sure you want to delete this note?')) {
 
             const allData = structuredClone(this.props.getAllData)
-            const items = allData.main[this.props.showActiveListIndex].items
+            const items = structuredClone(allData.main[this.props.showActiveListIndex].items)
 
             for (let i = 0; i < items.length; ++i) {
                 if (items[i].content) {
@@ -462,8 +462,8 @@ class InnerContainer extends React.Component {
 
     onPlusNoteClick(data: any) {
         const showActiveListIndex = this.props.showActiveListIndex
-        const allData = this.props.getAllData
-        const items = allData.main[showActiveListIndex].items
+        const allData = structuredClone(this.props.getAllData)
+        const items = structuredClone(allData.main[showActiveListIndex].items)
 
         const result = window.prompt("Note name", "");
 
