@@ -76,6 +76,8 @@ def authenticate(token):
 
 
 @app.route('/')
+@app.route('/home')
+@app.route('/notebooks')
 def index():
     if request.cookies:
         auth_token = request.cookies["testudoAuthorization"]

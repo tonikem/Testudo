@@ -74,6 +74,9 @@
     }
     .list-container {
         position: relative;
-        top: 0;
+        top: 6px;
+    }
+    .notebook-list-item {
+        min-width: 260px;
     }
   }

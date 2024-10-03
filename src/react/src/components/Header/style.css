@@ -40,6 +40,9 @@
     .container-fluid {
         display: flex;
         flex-direction: row;
+        position: relative;
+        left: -1px;
+        right: -1px;
     }
 
     .navbar-header {

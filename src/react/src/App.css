@@ -106,10 +106,13 @@
   .panel__container {
     margin: 0;
   }
-  .item {
-    /* max-width: 90% */
+  html {
+    background-color: #2b2d30;
   }
-  .list-group-item {
-    /* width: 80%; */
+  body {
+    background-color: #2b2d30;
+  }
+  .notebook-container {
+    background-color: #2b2d30;
   }
 }
