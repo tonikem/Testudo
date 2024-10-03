@@ -284,5 +284,8 @@
         margin: auto;
         min-width: 240px;
     }
+    .audio {
+        width: auto;
+    }
 }
 
