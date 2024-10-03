@@ -20,7 +20,7 @@
 .navbar {
     border-bottom: 3px solid black;
     background: rgb(2, 0, 36);
-    background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgb(71, 71, 85) 8%, #2b2d30 100%);
+    background: linear-gradient(90deg, rgb(0, 0, 0) 0%, rgb(44, 44, 44) 8%, #2b2d30 100%);
 }
 
 .main-logo {

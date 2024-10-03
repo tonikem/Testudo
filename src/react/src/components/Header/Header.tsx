@@ -1,6 +1,7 @@
 import { Link } from "wouter"
-import './style.css'
 import logo from '../../../public/turtle.png'
+import './style.css'
+
 
 function Header() {
 
