@@ -32,8 +32,9 @@
   display: none;
   cursor: pointer;
   width: 20px;
-  margin: 20px;
-  float: right;
+  margin: auto;
+  margin-top: 4px;
+  margin-bottom: 10px;
 }
 
 .folder-icon {
@@ -81,6 +82,16 @@
 .remove-button {
   width: 20px;
   margin: 4px;
+}
+
+.arrow-icon {
+  width: 16px;
+  height: auto;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  margin-left: 4px;
+  margin-right: 4px;
+  float: right;
 }
 
 .item {

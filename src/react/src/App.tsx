@@ -13,6 +13,8 @@ import trash from '../public/trash.png'
 import save from '../public/save.png'
 import pencil from '../public/pencil.png'
 import edit from '../public/edit.png'
+import downArrow from '../public/down-arrow.png'
+import upArrow from '../public/up-arrow.png'
 import {
   uuidv4,
   getCookie,
@@ -307,10 +309,10 @@ function App() {
   return (
     <div className="App">
       <Switch>
-      <Route path="/">
-        <Header />
-        <AllContainer />
-      </Route>
+        <Route path="/">
+          <Header />
+          <AllContainer />
+        </Route>
         <Route path="/Home">
           <Header />
           <Panel>
@@ -332,11 +334,11 @@ function App() {
                               <img src={notebook} alt="Notebook-icon" />
                               {data.name}
                             </div>
+                            <img src={save}
+                                className='save-notebook-icon'
+                                onClick={() => endEditing(data, index)} />
                             <input className='notebook-input' defaultValue={data.name} />
                           </div>
-                          <img src={save}
-                            className='save-notebook-icon'
-                            onClick={() => endEditing(data, index)} />
                           <div className="data-items-listed">
                             {
                               // Listataan yksittäiset osat
@@ -349,8 +351,7 @@ function App() {
                                       onMouseClickTable(d, i)
                                       setTableItems(d)
                                     }}
-                                      className='item'
-                                      id={d.id}>
+                                      className='item' id={d.id}>
                                       <div className='folder-title'>
                                         <img className='folder-icon' src={folder} />
                                         {d.name}
@@ -444,7 +445,7 @@ function App() {
         </Route>
         <Route path="/notebooks">
           <Header />
-          <NotebookContainer setAllData={setAllData}/>
+          <NotebookContainer setAllData={setAllData} />
         </Route>
       </Switch>
     </div>
