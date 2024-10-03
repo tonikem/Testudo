@@ -177,7 +177,7 @@ def get_notebooks_and_items(auth_token):
 
         for notebook in notebooks_db.all():
             if notebook['doc']['id'] in user['doc']["notebooks"]:
-                if 'visible' in notebook['doc'].keys():
+                if 'visible' in notebook['doc'].keys() and notebook['doc']["visible"]:
                     collected_notebook = {
                         "id": notebook['doc']["id"],
                         "name": notebook['doc']["name"],
@@ -190,8 +190,7 @@ def get_notebooks_and_items(auth_token):
                     else:
                         notebook['items'] = []
 
-                    if collected_notebook['visible']:
-                        collected_notebooks.append(collected_notebook)
+                    collected_notebooks.append(collected_notebook)
 
         result = {"main": collected_notebooks}
 
@@ -261,8 +260,8 @@ def save_new_notebooks(auth_token):
             else:
                 new_notebook['items'] = []
 
-            if 'visible' in notebook.keys():
-                new_notebook['visible'] = notebook['visible']
+            if 'visible' in old_notebook['doc'].keys():
+                new_notebook['visible'] = old_notebook['doc']['visible']
             else:
                 new_notebook['visible'] = False
 
@@ -334,19 +333,24 @@ def update_data(auth_token):
             else:
                 found_notebook = get_notebook_by_id(notebook['id'])
 
-                notebook_to_be_saved = {
+                new_notebook = {
                     '_id': found_notebook['doc']['_id'],
                     '_rev': found_notebook['doc']['_rev'],
                     'id': notebook['id'],
                     'name': notebook['name']
                 }
 
-                if 'items' in notebook.keys():
-                    notebook_to_be_saved['items'] = notebook['items']
+                if 'items' in found_notebook['doc'].keys():
+                    new_notebook['items'] = found_notebook['doc']['items']
                 else:
-                    notebook_to_be_saved['items'] = []
+                    new_notebook['items'] = []
 
-                notebooks_db.save(notebook_to_be_saved)
+                if 'visible' in found_notebook['doc'].keys():
+                    new_notebook['visible'] = found_notebook['doc']['visible']
+                else:
+                    new_notebook['visible'] = False
+
+                notebooks_db.save(new_notebook)
 
         if new_notebooks_found:
             user_to_be_saved = {
