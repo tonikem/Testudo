@@ -44,7 +44,7 @@ const ListGroup = (props: any) => {
     }
 
     const newNotebook = {
-      "id": uuidv4(),
+      "id": (Math.random() + 1).toString(36).substring(7),
       "items": [],
       "name": name,
       'visible': true

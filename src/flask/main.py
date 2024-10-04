@@ -177,7 +177,7 @@ def get_notebooks_and_items(auth_token):
         user = get_user_by_id(user_id)
 
         for notebook in notebooks_db.all():
-            if notebook['doc']['id'] in user['doc']["notebooks"]:
+            if notebook['doc']['_id'] in user['doc']["notebooks"]:
                 if 'visible' in notebook['doc'].keys() and notebook['doc']["visible"]:
                     collected_notebook = {
                         '_id': notebook['doc']["_id"],
@@ -268,11 +268,10 @@ def save_new_notebooks(auth_token):
             else:
                 new_notebook['visible'] = False
 
-            notebooks_db.save(new_notebook)
+            saved_notebook = notebooks_db.save(new_notebook)
+            return {"message": "Successfully updated Notebook"}, 200
 
-        return {"message": "Successfully updated Notebook"}, 200
-    else:
-        return {"Status": "Failure. Missing token!"}, 404
+    return {"Status": "Failure. Missing token!"}, 404
 
 
 @cross_origin()
@@ -314,7 +313,6 @@ def update_data(auth_token):
     if authenticate(auth_token):
         data = json.loads(request.data)
         json_data = json.dumps(data, indent=4)
-        new_notebooks_found = False
 
         if getsizeof(json_data) > MAX_DATA_SIZE:
             return {"message": f"Content too large. Max size is {MAX_DATA_SIZE} bytes"}, 413
@@ -329,53 +327,36 @@ def update_data(auth_token):
         notebooks = user['doc']['notebooks']
 
         for notebook in data["main"]:
-            # Luodaan uudet UUID-arvot
-            for item in notebook["items"]:
-                item['id'] = str(uuid.uuid4())
-                if 'content' in item.keys():
-                    for content in item['content']:
-                        content['id'] = str(uuid.uuid4())
-
-            if notebook['id'] not in notebooks:
-                new_notebooks_found = True
-                notebooks.insert(0, notebook['id'])
-                notebooks_db.save(notebook)
-            else:
-                found_notebook = get_notebook_by_id(notebook['id'])
-
+            if '_id' in notebook.keys():
+                old_notebook = notebooks_db.get(notebook['_id'])
                 new_notebook = {
-                    '_id': found_notebook['doc']['_id'],
-                    '_rev': found_notebook['doc']['_rev'],
+                    '_id': old_notebook['_id'],
+                    '_rev': old_notebook['_rev'],
                     'id': notebook['id'],
-                    'name': notebook['name']
+                    'items': notebook['items'],
+                    'name': notebook['name'],
+                    'visible': notebook['visible']
                 }
+                saved_notebook = notebooks_db.save(new_notebook)
+            else:
+                saved_notebook = notebooks_db.save(notebook)
 
-                if 'items' in found_notebook['doc'].keys():
-                    new_notebook['items'] = notebook['items']
-                else:
-                    new_notebook['items'] = []
+            if saved_notebook['_id'] not in notebooks:
+                notebooks.insert(0, saved_notebook['_id'])
 
-                if 'visible' in found_notebook['doc'].keys():
-                    new_notebook['visible'] = notebook['visible']
-                else:
-                    new_notebook['visible'] = False
-
-                notebooks_db.save(new_notebook)
-
-        if new_notebooks_found:
-            user_to_be_saved = {
-                "_id": user['doc']['_id'],
-                '_rev': user['doc']['_rev'],
-                "id": user['doc']['id'],
-                "name": user['doc']['name'],
-                "password": user['doc']['password'],
-                "notebooks": notebooks
-            }
-            users_db.save(user_to_be_saved)
+        user_to_be_saved = {
+            "_id": user['doc']['_id'],
+            "_rev": user['doc']['_rev'],
+            "id": user['doc']['id'],
+            "name": user['doc']['name'],
+            "password": user['doc']['password'],
+            "notebooks": notebooks
+        }
+        users_db.save(user_to_be_saved)
 
         return {"message": "Success"}, 200, {"Access-Control-Allow-Origin": "*"}
-    else:
-        return {"Status": "Failure. Missing token!"}, 404
+
+    return {"Status": "Failure. Missing token!"}, 404
 
 
 @cross_origin()

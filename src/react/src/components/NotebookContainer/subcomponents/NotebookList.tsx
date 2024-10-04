@@ -27,8 +27,6 @@ class NotebookList extends React.Component {
 
     onSaveClick = (e: any) => {
         const notebooks: any = structuredClone(this.props.getNotebooks)
-
-        console.log(notebooks)
         
         const cookie = getCookie("testudoAuthorization")
 
@@ -56,7 +54,7 @@ class NotebookList extends React.Component {
         }
 
         const newNotebook = {
-            "id": uuidv4(),
+            "id": (Math.random() + 1).toString(36).substring(7),
             "items": [],
             "name": name,
             'visible': true

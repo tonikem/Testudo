@@ -77,7 +77,7 @@ function App() {
     let allData = structuredClone(getAllData)
 
     for (let i = 0; i < allData.main.length; ++i) {
-      if (data._id === allData.main[i].id) {
+      if (data._id === allData.main[i]._id) {
 
         allData.main[i].name = newName
 
@@ -206,11 +206,11 @@ function App() {
     }
   }
 
-  function onAddClick(id: any) {
+  function onAddClick(_id: any) {
     let allData = structuredClone(getAllData)
 
     allData.main.forEach(notebook => {
-      if (id == notebook.id) {
+      if (_id == notebook._id) {
         const result = window.prompt("Folder name", "");
 
         if (result === null || result.trim().length === 0) {
@@ -219,8 +219,9 @@ function App() {
 
         const newItem = {
           "name": result,
-          "id": uuidv4(),
-          "items": []
+          "id": (Math.random() + 1).toString(36).substring(7),
+          "items": [],
+          "payload": ""
         }
 
         if (notebook.items) {
