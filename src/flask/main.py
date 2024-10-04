@@ -163,48 +163,6 @@ def delete_audio_file(auth_token, filename):
 
 
 @cross_origin()
-@app.route('/data/<auth_token>')
-def get_notebooks_and_items(auth_token):
-    if authenticate(auth_token):
-        collected_notebooks = []
-
-        decoded_token = decode_token(auth_token)
-
-        if decoded_token is None:
-            return {"Status": "Failure. Missing token!"}, 404
-
-        user_id = decoded_token["user_id"]
-        user = get_user_by_id(user_id)
-
-        for notebook in notebooks_db.all():
-            if notebook['doc']['_id'] in user['doc']["notebooks"]:
-                if 'visible' in notebook['doc'].keys() and notebook['doc']["visible"]:
-                    collected_notebook = {
-                        '_id': notebook['doc']["_id"],
-                        "id": notebook['doc']["id"],
-                        "name": notebook['doc']["name"],
-                        "visible": notebook['doc']["visible"],
-                        "items": notebook['doc']["items"]
-                    }
-
-                    if 'items' in notebook['doc'].keys():
-                        notebook['items'] = notebook['doc']['items']
-                    else:
-                        notebook['items'] = []
-
-                    collected_notebooks.append(collected_notebook)
-
-        result = {"main": collected_notebooks}
-
-        if getsizeof(result) > MAX_DATA_SIZE:
-            return {"message": f"Content too large. Max size is {MAX_DATA_SIZE} bytes"}, 413, {"Access-Control-Allow-Origin": "*"}
-
-        return result
-    else:
-        return {"Status": "Failure. Missing token!"}, 404
-
-
-@cross_origin()
 @app.route('/notebooks/<auth_token>')
 def get_notebooks_without_items(auth_token):
     if authenticate(auth_token):
@@ -292,6 +250,48 @@ def login_to_user():
 
 
 @cross_origin()
+@app.route('/data/<auth_token>')
+def get_notebooks_and_items(auth_token):
+    if authenticate(auth_token):
+        collected_notebooks = []
+
+        decoded_token = decode_token(auth_token)
+
+        if decoded_token is None:
+            return {"Status": "Failure. Missing token!"}, 404
+
+        user_id = decoded_token["user_id"]
+        user = get_user_by_id(user_id)
+
+        for notebook in notebooks_db.all():
+            if notebook['doc']['_id'] in user['doc']["notebooks"]:
+                if 'visible' in notebook['doc'].keys() and notebook['doc']["visible"]:
+                    collected_notebook = {
+                        '_id': notebook['doc']["_id"],
+                        "id": notebook['doc']["id"],
+                        "name": notebook['doc']["name"],
+                        "visible": notebook['doc']["visible"],
+                        "items": notebook['doc']["items"]
+                    }
+
+                    if 'items' in notebook['doc'].keys():
+                        notebook['items'] = notebook['doc']['items']
+                    else:
+                        notebook['items'] = []
+
+                    collected_notebooks.append(collected_notebook)
+
+        result = {"main": collected_notebooks}
+
+        if getsizeof(result) > MAX_DATA_SIZE:
+            return {"message": f"Content too large. Max size is {MAX_DATA_SIZE} bytes"}, 413, {"Access-Control-Allow-Origin": "*"}
+
+        return result
+    else:
+        return {"Status": "Failure. Missing token!"}, 404
+
+
+@cross_origin()
 @app.route("/data/<auth_token>", methods=["PUT"])
 def update_data(auth_token):
     if authenticate(auth_token):
@@ -321,6 +321,14 @@ def update_data(auth_token):
                     'name': notebook['name'],
                     'visible': notebook['visible']
                 }
+                for i, item in enumerate(new_notebook['items']):
+                    if 'url-id' not in item.keys():
+                        new_notebook['items'][i]['url-id'] = str(uuid.uuid4())
+
+                    for u, note in enumerate(new_notebook['items'][i]['content']):
+                        if 'url-id' not in note.keys():
+                            new_notebook['items'][i]['content'][u]['url-id'] = str(uuid.uuid4())
+
                 saved_notebook = notebooks_db.save(new_notebook)
             else:
                 saved_notebook = notebooks_db.save(notebook)
