@@ -13,8 +13,9 @@ import trash from '../public/trash.png'
 import save from '../public/save.png'
 import pencil from '../public/pencil.png'
 import edit from '../public/edit.png'
-import downArrow from '../public/down-arrow.png'
-import upArrow from '../public/up-arrow.png'
+import publish from '../public/publishing.png'
+/* import downArrow from '../public/down-arrow.png'
+import upArrow from '../public/up-arrow.png' */
 import {
   uuidv4,
   getCookie,
@@ -170,7 +171,7 @@ function App() {
     setAllData(allData)
   }
 
-  function onRemoveClick(id: any) {
+  function onRemoveClick(id: string) {
     if (confirm('Are you sure you want to delete this notebook?')) {
 
       // Poistetaan Notebookin osat käyttöliittymästä
@@ -206,7 +207,30 @@ function App() {
     }
   }
 
-  function onAddClick(_id: any) {
+  function onPublishClick(_id: string) {
+    let allData = structuredClone(getAllData)
+
+    allData.main.forEach(notebook => {
+      if (_id == notebook._id) {
+        if (confirm("Do you wish to publish this notebook?")) {
+          notebook.published = true
+
+          const options = {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(allData)
+          }
+          sendPutRequest(options)
+      
+          setAllData(allData)
+        }
+      }
+    })
+  }
+
+  function onAddClick(_id: string) {
     let allData = structuredClone(getAllData)
 
     allData.main.forEach(notebook => {
@@ -336,8 +360,8 @@ function App() {
                               {data.name}
                             </div>
                             <img src={save}
-                                className='save-notebook-icon'
-                                onClick={() => endEditing(data, index)} />
+                              className='save-notebook-icon'
+                              onClick={() => endEditing(data, index)} />
                             <input className='notebook-input' defaultValue={data.name} />
                           </div>
                           <div className="data-items-listed">
@@ -406,6 +430,9 @@ function App() {
                             <img className='remove-button'
                               src={remove}
                               onClick={() => onRemoveClick(data._id)} />
+                            <img className='publish-button'
+                              src={publish}
+                              onClick={() => onPublishClick(data._id)} />
                           </div>
                         </li>
                       )

@@ -319,8 +319,13 @@ def update_data(auth_token):
                     'id': notebook['id'],
                     'items': notebook['items'],
                     'name': notebook['name'],
-                    'visible': notebook['visible']
                 }
+
+                if 'published' in notebook.keys():
+                    new_notebook['published'] = notebook['published']
+                else:
+                    new_notebook['published'] = False
+
                 for i, item in enumerate(new_notebook['items']):
                     if 'url-id' not in item.keys():
                         new_notebook['items'][i]['url-id'] = str(uuid.uuid4())

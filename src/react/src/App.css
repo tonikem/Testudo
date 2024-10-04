@@ -75,13 +75,18 @@
 }
 
 .plus-sign {
-  width: 23px;
+  width: 24px;
   margin: 4px;
 }
 
 .remove-button {
-  width: 20px;
+  width: 21px;
   margin: 4px;
+}
+
+.publish-button {
+  width: 32px;
+  margin: 10px;
 }
 
 .arrow-icon {
