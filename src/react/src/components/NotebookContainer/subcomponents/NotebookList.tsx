@@ -15,8 +15,10 @@ class NotebookList extends React.Component {
         const notebooks: any = structuredClone(this.props.getNotebooks)
 
         for (let i = 0; i < notebooks.main.length; ++i) {
-            if (notebooks.main[i].id == data._id) {
+            if (notebooks.main[i]._id == data._id) {
                 notebooks.main[i].visible = e.target.checked
+
+                console.log(notebooks.main[i])
 
                 this.props.setNotebooks(notebooks)
 

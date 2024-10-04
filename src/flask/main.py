@@ -222,9 +222,10 @@ def get_notebooks_without_items(auth_token):
             if notebook['doc']['id'] in user['doc']["notebooks"]:
                 collected_notebook = {
                     "id": notebook['doc']["id"],
+                    "_id": notebook['doc']["_id"],
                     "name": notebook['doc']["name"]
                 }
-                if 'visible' in notebook['doc']:
+                if 'visible' in notebook['doc'].keys():
                     collected_notebook["visible"] = notebook['doc']["visible"]
                 else:
                     collected_notebook["visible"] = False
@@ -248,7 +249,7 @@ def save_new_notebooks(auth_token):
         bare_bone_notebooks = json.loads(request.data)
 
         for notebook in bare_bone_notebooks['main']:
-            old_notebook = get_notebook_by_id(notebook['id'])
+            old_notebook = notebooks_db.get(notebook['_id'])
 
             new_notebook = {
                 'id': notebook['id'],
@@ -263,6 +264,7 @@ def save_new_notebooks(auth_token):
                 new_notebook['items'] = []
 
             if 'visible' in notebook.keys():
+                print(notebook)
                 new_notebook['visible'] = notebook['visible']
             else:
                 new_notebook['visible'] = False
