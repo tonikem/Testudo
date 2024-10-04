@@ -219,7 +219,7 @@ def get_notebooks_without_items(auth_token):
         user = get_user_by_id(user_id)
 
         for notebook in notebooks_db.all():
-            if notebook['doc']['id'] in user['doc']["notebooks"]:
+            if notebook['doc']['_id'] in user['doc']["notebooks"]:
                 collected_notebook = {
                     "id": notebook['doc']["id"],
                     "_id": notebook['doc']["_id"],
@@ -248,28 +248,12 @@ def save_new_notebooks(auth_token):
 
         bare_bone_notebooks = json.loads(request.data)
 
-        for notebook in bare_bone_notebooks['main']:
-            old_notebook = notebooks_db.get(notebook['_id'])
+        for bare_bone_notebook in bare_bone_notebooks['main']:
+            old_notebook = notebooks_db.get(bare_bone_notebook['_id'])
+            old_notebook['visible'] = bare_bone_notebook['visible']
+            notebooks_db.save(old_notebook)
 
-            new_notebook = {
-                'id': notebook['id'],
-                'name': notebook['name'],
-                '_id': old_notebook['_id'],
-                '_rev': old_notebook['_rev']
-            }
-
-            if 'items' in old_notebook.keys():
-                new_notebook['items'] = old_notebook['items']
-            else:
-                new_notebook['items'] = []
-
-            if 'visible' in notebook.keys():
-                new_notebook['visible'] = notebook['visible']
-            else:
-                new_notebook['visible'] = False
-
-            saved_notebook = notebooks_db.save(new_notebook)
-            return {"message": "Successfully updated Notebook"}, 200
+        return {"message": "Success"}, 200, {"Access-Control-Allow-Origin": "*"}
 
     return {"Status": "Failure. Missing token!"}, 404
 

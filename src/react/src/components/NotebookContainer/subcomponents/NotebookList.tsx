@@ -27,7 +27,7 @@ class NotebookList extends React.Component {
 
     onSaveClick = (e: any) => {
         const notebooks: any = structuredClone(this.props.getNotebooks)
-        
+
         const cookie = getCookie("testudoAuthorization")
 
         const options = {
@@ -41,7 +41,9 @@ class NotebookList extends React.Component {
             .then(response => {
                 console.log(response)
             }).finally(() => {
-                location.reload()
+                setTimeout(() => {
+                    location.reload()
+                }, 40)
             })
     }
 
@@ -109,7 +111,10 @@ class NotebookList extends React.Component {
                 <img id="add-notebook-to-list"
                     src={add_notebook}
                     onClick={this.onMouseClickAddNotebook} />
-                <button id="save-notebooks-btn" type="button" className="btn btn-success" onClick={(e) => this.onSaveClick(e)}>
+                <button id="save-notebooks-btn"
+                    type="button"
+                    className="btn btn-success"
+                    onClick={(e) => this.onSaveClick(e)}>
                     Save
                 </button>
             </div>
