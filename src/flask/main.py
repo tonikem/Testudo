@@ -254,17 +254,16 @@ def save_new_notebooks(auth_token):
             new_notebook = {
                 'id': notebook['id'],
                 'name': notebook['name'],
-                '_id': old_notebook['doc']['_id'],
-                '_rev': old_notebook['doc']['_rev']
+                '_id': old_notebook['_id'],
+                '_rev': old_notebook['_rev']
             }
 
-            if 'items' in old_notebook['doc'].keys():
-                new_notebook['items'] = old_notebook['doc']['items']
+            if 'items' in old_notebook.keys():
+                new_notebook['items'] = old_notebook['items']
             else:
                 new_notebook['items'] = []
 
             if 'visible' in notebook.keys():
-                print(notebook)
                 new_notebook['visible'] = notebook['visible']
             else:
                 new_notebook['visible'] = False

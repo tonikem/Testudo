@@ -18,8 +18,6 @@ class NotebookList extends React.Component {
             if (notebooks.main[i]._id == data._id) {
                 notebooks.main[i].visible = e.target.checked
 
-                console.log(notebooks.main[i])
-
                 this.props.setNotebooks(notebooks)
 
                 return  // Lopetetaan looppi
@@ -30,6 +28,8 @@ class NotebookList extends React.Component {
     onSaveClick = (e: any) => {
         const notebooks: any = structuredClone(this.props.getNotebooks)
 
+        console.log(notebooks)
+        
         const cookie = getCookie("testudoAuthorization")
 
         const options = {
