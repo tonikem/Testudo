@@ -337,8 +337,11 @@ class InnerContainer extends React.Component {
 
         const url = `${BaseURL}/note/${notebook._id}/${noteId}`
 
-        //navigator.clipboard.writeText(url)
-        window.open(url)
+        if (notebook.published) {
+            window.open(url)
+        } else {
+            alert("Publish your notebook before sharing a link")
+        }
     }
 
     onChangeAudioFile(event: any, id: string) {

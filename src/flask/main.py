@@ -2,13 +2,15 @@ import os
 import jwt
 import json
 import uuid
+import base64
 import datetime
 import pycouchdb
 from pathlib import Path
 from string_utils.validation import is_full_string
 from sys import getsizeof
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, make_response
 from flask_cors import CORS, cross_origin
+from io import StringIO
 from functions import check_password, is_valid_audio
 
 
@@ -74,6 +76,13 @@ def authenticate(token):
         return user and datetime_now < expiration
 
     return False
+
+
+def get_user_by_notebook_id(notebook_id):
+    for user in users_db.all():
+        if notebook_id in user['doc']['notebooks']:
+            return user
+    return None
 
 
 @app.route('/')
@@ -165,19 +174,23 @@ def delete_audio_file(auth_token, filename):
 @cross_origin()
 @app.route('/note/<notebook_id>/<note_id>')
 def get_individual_note(notebook_id, note_id):
-    TYPES = {'audio'}
+    old_notebook = notebooks_db.get(notebook_id)
 
-    if request.cookies:
-        auth_token = request.cookies["testudoAuthorization"]
-        if authenticate(auth_token):
-            old_notebook = notebooks_db.get(notebook_id)
+    if 'published' in old_notebook.keys() and old_notebook['published']:
+        user = get_user_by_notebook_id(notebook_id)
+        user_id = user['doc']['id']
 
-            for item in old_notebook['items']:
-                for note in item['content']:
-                    if note['type'] in TYPES:
-                        print(note)
+        for item in old_notebook['items']:
+            for note in item['content']:
+                if note['url-id'] == note_id:
+                    if note['type'] == 'Audio':
+                        with open(f'./files/{user_id}/{note['payload']}', 'rb') as file:
+                            file_type = note['payload'].split('.')[-1]
+                            base64_data = base64.b64encode(file.read()).decode('ascii')
+                            audio_file = f"data:audio/{file_type};base64,{base64_data}"
+                            return render_template('audio.html', file_name=note['payload'], audio_file=audio_file)
 
-            return {"message": "Success"}, 200
+        return {"message": "File was not found!"}, 404
 
     return {"Status": "Failure. Missing token!"}, 404
 
