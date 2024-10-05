@@ -189,6 +189,8 @@ def get_individual_note(notebook_id, note_id):
                             base64_data = base64.b64encode(file.read()).decode('ascii')
                             audio_file = f"data:audio/{file_type};base64,{base64_data}"
                             return render_template('audio.html', file_name=note['payload'], audio_file=audio_file)
+                    else:
+                        return render_template('file.html', file_name=note['name'], file_payload=note['payload'])
 
         return {"message": "File was not found!"}, 404
 
