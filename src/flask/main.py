@@ -11,8 +11,7 @@ from sys import getsizeof
 from flask import Flask, render_template, request, send_file, make_response
 from flask_cors import CORS, cross_origin
 from io import StringIO
-from functions import check_password, is_valid_audio
-
+from functions import check_password, is_valid_audio, is_valid_video
 
 DATE_FORMAT = "%m/%d/%Y, %H:%M:%S"
 TOKEN_EXPIRATION_TIME = 2630750  # 86400
@@ -95,6 +94,62 @@ def index():
             return render_template("index.html")
 
     return render_template('login.html')
+
+
+@cross_origin()
+@app.route('/video/<auth_token>/<filename>')
+def get_video_files(auth_token, filename):
+    if authenticate(auth_token) and is_full_string(filename) and filename != 'undefined':
+        decoded_token = decode_token(auth_token)
+
+        if decoded_token is None:
+            return {"Status": "Failure. Missing token!"}, 404
+
+        user_id = decoded_token["user_id"]
+
+        return send_file(f"./files/{user_id}/{filename}", as_attachment=True)
+
+    return {"Status": "Failure. Missing token!"}, 404
+
+
+@cross_origin()
+@app.route('/video/<auth_token>/<filename>', methods=["POST"])
+def save_video_file(auth_token, filename):
+    if authenticate(auth_token) and is_full_string(filename) and filename != 'undefined':
+        decoded_token = decode_token(auth_token)
+
+        if decoded_token is None:
+            return {"Status": "Failure. Missing token!"}, 404
+
+        user_id = decoded_token["user_id"]
+        folder = f'./files/{user_id}/'
+        Path(folder).mkdir(parents=True, exist_ok=True)
+
+        if getsizeof(request.data) > MAX_AUDIO_SIZE:
+            return {"message": f"Content too large. Max size is {MAX_AUDIO_SIZE} bytes"}, 413
+
+        total_size = 0  # Lasketaan kansion tiedostojen yhteiskoko
+
+        for path, dirs, files in os.walk(folder):
+            for f in files:
+                fp = os.path.join(path, f)
+                total_size += os.path.getsize(fp)
+
+        total_size += getsizeof(request.data)
+
+        if total_size > MAX_DIRECTORY_SIZE:
+            return {"message": f"Content too large. Max size is {MAX_DIRECTORY_SIZE} bytes"}, 413
+
+        with open(folder + filename, "wb") as file:
+            file.write(request.data)
+
+        if is_valid_video(folder + filename):
+            return {"message": "Successfully saved a file"}, 200, {"Access-Control-Allow-Origin": "*"}
+        else:
+            os.remove(folder + filename)
+            return {"message": "Not a video file!"}, 403
+
+    return {"Status": "Failure. Missing token or filename!"}, 404
 
 
 @cross_origin()

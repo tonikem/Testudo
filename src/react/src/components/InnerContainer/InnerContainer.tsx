@@ -332,7 +332,7 @@ class InnerContainer extends React.Component {
     }
 
     onGetURL(data: any) {
-        const noteId = structuredClone(data['url-id'])   
+        const noteId = structuredClone(data['url-id'])
         const notebook = structuredClone(this.props.getAllData.main[this.props.showActiveListIndex])
 
         const url = `${BaseURL}/note/${notebook._id}/${noteId}`
@@ -423,7 +423,7 @@ class InnerContainer extends React.Component {
                 textarea.style.width = "calc(100% - 220px)"
                 textarea.classList.add("payload-input")
                 textarea.style.display = "block"
-                break;
+                break
             case 'URL':
                 if (codeStyle) {
                     codeStyle.style.display = "none"
@@ -438,7 +438,7 @@ class InnerContainer extends React.Component {
                 input.style.width = "calc(100% - 220px)"
                 input.classList.add("payload-input")
                 input.style.display = "block"
-                break;
+                break
             case 'Audio':
                 if (codeStyle) {
                     codeStyle.style.display = "none"
@@ -456,6 +456,8 @@ class InnerContainer extends React.Component {
                 input.style.display = "block"
                 input.addEventListener("change", (e: any) => { this.onChangeAudioFile(e, id) })
                 break;
+            case 'Video':
+                break
             default:
                 if (codeStyle) {
                     codeStyle.style.display = "none"
@@ -720,9 +722,8 @@ class InnerContainer extends React.Component {
                                         if (this.arrowBooleans[d.id] === undefined || this.arrowBooleans[d.id] === null) {
                                             this.arrowBooleans[d.id] = false
                                         }
-                                        const set_cookie = getCookie("testudoAuthorization")
+                                        let set_cookie = getCookie("testudoAuthorization")
 
-                                        //audioFiles[d.id] = d.payload
                                         return (
                                             <li id={d.id} key={d.id}
                                                 className="table-item"
@@ -788,6 +789,78 @@ class InnerContainer extends React.Component {
                                                     src={save}
                                                     onClick={() => this.endEditing(d)} />
                                             </li>
+                                        )
+                                    case 'Video':
+                                        if (this.arrowBooleans[d.id] === undefined || this.arrowBooleans[d.id] === null) {
+                                            this.arrowBooleans[d.id] = false
+                                        }
+                                        const video_cookie = getCookie("testudoAuthorization")
+
+                                        return (
+                                            <li id={d.id} key={d.id}
+                                            className="table-item"
+                                            draggable={this.props.getDraggingOn}
+                                            onDragStart={() => this.onDragStart(index)}
+                                            onDragEnter={() => this.onDragEnter(index)}
+                                            onDragEnd={() => this.handleSort(index)}
+                                            onDragOver={(e) => e.preventDefault()}>
+
+                                            {/* Tällä vaihdetaan muistiinpanon tyyppi */}
+                                            <select defaultValue={d.type}
+                                                className='selector'
+                                                onChange={e => this.setSelectedValue(e.target.value, d.id)}>
+                                                <option value="Text">Text</option>
+                                                <option value="URL">URL</option>
+                                                <option value="Code">Code</option>
+                                                <option value="Audio">Audio</option>
+                                            </select>
+
+                                            <div className='buttons'>
+                                                <i onClick={() => {
+                                                    // Asetetaan boolean arvo nuolelle
+                                                    this.resize(d.id)
+                                                }} className="arrow"></i>
+
+                                                <div className='data-type'>
+                                                    {d.type}
+                                                </div>
+                                                <img className="copy-icon"
+                                                    src={copy}
+                                                    onClick={() => { this.onClipBoardClick(d.id) }} />
+                                                <img className='edit-icon'
+                                                    src={edit}
+                                                    onClick={() => this.onEditClick(d)} />
+                                                <img className='delete-icon'
+                                                    src={trash}
+                                                    onClick={() => this.onDeleteClick(d, 'audio')} />
+                                                <img className='get-url-icon' src={url}
+                                                    onClick={() => this.onGetURL(d)} />
+                                            </div>
+
+                                            <div className='edit-input'>
+                                                <input className='title-input'
+                                                    type="text"
+                                                    defaultValue={d.name} />
+
+                                                <input className='payload-input'
+                                                    style={{ display: 'none' }}
+                                                    type="file"
+                                                    onChange={(e) => this.onChangeAudioFile(e, d.id)} />
+                                            </div>
+
+                                            <p className='item-name'>
+                                                {d.name}
+                                            </p>
+                                            <div className='hidden-element'>
+                                                <video width="320" height="240" controls>
+                                                    <source src="movie.mp4"/>
+                                                </video>
+                                                <div className='text-field'></div>
+                                            </div>
+                                            <img className='save-icon'
+                                                src={save}
+                                                onClick={() => this.endEditing(d)} />
+                                        </li>
                                         )
                                     default:
                                         if (this.arrowBooleans[d.id] === undefined || this.arrowBooleans[d.id] === null) {
