@@ -309,10 +309,15 @@ def get_notebooks_and_items(auth_token):
                         "items": notebook['doc']["items"]
                     }
 
-                    if 'items' in notebook['doc'].keys():
-                        notebook['items'] = notebook['doc']['items']
+                    if 'published' in notebook['doc'].keys():
+                        collected_notebook['published'] = notebook['doc']['published']
                     else:
-                        notebook['items'] = []
+                        collected_notebook['published'] = False
+
+                    if 'items' in notebook['doc'].keys():
+                        collected_notebook['items'] = notebook['doc']['items']
+                    else:
+                        collected_notebook['items'] = []
 
                     collected_notebooks.append(collected_notebook)
 

@@ -305,7 +305,7 @@ function App() {
     }
   }
 
-  useEffect(() => {
+  function updateAllDAta() {
     const spinner = document.getElementById('spinner')
 
     if (spinner) {
@@ -330,6 +330,10 @@ function App() {
           spinner.style.display = "none"
         }
       })
+  }
+
+  useEffect(() => {
+    updateAllDAta()
   }, [])
 
   return (
