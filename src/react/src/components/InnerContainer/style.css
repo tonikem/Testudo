@@ -227,6 +227,11 @@
     width: calc(100% - 100px);
 }
 
+.video {
+    margin-top: 20px;
+    width: calc(100% - 100px);
+}
+
 #spinner {
     display: none;
     margin-left: auto;

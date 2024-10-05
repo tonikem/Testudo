@@ -913,7 +913,7 @@ class InnerContainer extends React.Component {
                                                 {d.name}
                                             </p>
                                             <div className='hidden-element'>
-                                                <video width="320" height="240" controls>
+                                                <video className='video' controls="controls">
                                                     <source src={`${BaseURL}/video/${video_cookie}/${d.payload}`}/>
                                                 </video>
                                                 <div className='text-field'></div>
