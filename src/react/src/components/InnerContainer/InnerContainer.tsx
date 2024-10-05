@@ -13,9 +13,6 @@ import './style.css'
 import { BaseURL, DataURL, sendPutRequest, uuidv4, getCookie } from '../../methods/AppMethods'
 
 
-//let audioFiles: any = {}
-
-
 class InnerContainer extends React.Component {
     constructor(props: any) {
         super(props)
@@ -186,7 +183,11 @@ class InnerContainer extends React.Component {
         data.type = selector.value
 
         if (payloadInput.type === "file") {
-            data.payload = payloadInput.files[0].name
+            if (payloadInput.files[0] && payloadInput.files[0].name) {
+                data.payload = payloadInput.files[0].name
+            } else {
+                return alert("Choose the file first!")
+            }
         } else {
             data.payload = payloadInput.value
         }

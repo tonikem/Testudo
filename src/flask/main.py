@@ -217,7 +217,7 @@ def get_notebooks_without_items(auth_token):
 
 @cross_origin()
 @app.route('/notebooks/<auth_token>', methods=['PUT'])
-def save_new_notebooks(auth_token):
+def save_bare_notebooks(auth_token):
     if authenticate(auth_token):
         decoded_token = decode_token(auth_token)
 
@@ -313,7 +313,7 @@ def get_notebooks_and_items(auth_token):
 
 @cross_origin()
 @app.route("/data/<auth_token>", methods=["PUT"])
-def update_data(auth_token):
+def save_notebooks(auth_token):
     if authenticate(auth_token):
         data = json.loads(request.data)
         json_data = json.dumps(data, indent=4)
@@ -340,6 +340,11 @@ def update_data(auth_token):
                     'items': notebook['items'],
                     'name': notebook['name'],
                 }
+
+                if 'visible' in notebook.keys():
+                    new_notebook['visible'] = notebook['visible']
+                else:
+                    new_notebook['visible'] = False
 
                 if 'published' in notebook.keys():
                     new_notebook['published'] = notebook['published']
