@@ -244,6 +244,12 @@ def get_individual_note(notebook_id, note_id):
                             base64_data = base64.b64encode(file.read()).decode('ascii')
                             audio_file = f"data:audio/{file_type};base64,{base64_data}"
                             return render_template('audio.html', file_name=note['payload'], audio_file=audio_file)
+                    elif note['type'] == 'Video':
+                        with open(f'./files/{user_id}/{note['payload']}', 'rb') as file:
+                            file_type = note['payload'].split('.')[-1]
+                            base64_data = base64.b64encode(file.read()).decode('ascii')
+                            video_file = f"data:video/{file_type};base64,{base64_data}"
+                            return render_template('video.html', file_name=note['payload'], video_file=video_file)
                     else:
                         return render_template('file.html', file_name=note['name'], file_payload=note['payload'])
 
