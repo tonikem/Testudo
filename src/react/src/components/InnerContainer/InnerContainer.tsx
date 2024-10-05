@@ -379,7 +379,49 @@ class InnerContainer extends React.Component {
                 })
                 .then(data => {
                     console.log('File saved successfully:', data)
-                    //audioFiles[id] = name
+                })
+                .catch(error => {
+                    console.error('There was a problem with your fetch operation:', error)
+                })
+        }
+        reader.readAsArrayBuffer(input.files[0])
+    }
+
+    onChangeVideoFile(event: any, id: string) {
+        const input = event.target
+
+        const reader = new FileReader()
+
+        reader.onload = function () {
+            const binary: any = reader.result
+
+            const name = input.value.split('\\').pop()
+
+            const cookie = getCookie("testudoAuthorization")
+
+            const options = {
+                method: 'POST',
+                headers: { 'Connection': 'Keep-Alive' },
+                body: binary
+            }
+            
+            fetch(`${BaseURL}/video/${cookie}/${name}`, options)
+                .then(response => {
+                    if (response.status == 413) {
+                        alert(response['message'])
+                        location.reload()
+                    }
+                    if (response.status == 403) {
+                        console.log(response.status)
+                        alert("Uploaded file was not valid audio file!")
+                    }
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok')
+                    }
+                    return response.json()
+                })
+                .then(data => {
+                    console.log('File saved successfully:', data)
                 })
                 .catch(error => {
                     console.error('There was a problem with your fetch operation:', error)
@@ -457,6 +499,21 @@ class InnerContainer extends React.Component {
                 input.addEventListener("change", (e: any) => { this.onChangeAudioFile(e, id) })
                 break;
             case 'Video':
+                if (codeStyle) {
+                    codeStyle.style.display = "none"
+                }
+                input = document.createElement('input')
+                payloadInput.parentNode.replaceChild(input, payloadInput)
+                input.type = "file"
+                input.style.borderRadius = "6px"
+                input.style.backgroundColor = "#1e1f22"
+                input.style.padding = "2px"
+                input.style.margin = "auto"
+                input.style.marginTop = "10px"
+                input.style.width = "calc(100% - 220px)"
+                input.classList.add("payload-input")
+                input.style.display = "block"
+                input.addEventListener("change", (e: any) => { this.onChangeVideoFile(e, id) })
                 break
             default:
                 if (codeStyle) {
@@ -589,6 +646,7 @@ class InnerContainer extends React.Component {
                                                     <option value="URL">URL</option>
                                                     <option value="Code">Code</option>
                                                     <option value="Audio">Audio</option>
+                                                    <option value="Video">Video</option>
                                                 </select>
 
                                                 <div className='buttons'>
@@ -662,6 +720,7 @@ class InnerContainer extends React.Component {
                                                     <option value="URL">URL</option>
                                                     <option value="Code">Code</option>
                                                     <option value="Audio">Audio</option>
+                                                    <option value="Video">Video</option>
                                                 </select>
 
                                                 <div className='buttons'>
@@ -741,6 +800,7 @@ class InnerContainer extends React.Component {
                                                     <option value="URL">URL</option>
                                                     <option value="Code">Code</option>
                                                     <option value="Audio">Audio</option>
+                                                    <option value="Video">Video</option>
                                                 </select>
 
                                                 <div className='buttons'>
@@ -813,6 +873,7 @@ class InnerContainer extends React.Component {
                                                 <option value="URL">URL</option>
                                                 <option value="Code">Code</option>
                                                 <option value="Audio">Audio</option>
+                                                <option value="Video">Video</option>
                                             </select>
 
                                             <div className='buttons'>
@@ -853,7 +914,7 @@ class InnerContainer extends React.Component {
                                             </p>
                                             <div className='hidden-element'>
                                                 <video width="320" height="240" controls>
-                                                    <source src="movie.mp4"/>
+                                                    <source src={`${BaseURL}/video/${video_cookie}/${d.payload}`}/>
                                                 </video>
                                                 <div className='text-field'></div>
                                             </div>
@@ -883,6 +944,7 @@ class InnerContainer extends React.Component {
                                                     <option value="URL">URL</option>
                                                     <option value="Code">Code</option>
                                                     <option value="Audio">Audio</option>
+                                                    <option value="Video">Video</option>
                                                 </select>
 
                                                 <div className='buttons'>
