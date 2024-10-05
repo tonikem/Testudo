@@ -14,8 +14,6 @@ import save from '../public/save.png'
 import pencil from '../public/pencil.png'
 import edit from '../public/edit.png'
 import publish from '../public/publishing.png'
-/* import downArrow from '../public/down-arrow.png'
-import upArrow from '../public/up-arrow.png' */
 import {
   uuidv4,
   getCookie,
@@ -159,6 +157,9 @@ function App() {
     }
   }
 
+  function onGetURL(id: string) {
+  }
+
   function onMouseClick(index: any) {
     localStorage.setItem("activeList", index.toString())
     setActiveListIndex(index)
@@ -223,7 +224,7 @@ function App() {
             body: JSON.stringify(allData)
           }
           sendPutRequest(options)
-      
+
           setAllData(allData)
         }
       }
@@ -462,12 +463,12 @@ function App() {
             </ListGroup>
           </Panel>
           <InnerContainer data={showTableItems}
+            setAllData={setAllData}
             setActiveFolderIndex={setActiveFolderIndex}
             showActiveListIndex={showActiveListIndex}
             showActiveFolderIndex={showActiveFolderIndex}
             getAllData={getAllData}
             setTableItems={setTableItems}
-            setAllData={setAllData}
             getDraggingOn={getDraggingOn}
             setDraggingOn={setDraggingOn} />
         </Route>

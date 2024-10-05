@@ -133,6 +133,13 @@
     margin-right: 12px;
 }
 
+.get-url-icon {
+    width: 23px;
+    float: right;
+    cursor: pointer;
+    margin-right: 12px;
+}
+
 .save-icon {
     display: none;
     width: 28px;

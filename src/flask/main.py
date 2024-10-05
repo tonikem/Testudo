@@ -163,6 +163,26 @@ def delete_audio_file(auth_token, filename):
 
 
 @cross_origin()
+@app.route('/note/<notebook_id>/<note_id>')
+def get_individual_note(notebook_id, note_id):
+    TYPES = {'audio'}
+
+    if request.cookies:
+        auth_token = request.cookies["testudoAuthorization"]
+        if authenticate(auth_token):
+            old_notebook = notebooks_db.get(notebook_id)
+
+            for item in old_notebook['items']:
+                for note in item['content']:
+                    if note['type'] in TYPES:
+                        print(note)
+
+            return {"message": "Success"}, 200
+
+    return {"Status": "Failure. Missing token!"}, 404
+
+
+@cross_origin()
 @app.route('/notebooks/<auth_token>')
 def get_notebooks_without_items(auth_token):
     if authenticate(auth_token):

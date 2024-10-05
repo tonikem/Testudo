@@ -8,11 +8,12 @@ import open from '../../../public/open.png'
 import save from '../../../public/save.png'
 import trash from '../../../public/trash.png'
 import spinner from '../../../public/spinner.png'
+import url from '../../../public/url.png'
 import './style.css'
 import { BaseURL, DataURL, sendPutRequest, uuidv4, getCookie } from '../../methods/AppMethods'
 
 
-let audioFiles: any = {}
+//let audioFiles: any = {}
 
 
 class InnerContainer extends React.Component {
@@ -185,7 +186,7 @@ class InnerContainer extends React.Component {
         data.type = selector.value
 
         if (payloadInput.type === "file") {
-            data.payload = audioFiles[data.id]
+            data.payload = payloadInput.files[0].name
         } else {
             data.payload = payloadInput.value
         }
@@ -329,6 +330,16 @@ class InnerContainer extends React.Component {
         }
     }
 
+    onGetURL(data: any) {
+        const noteId = structuredClone(data['url-id'])   
+        const notebook = structuredClone(this.props.getAllData.main[this.props.showActiveListIndex])
+
+        const url = `${BaseURL}/note/${notebook._id}/${noteId}`
+
+        //navigator.clipboard.writeText(url)
+        window.open(url)
+    }
+
     onChangeAudioFile(event: any, id: string) {
         const input = event.target
 
@@ -364,7 +375,7 @@ class InnerContainer extends React.Component {
                 })
                 .then(data => {
                     console.log('File saved successfully:', data)
-                    audioFiles[id] = name
+                    //audioFiles[id] = name
                 })
                 .catch(error => {
                     console.error('There was a problem with your fetch operation:', error)
@@ -592,6 +603,8 @@ class InnerContainer extends React.Component {
                                                     <img className='delete-icon'
                                                         src={trash}
                                                         onClick={() => this.onDeleteClick(d, '')} />
+                                                    <img className='get-url-icon' src={url}
+                                                        onClick={() => this.onGetURL(d)} />
                                                 </div>
 
                                                 <div className='edit-input'>
@@ -663,6 +676,8 @@ class InnerContainer extends React.Component {
                                                     <img className='delete-icon'
                                                         src={trash}
                                                         onClick={() => this.onDeleteClick(d, '')} />
+                                                    <img className='get-url-icon' src={url}
+                                                        onClick={() => this.onGetURL(d)} />
                                                 </div>
 
                                                 <div className='edit-input'>
@@ -703,7 +718,7 @@ class InnerContainer extends React.Component {
                                         }
                                         const set_cookie = getCookie("testudoAuthorization")
 
-                                        audioFiles[d.id] = d.payload
+                                        //audioFiles[d.id] = d.payload
                                         return (
                                             <li id={d.id} key={d.id}
                                                 className="table-item"
@@ -741,6 +756,8 @@ class InnerContainer extends React.Component {
                                                     <img className='delete-icon'
                                                         src={trash}
                                                         onClick={() => this.onDeleteClick(d, 'audio')} />
+                                                    <img className='get-url-icon' src={url}
+                                                        onClick={() => this.onGetURL(d)} />
                                                 </div>
 
                                                 <div className='edit-input'>
@@ -809,6 +826,8 @@ class InnerContainer extends React.Component {
                                                     <img className='delete-icon'
                                                         src={trash}
                                                         onClick={() => this.onDeleteClick(d, '')} />
+                                                    <img className='get-url-icon' src={url}
+                                                        onClick={() => this.onGetURL(d)} />
                                                 </div>
 
                                                 <div className='edit-input'>
