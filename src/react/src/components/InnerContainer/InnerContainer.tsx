@@ -333,14 +333,19 @@ class InnerContainer extends React.Component {
 
     onGetURL(data: any) {
         const noteId = structuredClone(data['url-id'])
-        const notebook = structuredClone(this.props.getAllData.main[this.props.showActiveListIndex])
 
-        const url = `${BaseURL}/note/${notebook._id}/${noteId}`
+        if (noteId) {
+            const notebook = structuredClone(this.props.getAllData.main[this.props.showActiveListIndex])
 
-        if (notebook.published) {
-            window.open(url)
+            const url = `${BaseURL}/note/${notebook._id}/${noteId}`
+    
+            if (notebook.published) {
+                window.open(url)
+            } else {
+                alert("Publish your notebook before sharing a link")
+            }
         } else {
-            alert("Publish your notebook before sharing a link")
+            alert("ID not found. Try reloading the page.")
         }
     }
 

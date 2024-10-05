@@ -229,31 +229,32 @@ def delete_audio_file(auth_token, filename):
 @cross_origin()
 @app.route('/note/<notebook_id>/<note_id>')
 def get_individual_note(notebook_id, note_id):
-    old_notebook = notebooks_db.get(notebook_id)
+    if is_full_string(notebook_id) and is_full_string(note_id):
+        old_notebook = notebooks_db.get(notebook_id)
 
-    if 'published' in old_notebook.keys() and old_notebook['published']:
-        user = get_user_by_notebook_id(notebook_id)
-        user_id = user['doc']['id']
+        if 'published' in old_notebook.keys() and old_notebook['published']:
+            user = get_user_by_notebook_id(notebook_id)
+            user_id = user['doc']['id']
 
-        for item in old_notebook['items']:
-            for note in item['content']:
-                if note['url-id'] == note_id:
-                    if note['type'] == 'Audio':
-                        with open(f'./files/{user_id}/{note['payload']}', 'rb') as file:
-                            file_type = note['payload'].split('.')[-1]
-                            base64_data = base64.b64encode(file.read()).decode('ascii')
-                            audio_file = f"data:audio/{file_type};base64,{base64_data}"
-                            return render_template('audio.html', file_name=note['payload'], audio_file=audio_file)
-                    elif note['type'] == 'Video':
-                        with open(f'./files/{user_id}/{note['payload']}', 'rb') as file:
-                            file_type = note['payload'].split('.')[-1]
-                            base64_data = base64.b64encode(file.read()).decode('ascii')
-                            video_file = f"data:video/{file_type};base64,{base64_data}"
-                            return render_template('video.html', file_name=note['payload'], video_file=video_file)
-                    else:
-                        return render_template('file.html', file_name=note['name'], file_payload=note['payload'])
+            for item in old_notebook['items']:
+                for note in item['content']:
+                    if note['url-id'] == note_id:
+                        if note['type'] == 'Audio':
+                            with open(f'./files/{user_id}/{note['payload']}', 'rb') as file:
+                                file_type = note['payload'].split('.')[-1]
+                                base64_data = base64.b64encode(file.read()).decode('ascii')
+                                audio_file = f"data:audio/{file_type};base64,{base64_data}"
+                                return render_template('audio.html', file_name=note['payload'], audio_file=audio_file)
+                        elif note['type'] == 'Video':
+                            with open(f'./files/{user_id}/{note['payload']}', 'rb') as file:
+                                file_type = note['payload'].split('.')[-1]
+                                base64_data = base64.b64encode(file.read()).decode('ascii')
+                                video_file = f"data:video/{file_type};base64,{base64_data}"
+                                return render_template('video.html', file_name=note['payload'], video_file=video_file)
+                        else:
+                            return render_template('file.html', file_name=note['name'], file_payload=note['payload'])
 
-        return {"message": "File was not found!"}, 404
+            return {"message": "File was not found!"}, 404
 
     return {"Status": "Failure. Missing token!"}, 404
 

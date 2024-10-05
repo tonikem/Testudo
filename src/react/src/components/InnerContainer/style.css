@@ -299,5 +299,8 @@
     .audio {
         width: auto;
     }
+    .video {
+        width: auto;
+    }
 }
 
