@@ -308,19 +308,26 @@ def save_bare_notebooks(auth_token):
         bare_bone_notebooks = json.loads(request.data)
 
         for bare_bone_notebook in bare_bone_notebooks['main']:
-            if '_id' in bare_bone_notebook.keys():
-                old_notebook = notebooks_db.get(bare_bone_notebook['_id'])
+            try:
+                _id = bare_bone_notebook['_id']
+                old_notebook = notebooks_db.get(_id)
                 notebook_to_be_saved = {
                     'id': old_notebook['id'],
-                    '_id': old_notebook['_id'],
+                    '_id': _id,
                     '_rev': old_notebook['_rev'],
                     'name': old_notebook['name'],
                     'items': old_notebook['items'],
                     'visible': bare_bone_notebook['visible'],
                 }
                 saved_notebook = notebooks_db.save(notebook_to_be_saved)
-            else:
-                saved_notebook = notebooks_db.save(bare_bone_notebook)
+            except KeyError:
+                notebook_to_be_saved = {
+                    'id': bare_bone_notebook['id'],
+                    'name': bare_bone_notebook['name'],
+                    'items': bare_bone_notebook['items'],
+                    'visible': bare_bone_notebook['visible'],
+                }
+                saved_notebook = notebooks_db.save(notebook_to_be_saved)
 
             if saved_notebook['_id'] not in notebooks:
                 new_notebooks_found = True

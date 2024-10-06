@@ -43,6 +43,7 @@ class NotebookList extends React.Component {
             }).finally(() => {
                 setTimeout(() => {
                     location.reload()
+                    //this.props.setNotebooks(notebooks)
                 }, 40)
             })
     }
@@ -71,26 +72,6 @@ class NotebookList extends React.Component {
             },
             body: JSON.stringify(allData)
         }
-
-        const cookie = getCookie("testudoAuthorization")
-
-        fetch(`${BaseURL}/notebooks/${cookie}`, options)
-            .then(response => {
-                if (response.status == 404) {
-                    alert(response['message'])
-                    location.reload()
-                }
-                if (!response.ok) {
-                    throw new Error('Network response was not ok')
-                }
-                return response.json()
-            })
-            .then(data => {
-                console.log('Resource updated successfully:', data)
-            })
-            .catch(error => {
-                console.error('There was a problem with your fetch operation:', error)
-            })
 
         this.props.setNotebooks(allData)
     }
