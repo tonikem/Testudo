@@ -318,6 +318,7 @@ def save_bare_notebooks(auth_token):
                     '_rev': old_notebook['_rev'],
                     'name': old_notebook['name'],
                     'items': old_notebook['items'],
+                    'published': old_notebook['published'],
                     'visible': bare_bone_notebook['visible'],
                 }
                 saved_notebook = notebooks_db.save(notebook_to_be_saved)
@@ -325,9 +326,19 @@ def save_bare_notebooks(auth_token):
                 notebook_to_be_saved = {
                     'id': bare_bone_notebook['id'],
                     'name': bare_bone_notebook['name'],
-                    'items': bare_bone_notebook['items'],
                     'visible': bare_bone_notebook['visible'],
                 }
+
+                if 'items' in bare_bone_notebook.keys():
+                    notebook_to_be_saved['items'] = bare_bone_notebook['items']
+                else:
+                    notebook_to_be_saved['items'] = []
+
+                if 'published' in bare_bone_notebook.keys():
+                    notebook_to_be_saved['published'] = bare_bone_notebook['published']
+                else:
+                    notebook_to_be_saved['published'] = False
+
                 saved_notebook = notebooks_db.save(notebook_to_be_saved)
 
             if saved_notebook['_id'] not in notebooks:
@@ -474,9 +485,10 @@ def save_notebooks(auth_token):
                     if 'url-id' not in item.keys():
                         new_notebook['items'][i]['url-id'] = str(uuid.uuid4())
 
-                    for u, note in enumerate(new_notebook['items'][i]['content']):
-                        if 'url-id' not in note.keys():
-                            new_notebook['items'][i]['content'][u]['url-id'] = str(uuid.uuid4())
+                    if 'content' in new_notebook['items'][i].keys():
+                        for u, note in enumerate(new_notebook['items'][i]['content']):
+                            if 'url-id' not in note.keys():
+                                new_notebook['items'][i]['content'][u]['url-id'] = str(uuid.uuid4())
 
                 saved_notebook = notebooks_db.save(new_notebook)
             else:
