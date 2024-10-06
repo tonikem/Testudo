@@ -302,5 +302,8 @@
     .video {
         width: auto;
     }
+    .hidden-element {
+        margin: 7px;
+    }
 }
 
