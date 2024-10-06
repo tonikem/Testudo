@@ -219,8 +219,16 @@ function App() {
 
     allData.main.forEach(notebook => {
       if (_id == notebook._id) {
-        if (confirm("Do you wish to publish this notebook?")) {
-          notebook.published = true
+        let message = ""
+
+        if (notebook.published) {
+          message = "Do you wish to make this notebook private?"
+        } else {
+          message = "Do you wish to publish this notebook?"
+        }
+        
+        if (confirm(message)) {
+          notebook.published = !notebook.published
 
           const options = {
             method: 'PUT',
