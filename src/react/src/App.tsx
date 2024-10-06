@@ -20,7 +20,8 @@ import {
   DataURL,
   onMouseClickTable,
   sendPutRequest,
-  sendDeleteRequest
+  sendDeleteRequest,
+  BaseURL
 } from './methods/AppMethods'
 import './App.css'
 import AllContainer from './components/AllContainer/AllContainer'
@@ -40,6 +41,10 @@ function App() {
   // Valittu Notebook ja Folder
   const [showActiveListIndex, setActiveListIndex] = useState(localStorage.getItem("activeList"))
   const [showActiveFolderIndex, setActiveFolderIndex] = useState()
+
+  // Notebook-näkymän metodit
+  const [getNotebooks, setNotebooks] = useState({ main: [] })
+
 
   function onNotebookEditClick(id: string) {
     setTableItems(getAllData.main.items)
@@ -305,7 +310,7 @@ function App() {
     }
   }
 
-  function updateAllDAta() {
+  function updateAllData() {
     const spinner = document.getElementById('spinner')
 
     if (spinner) {
@@ -332,8 +337,26 @@ function App() {
       })
   }
 
+  function updateNotebookView() {
+    const cookie = getCookie("testudoAuthorization")
+
+    fetch(`${BaseURL}/notebooks/${cookie}`)
+      .then(res => res.json())
+      .then(mainData => {
+        if (mainData.Status === "Failure. Missing token!") {
+          // Varoitetaan tokenin puuttumisesta
+          alert("You are missing token!")
+          setNotebooks({ "main": [] })
+        } else {
+          // Asetetaan koko data
+          setNotebooks(mainData)
+        }
+      })
+  }
+
   useEffect(() => {
-    updateAllDAta()
+    updateAllData()
+    updateNotebookView()
   }, [])
 
   return (
@@ -478,7 +501,10 @@ function App() {
         </Route>
         <Route path="/notebooks">
           <Header />
-          <NotebookContainer setAllData={setAllData} />
+          <NotebookContainer setAllData={setAllData}
+            updateAllData={updateAllData}
+            getNotebooks={getNotebooks}
+            setNotebooks={setNotebooks} />
         </Route>
       </Switch>
     </div>

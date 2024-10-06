@@ -59,7 +59,7 @@ class NotebookList extends React.Component {
             "id": (Math.random() + 1).toString(36).substring(7),
             "items": [],
             "name": name,
-            'visible': true
+            'visible': false
         }
 
         allData.main.unshift(newNotebook)
@@ -72,10 +72,26 @@ class NotebookList extends React.Component {
             body: JSON.stringify(allData)
         }
 
-        console.log(allData)
+        const cookie = getCookie("testudoAuthorization")
 
-        sendPutRequest(options)
-        //this.props.setAllData(allData)
+        fetch(`${BaseURL}/notebooks/${cookie}`, options)
+            .then(response => {
+                if (response.status == 404) {
+                    alert(response['message'])
+                    location.reload()
+                }
+                if (!response.ok) {
+                    throw new Error('Network response was not ok')
+                }
+                return response.json()
+            })
+            .then(data => {
+                console.log('Resource updated successfully:', data)
+            })
+            .catch(error => {
+                console.error('There was a problem with your fetch operation:', error)
+            })
+
         this.props.setNotebooks(allData)
     }
 
@@ -89,7 +105,7 @@ class NotebookList extends React.Component {
                     {
                         this.props.getNotebooks.main.map((data: any, index: any) => {
                             if (data.visible) {
-                                return <li className='list-group-item notebook-list-item item-active' key={data._id}>
+                                return <li className='list-group-item notebook-list-item item-active' key={data.id}>
                                     <p>{data.name}</p>
                                     <label className="checkbox-container">
                                         <input type="checkbox" defaultChecked={true} onClick={(e) => this.onCheckboxClick(e, data)} />
@@ -97,7 +113,7 @@ class NotebookList extends React.Component {
                                     </label>
                                 </li>
                             } else {
-                                return <li className='list-group-item notebook-list-item' key={data._id}>
+                                return <li className='list-group-item notebook-list-item' key={data.id}>
                                     <p>{data.name}</p>
                                     <label className="checkbox-container">
                                         <input type="checkbox" defaultChecked={false} onClick={(e) => this.onCheckboxClick(e, data)} />

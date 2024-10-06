@@ -301,12 +301,30 @@ def save_bare_notebooks(auth_token):
         if decoded_token is None:
             return {"Status": "Failure. Missing token!"}, 404
 
+        user_id = decoded_token["user_id"]
+        user = get_user_by_id(user_id)
+        notebooks = user['doc']['notebooks']
         bare_bone_notebooks = json.loads(request.data)
 
         for bare_bone_notebook in bare_bone_notebooks['main']:
-            old_notebook = notebooks_db.get(bare_bone_notebook['_id'])
-            old_notebook['visible'] = bare_bone_notebook['visible']
-            notebooks_db.save(old_notebook)
+            if '_id' in bare_bone_notebook.keys():
+                old_notebook = notebooks_db.get(bare_bone_notebook['_id'])
+                old_notebook['visible'] = bare_bone_notebook['visible']
+                saved_notebook = notebooks_db.save(old_notebook)
+            else:
+                saved_notebook = notebooks_db.save(bare_bone_notebook)
+
+            notebooks.insert(0, saved_notebook['_id'])
+
+        user_to_be_saved = {
+            "_id": user['doc']['_id'],
+            "_rev": user['doc']['_rev'],
+            "id": user['doc']['id'],
+            "name": user['doc']['name'],
+            "password": user['doc']['password'],
+            "notebooks": notebooks
+        }
+        users_db.save(user_to_be_saved)
 
         return {"message": "Success"}, 200, {"Access-Control-Allow-Origin": "*"}
 
