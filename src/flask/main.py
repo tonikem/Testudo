@@ -513,17 +513,18 @@ def delete_data(auth_token):
         notebooks = user['doc']['notebooks']
 
         data = json.loads(request.data)
-        notebook_id = data['id']
+        notebook_id = data['_id']
 
         # Varmistetaan, että oikea käyttäjä poistaa notebookin
         if notebook_id not in notebooks:
             return {"message": "You don't own this notebook."}, 401
 
-        found_notebook = get_notebook_by_id(notebook_id)
+        found_notebook = notebooks_db.get(notebook_id)
+        print(found_notebook)
 
         # Poistetaan notebook tietokannasta
         notebook_to_be_deleted = {
-            '_id': found_notebook['doc']['_id']
+            '_id': found_notebook['_id']
         }
         notebooks_db.delete(notebook_to_be_deleted)
 

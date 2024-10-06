@@ -177,7 +177,7 @@ function App() {
     setAllData(allData)
   }
 
-  function onRemoveClick(id: string) {
+  function onRemoveClick(_id: string) {
     if (confirm('Are you sure you want to delete this notebook?')) {
 
       // Poistetaan Notebookin osat käyttöliittymästä
@@ -189,7 +189,7 @@ function App() {
       let allData = structuredClone(getAllData)
 
       for (let i = 0; i < allData.main.length; ++i) {
-        if (id == allData.main[i].id) {
+        if (_id == allData.main[i]._id) {
           const deleted_notebook = structuredClone(allData.main[i])
 
           delete allData.main[i]
