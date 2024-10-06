@@ -317,11 +317,21 @@ def save_bare_notebooks(auth_token):
                     '_id': _id,
                     '_rev': old_notebook['_rev'],
                     'name': old_notebook['name'],
-                    'items': old_notebook['items'],
-                    'published': old_notebook['published'],
                     'visible': bare_bone_notebook['visible'],
                 }
+
+                if 'items' in old_notebook.keys():
+                    notebook_to_be_saved['items'] = old_notebook['items']
+                else:
+                    notebook_to_be_saved['items'] = []
+
+                if 'published' in old_notebook.keys():
+                    notebook_to_be_saved['published'] = old_notebook['published']
+                else:
+                    notebook_to_be_saved['published'] = False
+
                 saved_notebook = notebooks_db.save(notebook_to_be_saved)
+
             except KeyError:
                 notebook_to_be_saved = {
                     'id': bare_bone_notebook['id'],
