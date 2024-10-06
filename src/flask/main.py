@@ -8,9 +8,8 @@ import pycouchdb
 from pathlib import Path
 from string_utils.validation import is_full_string
 from sys import getsizeof
-from flask import Flask, render_template, request, send_file, make_response
+from flask import Flask, render_template, request, send_file
 from flask_cors import CORS, cross_origin
-from io import StringIO
 from functions import check_password, is_valid_audio, is_valid_video
 
 DATE_FORMAT = "%m/%d/%Y, %H:%M:%S"
@@ -18,6 +17,8 @@ TOKEN_EXPIRATION_TIME = 2630750  # 86400
 MAX_DATA_SIZE = 6000000000  # 6GB
 MAX_AUDIO_SIZE = 1000000000  # 2GB
 MAX_DIRECTORY_SIZE = 12000000000  # 12GB
+MAX_DIRECTORY_SIZE_PREMIUM = 500000000000  # 500GB
+
 SECRET_KEY = "SECRET_KEY_1234"
 
 app = Flask(__name__)
@@ -422,7 +423,7 @@ def get_notebooks_and_items(auth_token):
         result = {"main": collected_notebooks}
 
         if getsizeof(result) > MAX_DATA_SIZE:
-            return {"message": f"Content too large. Max size is {MAX_DATA_SIZE} bytes"}, 413, {"Access-Control-Allow-Origin": "*"}
+            return {"message": f"Content too large. Max size is {MAX_DATA_SIZE} bytes."}, 413, {"Access-Control-Allow-Origin": "*"}
 
         return result
     else:
