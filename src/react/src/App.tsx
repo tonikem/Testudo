@@ -249,7 +249,7 @@ function App() {
 
         const newItem = {
           "name": result,
-          "id": (Math.random() + 1).toString(36).substring(7),
+          "id": uuidv4(),
           "items": [],
           "payload": ""
         }

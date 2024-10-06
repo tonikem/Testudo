@@ -15,7 +15,7 @@ class NotebookList extends React.Component {
         const notebooks: any = structuredClone(this.props.getNotebooks)
 
         for (let i = 0; i < notebooks.main.length; ++i) {
-            if (notebooks.main[i]._id == data._id) {
+            if (notebooks.main[i].id == data.id) {
                 notebooks.main[i].visible = e.target.checked
 
                 this.props.setNotebooks(notebooks)
@@ -56,7 +56,7 @@ class NotebookList extends React.Component {
         }
 
         const newNotebook = {
-            "id": (Math.random() + 1).toString(36).substring(7),
+            "id": uuidv4(),
             "items": [],
             "name": name,
             'visible': false

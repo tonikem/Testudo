@@ -556,14 +556,14 @@ class InnerContainer extends React.Component {
             newContent = [
                 ...data.content, {
                     "name": result,
-                    "id": (Math.random() + 1).toString(36).substring(7),
+                    "id": uuidv4(),
                     "type": "Text",
                     "payload": ""
                 }]
         } else {
             newContent = [{
                 "name": result,
-                "id": (Math.random() + 1).toString(36).substring(7),
+                "id": uuidv4(),
                 "type": "Text",
                 "payload": ""
             }]

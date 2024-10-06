@@ -301,6 +301,7 @@ def save_bare_notebooks(auth_token):
         if decoded_token is None:
             return {"Status": "Failure. Missing token!"}, 404
 
+        new_notebooks_found = False
         user_id = decoded_token["user_id"]
         user = get_user_by_id(user_id)
         notebooks = user['doc']['notebooks']
@@ -309,22 +310,32 @@ def save_bare_notebooks(auth_token):
         for bare_bone_notebook in bare_bone_notebooks['main']:
             if '_id' in bare_bone_notebook.keys():
                 old_notebook = notebooks_db.get(bare_bone_notebook['_id'])
-                old_notebook['visible'] = bare_bone_notebook['visible']
-                saved_notebook = notebooks_db.save(old_notebook)
+                notebook_to_be_saved = {
+                    'id': old_notebook['id'],
+                    '_id': old_notebook['_id'],
+                    '_rev': old_notebook['_rev'],
+                    'name': old_notebook['name'],
+                    'items': old_notebook['items'],
+                    'visible': bare_bone_notebook['visible'],
+                }
+                saved_notebook = notebooks_db.save(notebook_to_be_saved)
             else:
                 saved_notebook = notebooks_db.save(bare_bone_notebook)
 
-            notebooks.insert(0, saved_notebook['_id'])
+            if saved_notebook['_id'] not in notebooks:
+                new_notebooks_found = True
+                notebooks.insert(0, saved_notebook['_id'])
 
-        user_to_be_saved = {
-            "_id": user['doc']['_id'],
-            "_rev": user['doc']['_rev'],
-            "id": user['doc']['id'],
-            "name": user['doc']['name'],
-            "password": user['doc']['password'],
-            "notebooks": notebooks
-        }
-        users_db.save(user_to_be_saved)
+        if new_notebooks_found:
+            user_to_be_saved = {
+                "_id": user['doc']['_id'],
+                "_rev": user['doc']['_rev'],
+                "id": user['doc']['id'],
+                "name": user['doc']['name'],
+                "password": user['doc']['password'],
+                "notebooks": notebooks
+            }
+            users_db.save(user_to_be_saved)
 
         return {"message": "Success"}, 200, {"Access-Control-Allow-Origin": "*"}
 
