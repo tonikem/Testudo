@@ -37,6 +37,11 @@
   margin-bottom: 10px;
 }
 
+.notebook {
+  width: 24px;
+  margin: 4px;
+}
+
 .folder-icon {
   width: 14px;
   margin: 8px;

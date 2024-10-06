@@ -6,6 +6,7 @@ import NotebookContainer from './components/NotebookContainer/NotebookContainer'
 import { Route, Switch } from "wouter"
 import { useEffect, useState } from 'react'
 import notebook from '../public/notebook.png'
+import redNotebook from '../public/red-notebook.png'
 import folder from '../public/folder.png'
 import remove from '../public/remove.png'
 import plus from '../public/plus.png'
@@ -384,7 +385,7 @@ function App() {
                         <li id={data._id} key={data._id} className="list-group-item active-item">
                           <div className="notebook-icon">
                             <div className='data-name-div'>
-                              <img src={notebook} alt="Notebook-icon" />
+                              <img className='notebook' src={data.published ? redNotebook : notebook} alt="Notebook-icon" />
                               {data.name}
                             </div>
                             <img src={save}
@@ -471,7 +472,7 @@ function App() {
                           onClick={() => onMouseClick(index)} className="list-group-item">
                           <div className="notebook-icon">
                             <div className='data-name-div'>
-                              <img src={notebook} alt="Notebook-icon" />
+                              <img className='notebook' src={data.published ? redNotebook : notebook} alt="Notebook-icon" />
                               {data.name}
                             </div>
                             <input className='notebook-input' defaultValue={data.name} />
