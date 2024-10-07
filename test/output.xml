@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.1 (Python 3.12.5 on win32)" generated="2024-10-07T16:13:33.141551" rpa="false" schemaversion="5">
+<suite id="s1" name="Testudo Smoke" source="C:\Users\tonik\Desktop\Projektit\Testudo\test\testudo_smoke.robot">
+<test id="s1-t1" name="Testudo App Smoke testi" line="6">
+<kw name="Avaa selain">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2024-10-07T16:13:33.258572" level="INFO">Opening browser 'chrome' to base url 'http://localhost:5000'.</msg>
+<arg>http://localhost:5000</arg>
+<arg>chrome</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2024-10-07T16:13:33.258572" elapsed="1.526529"/>
+</kw>
+<kw name="Maximize Browser Window" owner="SeleniumLibrary">
+<doc>Maximizes current browser window.</doc>
+<status status="PASS" start="2024-10-07T16:13:34.786107" elapsed="0.027508"/>
+</kw>
+<status status="PASS" start="2024-10-07T16:13:33.257572" elapsed="1.556043"/>
+</kw>
+<kw name="Kirjaudu Testudoon">
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-10-07T16:13:34.814615" level="INFO">Typing text 'Admin' into text field 'id=inputUser'.</msg>
+<arg>id=inputUser</arg>
+<arg>Admin</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2024-10-07T16:13:34.814615" elapsed="0.055515"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-10-07T16:13:34.871130" level="INFO">Typing text 'joulupukki7' into text field 'id=inputPassword'.</msg>
+<arg>id=inputPassword</arg>
+<arg>%{TESTUDO_ADMIN_PASSWORD}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2024-10-07T16:13:34.870130" elapsed="0.051001"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2024-10-07T16:13:44.921526" level="INFO">Slept 10 seconds.</msg>
+<arg>10s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2024-10-07T16:13:34.921131" elapsed="10.000395"/>
+</kw>
+<status status="PASS" start="2024-10-07T16:13:34.813615" elapsed="10.107911"/>
+</kw>
+<status status="PASS" start="2024-10-07T16:13:33.257572" elapsed="11.663954"/>
+</test>
+<status status="PASS" start="2024-10-07T16:13:33.143055" elapsed="11.779052"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="1" fail="0" skip="0" id="s1" name="Testudo Smoke">Testudo Smoke</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
