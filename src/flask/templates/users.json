@@ -1,14 +1,11 @@
 {
   "users": [
     {
-      "name": "qwerty",
-      "id": "6bcaa6e6-c314-4033-9e44-aabbeeeca57b",
-      "password": "1234",
+      "name": "Admin",
+      "id": "2389074er7ywq9re8fu98e43wyhr9wf89wuef9ewy7f8uf9sw",
+      "password": "joulupukki7",
       "tokens": [],
-      "notebooks": [
-        "828f7c86-29cc-4e12-ace2-aa77fd7a7244",
-        "2d1a7342-bf11-4664-b174-3a54f9acfdfa"
-      ]
+      "notebooks": []
     }
   ]
 }

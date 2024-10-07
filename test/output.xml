@@ -1,47 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 7.1 (Python 3.12.5 on win32)" generated="2024-10-07T16:13:33.141551" rpa="false" schemaversion="5">
+<robot generator="Robot 7.1 (Python 3.12.5 on win32)" generated="2024-10-07T16:28:38.866864" rpa="false" schemaversion="5">
 <suite id="s1" name="Testudo Smoke" source="C:\Users\tonik\Desktop\Projektit\Testudo\test\testudo_smoke.robot">
 <test id="s1-t1" name="Testudo App Smoke testi" line="6">
 <kw name="Avaa selain">
 <kw name="Open Browser" owner="SeleniumLibrary">
-<msg time="2024-10-07T16:13:33.258572" level="INFO">Opening browser 'chrome' to base url 'http://localhost:5000'.</msg>
+<msg time="2024-10-07T16:28:38.984001" level="INFO">Opening browser 'chrome' to base url 'http://localhost:5000'.</msg>
 <arg>http://localhost:5000</arg>
 <arg>chrome</arg>
 <doc>Opens a new browser instance to the optional ``url``.</doc>
-<status status="PASS" start="2024-10-07T16:13:33.258572" elapsed="1.526529"/>
+<status status="PASS" start="2024-10-07T16:28:38.984001" elapsed="1.516675"/>
 </kw>
 <kw name="Maximize Browser Window" owner="SeleniumLibrary">
 <doc>Maximizes current browser window.</doc>
-<status status="PASS" start="2024-10-07T16:13:34.786107" elapsed="0.027508"/>
+<status status="PASS" start="2024-10-07T16:28:40.500676" elapsed="0.030999"/>
 </kw>
-<status status="PASS" start="2024-10-07T16:13:33.257572" elapsed="1.556043"/>
+<status status="PASS" start="2024-10-07T16:28:38.984001" elapsed="1.547674"/>
 </kw>
 <kw name="Kirjaudu Testudoon">
 <kw name="Input Text" owner="SeleniumLibrary">
-<msg time="2024-10-07T16:13:34.814615" level="INFO">Typing text 'Admin' into text field 'id=inputUser'.</msg>
+<msg time="2024-10-07T16:28:40.533677" level="INFO">Typing text 'Admin' into text field 'id=inputUser'.</msg>
 <arg>id=inputUser</arg>
 <arg>Admin</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="PASS" start="2024-10-07T16:13:34.814615" elapsed="0.055515"/>
+<status status="PASS" start="2024-10-07T16:28:40.533677" elapsed="0.059700"/>
 </kw>
 <kw name="Input Text" owner="SeleniumLibrary">
-<msg time="2024-10-07T16:13:34.871130" level="INFO">Typing text 'joulupukki7' into text field 'id=inputPassword'.</msg>
+<msg time="2024-10-07T16:28:40.594380" level="INFO">Typing text 'joulupukki7' into text field 'id=inputPassword'.</msg>
 <arg>id=inputPassword</arg>
 <arg>%{TESTUDO_ADMIN_PASSWORD}</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="PASS" start="2024-10-07T16:13:34.870130" elapsed="0.051001"/>
+<status status="PASS" start="2024-10-07T16:28:40.594380" elapsed="0.047000"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2024-10-07T16:28:40.642381" level="INFO">Clicking button 'id=submit-button'.</msg>
+<arg>id=submit-button</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2024-10-07T16:28:40.641380" elapsed="0.028509"/>
 </kw>
 <kw name="Sleep" owner="BuiltIn">
-<msg time="2024-10-07T16:13:44.921526" level="INFO">Slept 10 seconds.</msg>
+<msg time="2024-10-07T16:28:41.670151" level="INFO">Slept 1 second.</msg>
+<arg>1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2024-10-07T16:28:40.669889" elapsed="1.000262"/>
+</kw>
+<status status="PASS" start="2024-10-07T16:28:40.532675" elapsed="1.137476"/>
+</kw>
+<kw name="Valitse Home välilehti">
+<kw name="Click Link" owner="SeleniumLibrary">
+<msg time="2024-10-07T16:28:41.670151" level="INFO">Clicking link '//*[@id="root"]/div/div[1]/nav/div/ul/li[2]/a'.</msg>
+<arg>//*[@id="root"]/div/div[1]/nav/div/ul/li[2]/a</arg>
+<doc>Clicks a link identified by ``locator``.</doc>
+<status status="PASS" start="2024-10-07T16:28:41.670151" elapsed="0.031004"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2024-10-07T16:28:51.701495" level="INFO">Slept 10 seconds.</msg>
 <arg>10s</arg>
 <doc>Pauses the test executed for the given time.</doc>
-<status status="PASS" start="2024-10-07T16:13:34.921131" elapsed="10.000395"/>
+<status status="PASS" start="2024-10-07T16:28:41.701155" elapsed="10.000340"/>
 </kw>
-<status status="PASS" start="2024-10-07T16:13:34.813615" elapsed="10.107911"/>
+<status status="PASS" start="2024-10-07T16:28:41.670151" elapsed="10.031344"/>
 </kw>
-<status status="PASS" start="2024-10-07T16:13:33.257572" elapsed="11.663954"/>
+<status status="PASS" start="2024-10-07T16:28:38.983001" elapsed="12.718494"/>
 </test>
-<status status="PASS" start="2024-10-07T16:13:33.143055" elapsed="11.779052"/>
+<status status="PASS" start="2024-10-07T16:28:38.867864" elapsed="12.833631"/>
 </suite>
 <statistics>
 <total>

@@ -11,12 +11,11 @@ notebooks_db = server.database("notebooks")
 users_db = server.database("users")
 
 
-with open("./templates/data.json") as file:
-    data = json.load(file)
-    notebooks = data["main"]
-
-    # Asetetaan notebook data
-    notebooks_db.save_bulk(notebooks)
+#with open("./templates/data.json") as file:
+#    data = json.load(file)
+#    notebooks = data["main"]
+#    # Asetetaan notebook data
+#    notebooks_db.save_bulk(notebooks)
 
 
 with open("./templates/users.json") as file:
