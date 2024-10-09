@@ -4,7 +4,7 @@ import json
 import uuid
 import base64
 import datetime
-import pycouchdb
+import pycouchdb as pycouchdb
 from pathlib import Path
 from string_utils.validation import is_full_string
 from sys import getsizeof

@@ -1,6 +1,6 @@
 import os
 import json
-import pycouchdb
+from src.flask import pycouchdb
 from functions import get_hashed_password
 
 
