@@ -1,3 +1,6 @@
+# source .venv/bin/activate
+# document.cookie = "testudoAuthorization=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMjM4OTA3NGVyN3l3cTlyZThmdTk4ZTQzd3locjl3Zjg5d3VlZjlld3k3Zjh1ZjlzdyIsImRhdGUiOiIxMC8wOS8yMDI0LCAxMzozODoyNiJ9.FMECoXw_QqXYxVMUawPZOmr545-gGr6wk__JW4L-c1c"
+
 import os
 import jwt
 import json
@@ -18,8 +21,6 @@ MAX_DATA_SIZE = 6000000000  # 6GB
 MAX_AUDIO_SIZE = 1000000000  # 2GB
 MAX_DIRECTORY_SIZE = 12000000000  # 12GB
 MAX_DIRECTORY_SIZE_PREMIUM = 500000000000  # 500GB
-
-# source .venv/bin/activate
 
 SECRET_KEY = "SECRET_KEY_1234"
 
