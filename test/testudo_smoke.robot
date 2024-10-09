@@ -4,7 +4,6 @@ Library  SeleniumLibrary
 
 *** Test Cases ***
 Testudo App Smoke testi
-    Log    %{DISPLAY}
     Avaa selain
     Kirjaudu Testudoon
     Valitse Home välilehti
