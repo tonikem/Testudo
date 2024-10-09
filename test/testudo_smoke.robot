@@ -4,6 +4,7 @@ Library  SeleniumLibrary
 
 *** Test Cases ***
 Testudo App Smoke testi
+    Log    %{DISPLAY}
     Avaa selain
     Kirjaudu Testudoon
     Valitse Home välilehti
@@ -11,7 +12,7 @@ Testudo App Smoke testi
 
 *** Keywords ***
 Avaa selain
-    Open Browser    http://localhost:5000    chrome
+    Open Browser    http://localhost:5000    headlesschrome
     Maximize Browser Window
 
 Kirjaudu Testudoon
