@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.1 (Python 3.12.5 on linux)" generated="2024-10-09T11:54:59.889689" rpa="false" schemaversion="5">
+<suite id="s1" name="Test" source="/home/tonik/Desktop/Testudo/test">
+<suite id="s1-s1" name="Testudo Smoke" source="/home/tonik/Desktop/Testudo/test/testudo_smoke.robot">
+<test id="s1-s1-t1" name="Testudo App Smoke testi" line="6">
+<kw name="Avaa selain">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2024-10-09T11:54:59.946062" level="INFO">Opening browser 'chrome' to base url 'http://localhost:5000'.</msg>
+<arg>http://localhost:5000</arg>
+<arg>chrome</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2024-10-09T11:54:59.945963" elapsed="0.413809"/>
+</kw>
+<kw name="Maximize Browser Window" owner="SeleniumLibrary">
+<doc>Maximizes current browser window.</doc>
+<status status="PASS" start="2024-10-09T11:55:00.359963" elapsed="0.011882"/>
+</kw>
+<status status="PASS" start="2024-10-09T11:54:59.945625" elapsed="0.426332"/>
+</kw>
+<kw name="Kirjaudu Testudoon">
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-10-09T11:55:00.372577" level="INFO">Typing text 'Admin' into text field 'id=inputUser'.</msg>
+<arg>id=inputUser</arg>
+<arg>Admin</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2024-10-09T11:55:00.372337" elapsed="0.091586"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2024-10-09T11:55:00.465367" level="FAIL">Environment variable '%{TESTUDO_ADMIN_PASSWORD}' not found.</msg>
+<arg>id=inputPassword</arg>
+<arg>%{TESTUDO_ADMIN_PASSWORD}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="FAIL" start="2024-10-09T11:55:00.464271" elapsed="0.001238">Environment variable '%{TESTUDO_ADMIN_PASSWORD}' not found.</status>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<arg>id=submit-button</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="NOT RUN" start="2024-10-09T11:55:00.465784" elapsed="0.000048"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<arg>1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" start="2024-10-09T11:55:00.465995" elapsed="0.000037"/>
+</kw>
+<status status="FAIL" start="2024-10-09T11:55:00.372145" elapsed="0.094109">Environment variable '%{TESTUDO_ADMIN_PASSWORD}' not found.</status>
+</kw>
+<kw name="Valitse Home välilehti">
+<status status="NOT RUN" start="2024-10-09T11:55:00.466568" elapsed="0.000045"/>
+</kw>
+<status status="FAIL" start="2024-10-09T11:54:59.945275" elapsed="0.521584">Environment variable '%{TESTUDO_ADMIN_PASSWORD}' not found.</status>
+</test>
+<status status="FAIL" start="2024-10-09T11:54:59.899941" elapsed="0.567489"/>
+</suite>
+<status status="FAIL" start="2024-10-09T11:54:59.890098" elapsed="0.577916"/>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="1" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="0" fail="1" skip="0" id="s1" name="Test">Test</stat>
+<stat pass="0" fail="1" skip="0" id="s1-s1" name="Testudo Smoke">Test.Testudo Smoke</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

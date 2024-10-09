@@ -19,7 +19,7 @@ MAX_AUDIO_SIZE = 1000000000  # 2GB
 MAX_DIRECTORY_SIZE = 12000000000  # 12GB
 MAX_DIRECTORY_SIZE_PREMIUM = 500000000000  # 500GB
 
-# source .venv/bin/activate #
+# source .venv/bin/activate
 
 SECRET_KEY = "SECRET_KEY_1234"
 
@@ -572,7 +572,6 @@ def delete_data(auth_token):
 
 
 if __name__ == "__main__":
-    # context = ('./ssl/cert.pem', './ssl/key.pem')
-    app.run(host='0.0.0.0', port=5000, debug=True)  # ssl_context=context
+    app.run(host='127.0.0.1', port=5000, debug=True)
 
 
