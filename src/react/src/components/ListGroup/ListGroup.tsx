@@ -62,6 +62,10 @@ const ListGroup = (props: any) => {
     sendPutRequest(options)
 
     props.setAllData(allData)
+
+    setTimeout(() => {
+      window.location.reload()
+    }, 40)
   }
 
   useEffect(() => {

@@ -50,7 +50,7 @@ function App() {
   function onNotebookEditClick(id: string) {
     setTableItems(getAllData.main.items)
 
-    const li = document.getElementById(id)
+    const li: any = document.getElementById(id)
 
     const dataNameDiv = li.getElementsByClassName('data-name-div')[0]
     dataNameDiv.innerHTML = ""

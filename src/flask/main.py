@@ -222,11 +222,6 @@ def sign_up_to_user():
         return {"message": "Fail. Unwanted JSON-document."}, 400
 
 
-@app.route('/confirm/<token>')
-def confirm_email_page(token):
-    return render_template('confirm_email.html', confirm_url=f"http://127.0.0.1:5000/confirm/{token}")
-
-
 @app.route('/signup')
 def signup_page():
     return render_template('signup.html')
