@@ -6,14 +6,14 @@ import jwt
 import json
 import uuid
 import base64
-import datetime
+from datetime import datetime
 import pycouchdb as pycouchdb
 from pathlib import Path
-from string_utils.validation import is_full_string
+from string_utils.validation import is_full_string, is_email
 from sys import getsizeof
 from flask import Flask, render_template, request, send_file
 from flask_cors import CORS, cross_origin
-from functions import check_password, is_valid_audio, is_valid_video
+from functions import check_password, is_valid_audio, is_valid_video, get_hashed_password
 
 DATE_FORMAT = "%m/%d/%Y, %H:%M:%S"
 TOKEN_EXPIRATION_TIME = 2630750  # 86400
@@ -45,6 +45,13 @@ def get_user_by_id(user_id):
 def get_user_by_name(username):
     for user in users_db.all():
         if user['doc']['name'] == username:
+            return user
+    return None
+
+
+def get_user_by_email(email):
+    for user in users_db.all():
+        if user['doc']['email'] == email:
             return user
     return None
 
@@ -122,15 +129,44 @@ def login_to_user():
 
 
 @cross_origin()
-@app.route('/login', methods=["POST"])
-def login_to_user():
+@app.route('/signup', methods=["POST"])
+def sign_up_to_user():
     try:
         data = json.loads(request.data)
 
-        email = data["email"]
-        username = data["username"]
-        password1 = data["password1"]
-        password2 = data["password2"]
+        email = data["email"].strip()
+        username = data["name"].strip()
+        password1 = data["password1"].strip()
+        password2 = data["password2"].strip()
+
+        if len(email) == 0 or len(username) == 0 or len(password1) == 0:
+            return {"Status": "Input fields cannot be empty!"}, 411
+
+        if password1 != password2:
+            return {"Status": "Passwords do not match!"}, 406
+
+        if get_user_by_name(username):
+            return {"Status": "Username already exists!"}, 409
+
+        if not is_email(email):
+            return {"Status": "Email not valid!"}, 405
+
+        if get_user_by_email(email):
+            return {"Status": "Email already exists!"}, 418
+
+        password = get_hashed_password(password1)
+
+        user_to_be_saved = {
+            "id": str(uuid.uuid4()),
+            "email": email,
+            "name": username,
+            "password": password.decode('utf-8'),
+            "timestamp": str(datetime.now()),
+            "verified": False,
+            "premium": False,
+            "notebooks": []
+        }
+        return users_db.save(user_to_be_saved), 200
 
     except json.decoder.JSONDecodeError:
         return {"message": "Fail. Unwanted JSON-document."}, 400
@@ -139,6 +175,11 @@ def login_to_user():
 @app.route('/signup')
 def signup_page():
     return render_template('signup.html')
+
+
+@app.route('/login')
+def login_page():
+    return render_template('login.html')
 
 
 @app.route('/')

@@ -38,20 +38,36 @@
         method: "POST",
         body: JSON.stringify({
           "email": email,
-          "username": username,
+          "name": username,
           "password1": password1,
           "password2": password2
         })
       }).then(function (res) {
-        if (res.status == 404) {
-          alert(res.Status);
-          throw new Error(res.Status);
+        if (res.status == 411) {
+          alert("Input fields cannot be empty!");
+          throw new Error("Input fields cannot be empty!");
+        }
+        if (res.status == 406) {
+          alert("Passwords do not match!");
+          throw new Error("Passwords do not match!");
+        }
+        if (res.status == 409) {
+          alert("Username already exists!");
+          throw new Error("Username already exists!");
+        }
+        if (res.status == 405) {
+          alert("Email not valid!");
+          throw new Error("Email not valid!");
+        }
+        if (res.status == 418) {
+          alert("Email already exists!");
+          throw new Error("Email already exists!");
         }
         return res.json()
       }).then(function(res) {
-
+        window.location.href = "/login"
       }).catch(function(error) {
-        
+
       });
     }
     document.getElementById('form').addEventListener("submit", function (e) {
