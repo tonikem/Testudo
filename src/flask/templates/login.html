@@ -40,6 +40,10 @@
         alert("Username or password is not valid!");
         throw new Error("Username or password is not valid!");
       }
+      if (res.status == 403) {
+        alert("Verify your email first.");
+        throw new Error("Verify your email first.");
+      }
       return res.json()
     }).then(function (res) {
       //cookieStore.delete("testudoAuthorization");

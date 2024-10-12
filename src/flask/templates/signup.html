@@ -30,7 +30,7 @@
   <script>
     function upload_data() {
       var email = document.getElementById('inputEmail').value;
-      var username = document.getElementById('inputUsername').value;
+      var name = document.getElementById('inputUsername').value;
       var password1 = document.getElementById('inputPassword1').value;
       var password2 = document.getElementById('inputPassword2').value;
 
@@ -38,7 +38,7 @@
         method: "POST",
         body: JSON.stringify({
           "email": email,
-          "name": username,
+          "name": name,
           "password1": password1,
           "password2": password2
         })

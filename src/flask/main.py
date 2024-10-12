@@ -108,6 +108,9 @@ def login_to_user():
         if user is None:
             return {"Status": "Failure. User not found!"}, 404
 
+        if "verified" not in user.keys() or not user["verified"]:
+            return {"Status": "Verify your email first."}, 403
+
         hashed_password = user['doc']['password']
         user_id = user['doc']["id"]
 
