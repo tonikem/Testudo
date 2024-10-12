@@ -1,5 +1,5 @@
 # source .venv/bin/activate
-# document.cookie = "testudoAuthorization=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMjM4OTA3NGVyN3l3cTlyZThmdTk4ZTQzd3locjl3Zjg5d3VlZjlld3k3Zjh1ZjlzdyIsImRhdGUiOiIxMC8wOS8yMDI0LCAxMzozODoyNiJ9.FMECoXw_QqXYxVMUawPZOmr545-gGr6wk__JW4L-c1c"
+# document.cookie = "testudoAuthorization=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMDI2ZDU0NmItODlhOS00MzhiLThjZjktNzcyOGVlNmYyM2ViIiwiZGF0ZSI6IjEwLzEyLzIwMjQsIDE3OjMxOjI0In0.6NJsiWjOQ4K6QXtntFq4G-yHrMq78rtDgP7ScHJ-C08"
 
 import os
 import jwt
