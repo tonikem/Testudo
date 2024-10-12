@@ -88,6 +88,59 @@ def get_user_by_notebook_id(notebook_id):
     return None
 
 
+@cross_origin()
+@app.route('/login', methods=["POST"])
+def login_to_user():
+    try:
+        data = json.loads(request.data)
+        username = data["username"]
+        password = data["password"]
+
+        user = get_user_by_name(username)
+
+        if user is None:
+            return {"Status": "Failure. User not found!"}, 404
+
+        hashed_password = user['doc']['password']
+        user_id = user['doc']["id"]
+
+        if check_password(password, hashed_password):
+            token_date = datetime.datetime.now().strftime(DATE_FORMAT)
+            res_data = {
+                "username": username,
+                "token": jwt.encode({
+                    "user_id": user_id,
+                    "date": str(token_date)
+                }, "SECRET_KEY_1234", algorithm="HS256")
+            }
+            return {"message": "Successfully fetched auth token", "data": res_data}, 200
+        else:
+            return {"message": "Failure. Password not found!"}, 404
+
+    except json.decoder.JSONDecodeError:
+        return {"message": "Fail. Unwanted JSON-document."}, 400
+
+
+@cross_origin()
+@app.route('/login', methods=["POST"])
+def login_to_user():
+    try:
+        data = json.loads(request.data)
+
+        email = data["email"]
+        username = data["username"]
+        password1 = data["password1"]
+        password2 = data["password2"]
+
+    except json.decoder.JSONDecodeError:
+        return {"message": "Fail. Unwanted JSON-document."}, 400
+
+
+@app.route('/signup')
+def signup_page():
+    return render_template('signup.html')
+
+
 @app.route('/')
 @app.route('/home')
 @app.route('/notebooks')
@@ -372,39 +425,6 @@ def save_bare_notebooks(auth_token):
         return {"message": "Success"}, 200, {"Access-Control-Allow-Origin": "*"}
 
     return {"Status": "Failure. Missing token!"}, 404
-
-
-@cross_origin()
-@app.route('/login', methods=["POST"])
-def login_to_user():
-    try:
-        data = json.loads(request.data)
-        username = data["username"]
-        password = data["password"]
-
-        user = get_user_by_name(username)
-
-        if user is None:
-            return {"Status": "Failure. User not found!"}, 404
-
-        hashed_password = user['doc']['password']
-        user_id = user['doc']["id"]
-
-        if check_password(password, hashed_password):
-            token_date = datetime.datetime.now().strftime(DATE_FORMAT)
-            res_data = {
-                "username": username,
-                "token": jwt.encode({
-                    "user_id": user_id,
-                    "date": str(token_date)
-                }, "SECRET_KEY_1234", algorithm="HS256")
-            }
-            return {"message": "Successfully fetched auth token", "data": res_data}, 200
-        else:
-            return {"message": "Failure. Password not found!"}, 404
-
-    except json.decoder.JSONDecodeError:
-        return {"message": "Fail. Unwanted JSON-document."}, 400
 
 
 @cross_origin()

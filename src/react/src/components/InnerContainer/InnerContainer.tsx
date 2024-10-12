@@ -690,7 +690,7 @@ class InnerContainer extends React.Component {
                                                     {d.name}
                                                 </p>
                                                 <p className='item-payload'>
-                                                    {d.payload}
+                                                    <a href={d.payload}>{d.payload}</a>
                                                 </p>
                                                 <div className='hidden-element'>
                                                     <iframe className='url-source' src={d.payload}></iframe>

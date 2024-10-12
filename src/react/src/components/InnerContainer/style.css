@@ -87,10 +87,9 @@
 
 .item-payload {
     width: calc(100% - 220px);
+    margin: auto;
     margin-top: 8px;
     margin-bottom: 8px;
-    margin-right: auto;
-    margin-left: auto;
     padding: auto;
     text-align: left;
 }

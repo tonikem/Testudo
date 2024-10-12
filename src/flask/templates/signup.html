@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <title>Testudo App | Sign Up page</title>
+  </head>
+  <body>
+      <form id="form" style="max-width: 500px; display: block; margin-left: auto; margin-right: auto;">
+      <div class="form-row" style="margin-top: 50px;">
+        <div class="form-group col-md-6">
+          <label for="inputEmail">Email</label>
+          <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+          <label for="inputUsername">Username</label>
+          <input type="text" class="form-control" id="inputUsername" placeholder="Username">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="inputPassword1">Password</label>
+          <input type="password" class="form-control" id="inputPassword1" placeholder="Password">
+          <label for="inputPassword2">Repeat password</label>
+          <input type="password" class="form-control" id="inputPassword2" placeholder="Repeat password">
+          <button type="submit" class="btn btn-primary" style="margin-top: 22px;">Sign up</button>
+        </div>
+      </div>
+    </form>
+  </body>
+  <script>
+    function upload_data() {
+      var email = document.getElementById('inputEmail').value;
+      var username = document.getElementById('inputUsername').value;
+      var password1 = document.getElementById('inputPassword1').value;
+      var password2 = document.getElementById('inputPassword2').value;
+
+      fetch(`${window.location.protocol}//${window.location.hostname}:5000/signup`, {
+        method: "POST",
+        body: JSON.stringify({
+          "email": email,
+          "username": username,
+          "password1": password1,
+          "password2": password2
+        })
+      }).then(function (res) {
+        if (res.status == 404) {
+          alert(res.Status);
+          throw new Error(res.Status);
+        }
+        return res.json()
+      }).then(function(res) {
+
+      }).catch(function(error) {
+        
+      });
+    }
+    document.getElementById('form').addEventListener("submit", function (e) {
+      e.preventDefault();
+      upload_data();
+    });
+  </script>
+</html>
