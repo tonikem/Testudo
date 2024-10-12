@@ -6,14 +6,15 @@ import jwt
 import json
 import uuid
 import base64
-from datetime import datetime
+from datetime import datetime, timedelta
 import pycouchdb as pycouchdb
 from pathlib import Path
 from string_utils.validation import is_full_string, is_email
 from sys import getsizeof
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, url_for
 from flask_cors import CORS, cross_origin
-from functions import check_password, is_valid_audio, is_valid_video, get_hashed_password
+from flask_mail import Mail, Message
+from functions import check_password, is_valid_audio, is_valid_video, get_hashed_password, get_hashed_email, check_hashed_email
 
 DATE_FORMAT = "%m/%d/%Y, %H:%M:%S"
 TOKEN_EXPIRATION_TIME = 2630750  # 86400
@@ -33,6 +34,28 @@ server = pycouchdb.Server(f"http://admin:{PYCOUCH_DB_PASSWORD}@localhost:5984")
 
 notebooks_db = server.database("notebooks")
 users_db = server.database("users")
+
+mail = Mail(app)
+
+
+def send_email(to, subject, template):
+    msg = Message(
+        subject,
+        recipients=[to],
+        html=template,
+        sender="noreply@testudoapp.com",
+    )
+    mail.send(msg)
+
+
+def is_valid_input(string):
+    if type(string) is not str:
+        return False
+    if not is_full_string(string):
+        return False
+    if len(string) > 100:
+        return False
+    return True
 
 
 def get_user_by_id(user_id):
@@ -77,12 +100,12 @@ def authenticate(token):
             return False
 
         user_id = decoded_token['user_id']
-        token_date = datetime.datetime.strptime(decoded_token["date"], DATE_FORMAT)
-        datetime_now = datetime.datetime.now()
+        token_date = datetime.strptime(decoded_token["date"], DATE_FORMAT)
+        datetime_now = datetime.now()
 
         user = get_user_by_id(user_id)
 
-        expiration = token_date + datetime.timedelta(seconds=TOKEN_EXPIRATION_TIME)
+        expiration = token_date + timedelta(seconds=TOKEN_EXPIRATION_TIME)
         return user and datetime_now < expiration
 
     return False
@@ -103,6 +126,9 @@ def login_to_user():
         username = data["username"]
         password = data["password"]
 
+        if not is_valid_input(username) or not is_valid_input(password):
+            return {"message": "Fail. Fields can be string values with max length of 100"}, 400
+
         user = get_user_by_name(username)
 
         if user is None:
@@ -115,7 +141,7 @@ def login_to_user():
         user_id = user['doc']["id"]
 
         if check_password(password, hashed_password):
-            token_date = datetime.datetime.now().strftime(DATE_FORMAT)
+            token_date = datetime.now().strftime(DATE_FORMAT)
             res_data = {
                 "username": username,
                 "token": jwt.encode({
@@ -141,6 +167,9 @@ def sign_up_to_user():
         username = data["name"].strip()
         password1 = data["password1"].strip()
         password2 = data["password2"].strip()
+
+        if not is_valid_input(username) or not is_valid_input(password1) or not is_valid_input(password2) or not is_valid_input(email):
+            return {"message": "Fail. Fields can be string values with max length of 100"}, 400
 
         if len(email) == 0 or len(username) == 0 or len(password1) == 0:
             return {"Status": "Input fields cannot be empty!"}, 411
@@ -169,10 +198,22 @@ def sign_up_to_user():
             "premium": False,
             "notebooks": []
         }
+
+        # Lähetetään sähköpostiin varmistus
+        token = get_hashed_email(email)
+        html = render_template("confirm_email.html", confirm_url=f"http://127.0.0.1:5000/confirm/{token}")
+        subject = "Please confirm your email"
+        send_email(user_to_be_saved["email"], subject, html)
+
         return users_db.save(user_to_be_saved), 200
 
     except json.decoder.JSONDecodeError:
         return {"message": "Fail. Unwanted JSON-document."}, 400
+
+
+@app.route('/confirm/<token>')
+def confirm_email_page(token):
+    return render_template('confirm_email.html', confirm_url=f"http://127.0.0.1:5000/confirm/{token}")
 
 
 @app.route('/signup')
@@ -402,6 +443,9 @@ def save_bare_notebooks(auth_token):
         if decoded_token is None:
             return {"Status": "Failure. Missing token!"}, 404
 
+        if getsizeof(request.data) > MAX_DATA_SIZE:
+            return {"message": f"Content too large. Max size is {MAX_DATA_SIZE} bytes"}, 413
+
         new_notebooks_found = False
         user_id = decoded_token["user_id"]
         user = get_user_by_id(user_id)
@@ -522,11 +566,12 @@ def get_notebooks_and_items(auth_token):
 @app.route("/data/<auth_token>", methods=["PUT"])
 def save_notebooks(auth_token):
     if authenticate(auth_token):
+
+        if getsizeof(request.data) > MAX_DATA_SIZE:
+            return {"message": f"Content too large. Max size is {MAX_DATA_SIZE} bytes"}, 413
+
         data = json.loads(request.data)
         json_data = json.dumps(data, indent=4)
-
-        if getsizeof(json_data) > MAX_DATA_SIZE:
-            return {"message": f"Content too large. Max size is {MAX_DATA_SIZE} bytes"}, 413
 
         decoded_token = decode_token(auth_token)
 

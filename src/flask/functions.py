@@ -1,6 +1,6 @@
 import bcrypt
 import filetype
-
+from itsdangerous import URLSafeTimedSerializer
 
 AUDIO_MIMES = (
     "audio/mpeg", "audio/aac", "audio/midi",
@@ -24,6 +24,14 @@ def get_hashed_password(plain_text_password):
 
 def check_password(plain_text_password, hashed_password):
     return bcrypt.checkpw(plain_text_password.encode('UTF-8'), bytes(hashed_password, 'UTF-8'))
+
+
+def get_hashed_email(email):
+    return bcrypt.hashpw(email.encode('UTF-8'), SALT)
+
+
+def check_hashed_email(email, hashed_email):
+    return bcrypt.checkpw(email.encode('UTF-8'), bytes(hashed_email, 'UTF-8'))
 
 
 def is_valid_audio(filename):
