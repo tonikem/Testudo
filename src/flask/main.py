@@ -16,6 +16,7 @@ from flask_cors import CORS, cross_origin
 from flask_mail import Mail, Message
 from functions import check_password, is_valid_audio, is_valid_video, get_hashed_password, get_hashed_email, check_hashed_email
 
+
 DATE_FORMAT = "%m/%d/%Y, %H:%M:%S"
 TOKEN_EXPIRATION_TIME = 2630750  # 86400
 MAX_DATA_SIZE = 6000000000  # 6GB
@@ -35,17 +36,15 @@ server = pycouchdb.Server(f"http://admin:{PYCOUCH_DB_PASSWORD}@localhost:5984")
 notebooks_db = server.database("notebooks")
 users_db = server.database("users")
 
-mail = Mail(app)
+#app.config['MAIL_SERVER'] = 'your_mail_server'
+#app.config['MAIL_PORT'] = 587
+#app.config['MAIL_USE_TLS'] = True
+#app.config['MAIL_USE_SSL'] = False
+#app.config['MAIL_USERNAME'] = 'your_username'
+#app.config['MAIL_PASSWORD'] = 'your_password'
+#app.config['MAIL_DEFAULT_SENDER'] = 'your_email@example.com'
 
-
-def send_email(to, subject, template):
-    msg = Message(
-        subject,
-        recipients=[to],
-        html=template,
-        sender="noreply@testudoapp.com",
-    )
-    mail.send(msg)
+#mail = Mail(app)
 
 
 def is_valid_input(string):
@@ -61,6 +60,13 @@ def is_valid_input(string):
 def get_user_by_id(user_id):
     for user in users_db.all():
         if user['doc']['id'] == user_id:
+            return user
+    return None
+
+
+def get_user_by_IP(ip):
+    for user in users_db.all():
+        if user['doc']['IP'] == ip:
             return user
     return None
 
@@ -134,8 +140,8 @@ def login_to_user():
         if user is None:
             return {"Status": "Failure. User not found!"}, 404
 
-        if "verified" not in user.keys() or not user["verified"]:
-            return {"Status": "Verify your email first."}, 403
+        # if "verified" not in user.keys() or not user["verified"]:
+        #     return {"Status": "Verify your email first."}, 403
 
         hashed_password = user['doc']['password']
         user_id = user['doc']["id"]
@@ -161,6 +167,11 @@ def login_to_user():
 @app.route('/signup', methods=["POST"])
 def sign_up_to_user():
     try:
+        ip = request.remote_addr
+
+        if get_user_by_IP(ip):
+            return {"Status": "Cannot use the same IP-address"}, 412
+
         data = json.loads(request.data)
 
         email = data["email"].strip()
@@ -189,6 +200,7 @@ def sign_up_to_user():
         password = get_hashed_password(password1)
 
         user_to_be_saved = {
+            "IP": request.remote_addr,
             "id": str(uuid.uuid4()),
             "email": email,
             "name": username,
@@ -201,9 +213,8 @@ def sign_up_to_user():
 
         # Lähetetään sähköpostiin varmistus
         token = get_hashed_email(email)
-        html = render_template("confirm_email.html", confirm_url=f"http://127.0.0.1:5000/confirm/{token}")
-        subject = "Please confirm your email"
-        send_email(user_to_be_saved["email"], subject, html)
+        #msg = Message('Hello', recipients=[email], body='This is a test email sent from Flask-Mail!')
+        #mail.send(msg)
 
         return users_db.save(user_to_be_saved), 200
 
@@ -682,6 +693,6 @@ def delete_data(auth_token):
 
 
 if __name__ == "__main__":
-    app.run(host='127.0.0.1', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
 
 

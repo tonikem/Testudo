@@ -48,7 +48,7 @@
     }).then(function (res) {
       //cookieStore.delete("testudoAuthorization");
       document.cookie = `testudoAuthorization=${res.data.token}`;
-      location.reload();
+      location.href = "/"
     }).catch(function (error) {
       //alert(error);
     });

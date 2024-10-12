@@ -43,6 +43,10 @@
           "password2": password2
         })
       }).then(function (res) {
+        if (res.status == 412) {
+          alert("Cannot use the same IP-address");
+          throw new Error("Cannot use the same IP-address");
+        }
         if (res.status == 400) {
           alert("Fail. Fields can be string values with max length of 100");
           throw new Error("Fail. Fields can be string values with max length of 100");
