@@ -9,7 +9,8 @@ import './style.css'
 
 
 const ListGroup = (props: any) => {
-  const [getHamburger, setHamburger] = useState(false)
+  //const [_, update] = useState()
+  //const [getHamburger, setHamburger] = useState(false)
 
   const defaultSize = "255"
 
@@ -62,10 +63,6 @@ const ListGroup = (props: any) => {
     sendPutRequest(options)
 
     props.setAllData(allData)
-
-    setTimeout(() => {
-      window.location.reload()
-    }, 40)
   }
 
   useEffect(() => {

@@ -63,7 +63,7 @@ function App() {
   }
 
   function endEditing(data: any, index: any) {
-    const li = document.getElementById(data._id)
+    const li = document.getElementById(data.id)
 
     const notebookInput = li.getElementsByClassName('notebook-input')[0]
     notebookInput.style.display = "none"
@@ -82,7 +82,7 @@ function App() {
     let allData = structuredClone(getAllData)
 
     for (let i = 0; i < allData.main.length; ++i) {
-      if (data._id === allData.main[i]._id) {
+      if (data.id === allData.main[i].id) {
 
         allData.main[i].name = newName
 
@@ -178,7 +178,7 @@ function App() {
     setAllData(allData)
   }
 
-  function onRemoveClick(_id: string) {
+  function onRemoveClick(id: string) {
     if (confirm('Are you sure you want to delete this notebook?')) {
 
       // Poistetaan Notebookin osat käyttöliittymästä
@@ -190,7 +190,7 @@ function App() {
       let allData = structuredClone(getAllData)
 
       for (let i = 0; i < allData.main.length; ++i) {
-        if (_id == allData.main[i]._id) {
+        if (id == allData.main[i].id) {
           const deleted_notebook = structuredClone(allData.main[i])
 
           delete allData.main[i]
@@ -214,11 +214,11 @@ function App() {
     }
   }
 
-  function onPublishClick(_id: string) {
+  function onPublishClick(id: string) {
     let allData = structuredClone(getAllData)
 
     allData.main.forEach(notebook => {
-      if (_id == notebook._id) {
+      if (id == notebook.id) {
         let message = ""
 
         if (notebook.published) {
@@ -245,11 +245,11 @@ function App() {
     })
   }
 
-  function onAddClick(_id: string) {
+  function onAddClick(id: string) {
     let allData = structuredClone(getAllData)
 
     allData.main.forEach(notebook => {
-      if (_id == notebook._id) {
+      if (id == notebook.id) {
         const result = window.prompt("Folder name", "");
 
         if (result === null || result.trim().length === 0) {
@@ -333,7 +333,7 @@ function App() {
       .then(mainData => {
         if (mainData["Status"] === "Failure. Missing token!") {
           // Varoitetaan tokenin puuttumisesta
-          alert("You are missing token!")
+          //alert("You are missing token!")
           setAllData({ "main": [] })
         } else {
           // Asetetaan koko data
@@ -354,7 +354,7 @@ function App() {
       .then(mainData => {
         if (mainData.Status === "Failure. Missing token!") {
           // Varoitetaan tokenin puuttumisesta
-          alert("You are missing token!")
+          //alert("You are missing token!")
           setNotebooks({ "main": [] })
         } else {
           // Asetetaan koko data
@@ -390,7 +390,7 @@ function App() {
                   if (data && data.items && data.visible) {
                     if (index == showActiveListIndex) {
                       return (
-                        <li id={data._id} key={data._id} className="list-group-item active-item">
+                        <li id={data.id} key={data.id} className="list-group-item active-item">
                           <div className="notebook-icon">
                             <div className='data-name-div'>
                               <img className='notebook' src={data.published ? redNotebook : notebook} alt="Notebook-icon" />
@@ -422,7 +422,7 @@ function App() {
                                       <input className='folder-input' />
 
                                       <img className='trash-icon' src={trash}
-                                        onClick={() => onClickTrashIcon(data._id, d.id)} />
+                                        onClick={() => onClickTrashIcon(data.id, d.id)} />
                                       <img className='edit-folder-icon' src={edit}
                                         onClick={() => onFolderEditClick(d.id)} />
                                       <img className='save-folder-icon' src={save}
@@ -447,7 +447,7 @@ function App() {
                                     <input className='folder-input' />
 
                                     <img className='trash-icon' src={trash}
-                                      onClick={() => onClickTrashIcon(data._id, d.id)} />
+                                      onClick={() => onClickTrashIcon(data.id, d.id)} />
                                     <img className='edit-folder-icon' src={edit}
                                       onClick={() => onFolderEditClick(d.id)} />
                                     <img className='save-folder-icon' src={save}
@@ -460,23 +460,23 @@ function App() {
                           <div className='buttons'>
                             <img className='pencil-button'
                               src={pencil}
-                              onClick={() => onNotebookEditClick(data._id)} />
+                              onClick={() => onNotebookEditClick(data.id)} />
                             <img className='plus-sign'
                               src={plus}
-                              onClick={() => onAddClick(data._id)} />
+                              onClick={() => onAddClick(data.id)} />
                             <img className='remove-button'
                               src={remove}
-                              onClick={() => onRemoveClick(data._id)} />
+                              onClick={() => onRemoveClick(data.id)} />
                             <img className='publish-button'
                               src={publish}
-                              onClick={() => onPublishClick(data._id)} />
+                              onClick={() => onPublishClick(data.id)} />
                           </div>
                         </li>
                       )
                     }
                     else {
                       return (
-                        <li id={data._id} key={data._id}
+                        <li id={data.id} key={data.id}
                           onClick={() => onMouseClick(index)} className="list-group-item">
                           <div className="notebook-icon">
                             <div className='data-name-div'>
