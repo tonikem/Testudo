@@ -13,7 +13,6 @@ from string_utils.validation import is_full_string, is_email
 from sys import getsizeof
 from flask import Flask, render_template, request, send_file, url_for
 from flask_cors import CORS, cross_origin
-from flask_mail import Mail, Message
 from functions import check_password, is_valid_audio, is_valid_video, get_hashed_password, get_hashed_email, check_hashed_email
 
 
@@ -459,12 +458,11 @@ def save_bare_notebooks(auth_token):
         bare_bone_notebooks = json.loads(request.data)
 
         for bare_bone_notebook in bare_bone_notebooks['main']:
-            try:
-                _id = bare_bone_notebook['_id']
-                old_notebook = notebooks_db.get(_id)
+            old_notebook = get_notebook_by_id(bare_bone_notebook['id'])
+            if old_notebook:
                 notebook_to_be_saved = {
                     'id': old_notebook['id'],
-                    '_id': _id,
+                    '_id': old_notebook['_id'],
                     '_rev': old_notebook['_rev'],
                     'name': old_notebook['name'],
                     'visible': bare_bone_notebook['visible'],
@@ -482,7 +480,7 @@ def save_bare_notebooks(auth_token):
 
                 saved_notebook = notebooks_db.save(notebook_to_be_saved)
 
-            except KeyError:
+            else:
                 notebook_to_be_saved = {
                     'id': bare_bone_notebook['id'],
                     'name': bare_bone_notebook['name'],
