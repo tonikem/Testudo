@@ -63,6 +63,7 @@ const ListGroup = (props: any) => {
     sendPutRequest(options)
 
     props.setAllData(allData)
+    props.setNotebooks(allData)
   }
 
   useEffect(() => {

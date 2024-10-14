@@ -207,6 +207,7 @@ function App() {
           sendDeleteRequest(options)
 
           setAllData(allData)
+          setNotebooks(allData)
 
           return // Poistutaan loopista
         }
@@ -379,6 +380,7 @@ function App() {
           <Header />
           <Panel>
             <ListGroup
+              setNotebooks={setNotebooks}
               setAllData={setAllData}
               getAllData={getAllData}
               onMouseClick={onMouseClick}
